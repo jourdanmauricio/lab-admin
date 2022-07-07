@@ -1,0 +1,120 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.input-oval {
+  @apply bg-none bg-transparent text-lg p-1 pl-1 block w-full border border-solid border-black rounded-lg;
+}
+
+.label-oval {
+  @apply text-sm  absolute pointer-events-none left-2.5 top-2 transition-all duration-300;
+}
+
+.input-oval[type="password"] {
+  @apply tracking-[0.3em];
+}
+
+.input-oval:focus ~ label,
+.input-oval:disabled ~ label,
+.input-oval:read-only ~ label,
+.input-oval:valid ~ label {
+  @apply -top-5 left-2 text-sm  bg-none;
+}
+
+.btn {
+  @apply rounded bg-secondaryColor text-white py-1 px-10;
+}
+
+.error {
+  @apply absolute top-10 right-4;
+}
+
+.ripple:active:after {
+  transform: scale(0, 0);
+  opacity: 0.3;
+  transition: 0s;
+}
+.ripple {
+  position: relative;
+  overflow: hidden;
+  transform: translate3d(0, 0, 0);
+}
+.ripple:after {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  background-image: radial-gradient(circle, #fff 10%, transparent 10.01%);
+  background-repeat: no-repeat;
+  background-position: 50%;
+  transform: scale(10, 10);
+  opacity: 0;
+  transition: transform 0.5s, opacity 1s;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+/* Zebra striping */
+tr:nth-of-type(odd) {
+  background: #eee;
+}
+th {
+  background: #333;
+  color: white;
+  font-weight: bold;
+}
+td,
+th {
+  padding: 6px;
+  border: 1px solid #ccc;
+  text-align: left;
+}
+
+@media only screen and (max-width: 1024px),
+  /* (min-device-width: 768px) and (max-device-width: 1024px) */ {
+  /* Force table to not be like tables anymore */
+  table,
+  thead,
+  tbody,
+  th,
+  td,
+  tr {
+    display: block;
+  }
+
+  /* Hide table headers (but not display: none;, for accessibility) */
+  thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+
+  tr {
+    border: 1px solid #ccc;
+  }
+
+  td {
+    /* Behave  like a "row" */
+    border: none;
+    border-bottom: 1px solid #eee;
+    position: relative;
+    padding-left: 30%;
+  }
+
+  td:before {
+    /* Now like a table header */
+    position: absolute;
+    /* Top/left values mimic padding */
+    top: 6px;
+    left: 6px;
+    width: 25%;
+    padding-right: 10px;
+    white-space: nowrap;
+  }
+}

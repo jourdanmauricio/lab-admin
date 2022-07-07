@@ -1,0 +1,87 @@
+<script>
+  import { onMount } from "svelte";
+  import { goto } from "$app/navigation";
+  import { isLogged, credentials, notification } from "../store/stores.js";
+  import Footer from "../lib/Footer.svelte";
+  import Snackbar from "../lib/Snackbar.svelte";
+  import NavDashboard from "../lib/Nav-dashboard.svelte";
+  import SidebarDashboard from "../lib/Sidebar-dashboard.svelte";
+
+  let fullWidth = false;
+
+  const fullDisplay = () => (fullWidth = !fullWidth);
+
+  onMount(async () => {
+    console.log("Mount Dashboard");
+    if (!$isLogged) {
+      const user = localStorage.getItem("user");
+      if (user) {
+        console.log("user", JSON.parse(user));
+        isLogged.login();
+        credentials.setCredentials(JSON.parse(user));
+      } else {
+        goto("/");
+      }
+    }
+  });
+</script>
+
+<Snackbar />
+<div class="g-content {fullWidth ? 'animate' : ''}">
+  <div class="g-header">
+    <NavDashboard {fullDisplay} />
+  </div>
+
+  <div class="g-side">
+    <SidebarDashboard />
+  </div>
+
+  <div class="g-main">
+    <slot />
+  </div>
+
+  <div class="g-footer">
+    <Footer />
+  </div>
+</div>
+
+<style>
+  .g-content {
+    background-color: azure;
+    display: grid;
+    height: 100vh;
+    grid-template-columns: 180px 1fr;
+    grid-template-rows: 48px 1fr 40px;
+    grid-template-areas:
+      "g-header g-header"
+      "g-side g-main"
+      "g-footer g-footer";
+    overflow-x: hidden;
+  }
+
+  .g-header {
+    grid-area: g-header;
+  }
+
+  .g-side {
+    grid-area: g-side;
+    transition: all 0.5s;
+  }
+
+  .g-main {
+    grid-area: g-main;
+    transition: all 0.5s;
+    padding: 20px;
+  }
+  .g-footer {
+    grid-area: g-footer;
+  }
+  .animate .g-main {
+    width: calc(100% + 180px);
+    transform: translateX(-180px);
+  }
+
+  .animate .g-side {
+    transform: translateX(-180px);
+  }
+</style>

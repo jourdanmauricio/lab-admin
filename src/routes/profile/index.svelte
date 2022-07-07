@@ -1,0 +1,205 @@
+<script>
+  import { credentials, notification } from "./../../store/stores";
+  import ModalChangePass from "./../../lib/profile/Modal-change-Pass.svelte";
+  import { variables } from "$lib/variables";
+  import { validateFields } from "./../../helpers/validateFileds";
+  import Spinner from "./../../lib/Spinner.svelte";
+
+  let errors = {};
+  let isLoading = false;
+
+  function resetFieldError(e) {
+    delete errors[e.target.name];
+    errors = errors;
+  }
+
+  async function handleSubmit(event) {
+    const formData = new FormData(event.target);
+    const formUser = {};
+    for (const [key, value] of formData.entries()) {
+      formUser[key] = value;
+    }
+    /* isPassword, isConfirmPassword, isEmail, isName, isPhone, isDocument, none */
+    formData.append("name", "isName");
+    formData.append("lastName", "isName");
+    formData.append("documentType", "isName");
+    formData.append("phone", "isPhone");
+    formData.append("documentNumber", "isDocument");
+    errors = validateFields(formData);
+
+    if (Object.keys(errors).length === 0) {
+      isLoading = true;
+      let url, method;
+      try {
+        if ($credentials.customer) {
+          url = `${variables.basePath}/customers/${$credentials.customer.id}`;
+          method = "PATCH";
+        } else {
+          url = `${variables.basePath}/customers`;
+          method = "POST";
+        }
+
+        formUser.userId = $credentials.id;
+        delete formUser.role;
+
+        const res = await fetch(url, {
+          method: method,
+          body: JSON.stringify(formUser),
+          headers: {
+            "content-type": "application/json",
+            Authorization: `Bearer ${$credentials.token}`,
+          },
+        });
+        const data = await res.json();
+        if (res.status === 201) {
+          const user = $credentials;
+          user.customer = data;
+          localStorage.setItem("user", JSON.stringify(user));
+          credentials.setCredentials(user);
+          notification.show("Perfil actualizado correctamente 👌", "success");
+        } else {
+          let message = "";
+          message = res.statusText
+            ? `${res.status}: ${res.statusText}`
+            : "Error actualizando el perfil 😞";
+          throw message;
+        }
+      } catch (err) {
+        notification.show(err, "error");
+      } finally {
+        isLoading = false;
+      }
+    }
+  }
+</script>
+
+<!-- <section class="personal">
+  <h2>{$credentials.email}</h2>
+  <button class="btn ripple btn-local">Eliminar cuenta</button>
+
+  <button class="btn ripple btn-local" on:click={() => getModal().open()}
+    >Cambiar contraseña</button
+  >
+</section> -->
+
+<div class="flex flex-wrap justify-between gap-y-2">
+  <h2 class="text-lg">{$credentials.email}</h2>
+  <button class="btn ripple btn-local">Eliminar cuenta</button>
+  <ModalChangePass />
+</div>
+
+<form class="mt-10" on:submit|preventDefault={handleSubmit}>
+  <div class="grid grid-cols-2 gap-10">
+    <div class="relative">
+      <input
+        class="input-oval"
+        type="text"
+        name="name"
+        on:input={resetFieldError}
+        value={$credentials.customer ? $credentials.customer.name : ""}
+        required="required"
+      />
+      <label class="label-oval" for="password">Nombre</label>
+      {#if errors.name}
+        <p class="error">
+          <small style="color: red"> {errors.name} </small>
+        </p>
+      {/if}
+    </div>
+    <div class="relative">
+      <input
+        class="input-oval"
+        type="text"
+        name="lastName"
+        on:input={resetFieldError}
+        value={$credentials.customer ? $credentials.customer.lastName : ""}
+        required="required"
+      />
+      <label class="label-oval" for="password">Apellido</label>
+      {#if errors.lastName}
+        <p class="error">
+          <small style="color: red"> {errors.lastName} </small>
+        </p>
+      {/if}
+    </div>
+    <div class="relative">
+      <input
+        class="input-oval"
+        type="text"
+        name="role"
+        on:input={resetFieldError}
+        value={$credentials.role}
+        readonly
+      />
+      <label class="label-oval" for="role">Role</label>
+    </div>
+    <div class="relative">
+      <input
+        class="input-oval"
+        type="text"
+        name="phone"
+        on:input={resetFieldError}
+        value={$credentials.customer ? $credentials.customer.phone : ""}
+        required="required"
+      />
+      <label class="label-oval" for="phone">Teléfono</label>
+      {#if errors.phone}
+        <p class="error">
+          <small style="color: red"> {errors.phone} </small>
+        </p>
+      {/if}
+    </div>
+    <div class="relative">
+      <input
+        class="input-oval"
+        type="text"
+        name="documentType"
+        on:input={resetFieldError}
+        value={$credentials.customer ? $credentials.customer.documentType : ""}
+        required="required"
+      />
+      <label class="label-oval" for="documentType">Tipo documento</label>
+      {#if errors.documentType}
+        <p class="error">
+          <small style="color: red"> {errors.documentType} </small>
+        </p>
+      {/if}
+    </div>
+    <div class="relative">
+      <input
+        class="input-oval"
+        type="text"
+        name="documentNumber"
+        on:input={resetFieldError}
+        value={$credentials.customer
+          ? $credentials.customer.documentNumber
+          : ""}
+        required="required"
+      />
+      <label class="label-oval" for="documentNumber">Número documento</label>
+      {#if errors.documentNumber}
+        <p class="error">
+          <small style="color: red"> {errors.documentNumber} </small>
+        </p>
+      {/if}
+    </div>
+  </div>
+
+  <div class="text-right">
+    <button type="submit" class="btn mt-8 py-1 px-10 ripple">Enviar</button>
+  </div>
+</form>
+
+{#if isLoading}
+  <Spinner />
+{/if}
+
+<style>
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus {
+    /* -webkit-text-fill-color: #141e30; */
+    transition: background-color 5000s ease-in-out 0s;
+    /* caret-color: var(--principal-color); */
+  }
+</style>
