@@ -41,8 +41,7 @@
 
     <a href="/dashboard" class="enlace">
       <!-- svelte-ignore a11y-label-has-associated-control -->
-      <span
-        class="text-white hidden sm:inline px-1 py-0 sm:text-3xl sm:px-12 border-none"
+      <span class="text-white px-10 py-0 hidden sm:inline text-sm sm:text-3xl"
         >Integriprod</span
       >
     </a>

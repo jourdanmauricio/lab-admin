@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .input-oval {
-  @apply bg-none bg-transparent text-lg p-1 pl-1 block w-full border border-solid border-black rounded-lg;
+  @apply bg-none bg-transparent text-lg p-1 pl-2 block w-full border border-solid border-black rounded-lg;
 }
 
 .label-oval {
@@ -18,7 +18,7 @@
 .input-oval:disabled ~ label,
 .input-oval:read-only ~ label,
 .input-oval:valid ~ label {
-  @apply -top-5 left-2 text-sm  bg-none;
+  @apply -top-5 left-2 text-sm bg-transparent;
 }
 
 .btn {
@@ -56,58 +56,67 @@
   transition: transform 0.5s, opacity 1s;
 }
 
-table {
+.responsive-table {
   width: 100%;
   border-collapse: collapse;
 }
 /* Zebra striping */
-tr:nth-of-type(odd) {
+.responsive-table tr:nth-of-type(odd) {
   background: #eee;
 }
-th {
+.responsive-table th {
   background: #333;
   color: white;
-  font-weight: bold;
+  font-weight: normal;
 }
-td,
-th {
-  padding: 6px;
+.responsive-table td,
+.responsive-table th {
+  padding: 2px 6px;
   border: 1px solid #ccc;
-  text-align: left;
+  text-align: center;
 }
 
 @media only screen and (max-width: 1024px),
-  /* (min-device-width: 768px) and (max-device-width: 1024px) */ {
-  /* Force table to not be like tables anymore */
-  table,
-  thead,
-  tbody,
-  th,
-  td,
-  tr {
+  (min-device-width: 320px) and (max-device-width: 1024px) /* Force table to not be like tables anymore */ {
+  .responsive-table table,
+  .responsive-table thead,
+  .responsive-table tbody,
+  .responsive-table th,
+  .responsive-table td,
+  .responsive-table tr {
     display: block;
   }
 
+  .responsive-table {
+    width: 50%;
+    /* max-width: 1024px; */
+    min-width: 320px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
   /* Hide table headers (but not display: none;, for accessibility) */
-  thead tr {
+  .responsive-table thead tr {
     position: absolute;
     top: -9999px;
     left: -9999px;
   }
 
-  tr {
-    border: 1px solid #ccc;
+  .responsive-table tr {
+    border: 1px solid #888;
+    margin-top: 5px;
   }
 
-  td {
+  .responsive-table td {
     /* Behave  like a "row" */
     border: none;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid #888;
     position: relative;
     padding-left: 30%;
+    min-height: 27.5px;
   }
 
-  td:before {
+  .responsive-table td:before {
     /* Now like a table header */
     position: absolute;
     /* Top/left values mimic padding */
@@ -116,5 +125,6 @@ th {
     width: 25%;
     padding-right: 10px;
     white-space: nowrap;
+    text-align: left;
   }
 }

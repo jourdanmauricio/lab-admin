@@ -24,7 +24,8 @@
           ? 'bg-secondaryColor'
           : 'transparent'}"
         href="/dashboard"
-        ><i class="material-icons">person</i><span class="ml-2">Dashboard</span
+        ><i class="material-icons">dashboard</i><span class="ml-2"
+          >Dashboard</span
         ></a
       >
     </li>
@@ -40,12 +41,24 @@
     </li>
     <li class="mt-4">
       <a
-        class="flex  rounded text-white py-1 pl-5 bg-transparent hover:bg-secondaryColor {$page
+        class="flex rounded text-white py-1 pl-5 bg-transparent hover:bg-secondaryColor {$page
+          .url.pathname === '/setings'
+          ? 'bg-secondaryColor'
+          : 'transparent'}"
+        href="/settings"
+        ><i class="material-icons text-gray-500">settings</i><span class="ml-2"
+          >Configuración</span
+        ></a
+      >
+    </li>
+    <li class="mt-4">
+      <a
+        class="flex rounded text-white py-1 pl-5 bg-transparent hover:bg-secondaryColor {$page
           .url.pathname === '/products'
           ? 'bg-secondaryColor'
           : 'transparent'}"
         href="/products"
-        ><i class="material-icons" style="top: 30px;">stars</i><span
+        ><i class="material-icons" style="color: teal;">stars</i><span
           class="ml-2">Productos</span
         ></a
       >
@@ -58,9 +71,7 @@
             ? 'bg-secondaryColor'
             : 'transparent'}"
           href="/users"
-          ><i class="material-icons" style="top: 16px;">group</i><span
-            class="ml-2 text-sm">Users</span
-          ></a
+          ><i class="material-icons">group</i><span class="ml-2">Users</span></a
         >
       </li>
     {/if}

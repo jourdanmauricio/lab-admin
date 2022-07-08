@@ -10,6 +10,7 @@ module.exports = {
         principalColor: "#141e30",
         secondaryColor: "#243b55",
         whiteColor: "#c6c6c6",
+        errorColor: "#F20000",
       },
     },
   },

@@ -50,8 +50,8 @@
     background-color: azure;
     display: grid;
     height: 100vh;
-    grid-template-columns: 180px 1fr;
-    grid-template-rows: 48px 1fr 40px;
+    grid-template-columns: 180px minmax(0, 1fr);
+    grid-template-rows: 45px 1fr 30px;
     grid-template-areas:
       "g-header g-header"
       "g-side g-main"

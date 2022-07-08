@@ -111,7 +111,7 @@
         <a class="" href="/forgot-password"> ¿Olvidó su contraseña?</a>
       </p>
 
-      <button class="mt-10 btn ripple">Login</button>
+      <button type="submit" class="mt-10 btn ripple">Login</button>
     </form>
   </div>
 </div>
