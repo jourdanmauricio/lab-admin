@@ -1,18 +1,21 @@
 <script>
+  import Pagination from "./../../lib/Pagination.svelte";
   import Modal2 from "./../../lib/Modal2.svelte";
   import Spinner from "./../../lib/Spinner.svelte";
+  import { settings } from "./../../store/settings.js";
   import { credentials, notification } from "./../../store/stores.js";
   import { variables } from "$lib/variables";
   import { onMount, tick } from "svelte";
   import { validateFields } from "./../../helpers/validateFileds";
-  import { each } from "svelte/internal";
-
-  // import { isLogged, credentials, notification } from "./../../store/stores.js";
 
   let modalDelete;
   let modalCreate;
   let isLoading = false;
   let users = [];
+  let pagination = {
+    limit: $settings.itemsxpage,
+    offset: 0,
+  };
   let errors = {};
   let currentUser = null;
 
@@ -91,30 +94,38 @@
     }
   }
 
-  onMount(async () => {
-    await tick();
-    console.log("MOUNT");
+  function refreshData(pag) {
+    pagination = pag;
+    loadData();
+  }
+
+  async function loadData() {
     try {
       isLoading = true;
-      console.log("Token: ", $credentials.token);
-      const response = await fetch(`${variables.basePath}/users`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${$credentials.token}`,
-        },
-      });
-      console.log("res", response);
-
-      users = await response.json();
-      console.log("users", users);
+      const response = await fetch(
+        `${variables.basePath}/users?limit=${pagination.limit}&offset=${pagination.offset}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${$credentials.token}`,
+          },
+        }
+      );
+      let data = await response.json();
+      users = data.results;
+      pagination = {
+        limit: data.paging.limit,
+        offset: data.paging.offset,
+        total: data.paging.total,
+      };
     } catch (error) {
       notification.show(error, "error");
       console.error(`Error in load function for /: ${error}`);
     } finally {
       isLoading = false;
     }
-  });
+  }
 
   function handleDelete(user) {
     currentUser = user;
@@ -129,6 +140,10 @@
     delete errors[e.target.name];
     errors = errors;
   }
+  onMount(async () => {
+    await tick();
+    loadData();
+  });
 </script>
 
 {#if isLoading}
@@ -141,7 +156,7 @@
   <caption
     class="bg-secondaryColor text-white min-w-[320px] border px-10 py-1 border-gray-900 flex items-center justify-between"
   >
-    <span class="text-lg">Usuarios</span>
+    <span class="text-lg">Usuarios: {pagination.total}</span>
     <button on:click={() => modalCreate.show()}
       ><i class="material-icons" style="color: green">add</i></button
     >
@@ -177,6 +192,9 @@
       {/each}
     </tbody>
   </table>
+  {#if pagination.total}
+    <Pagination {refreshData} {pagination} />
+  {/if}
 {/if}
 
 <Modal2 bind:this={modalDelete}>

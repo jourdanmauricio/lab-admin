@@ -71,7 +71,8 @@
             ? 'bg-secondaryColor'
             : 'transparent'}"
           href="/users"
-          ><i class="material-icons">group</i><span class="ml-2">Users</span></a
+          ><i class="material-icons">group</i><span class="ml-2">Usuarios</span
+          ></a
         >
       </li>
     {/if}
