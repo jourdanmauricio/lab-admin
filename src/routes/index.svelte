@@ -10,7 +10,7 @@
 
   let errors = {};
   let email = "admin@integriprod.com";
-  let password = "12345678";
+  let password = "integriprod";
   let isLoading = false;
 
   function resetFieldError(e) {

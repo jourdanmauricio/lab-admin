@@ -7,7 +7,7 @@
 }
 
 .label-oval {
-  @apply text-sm  absolute pointer-events-none left-2.5 top-2 transition-all duration-300;
+  @apply text-sm absolute pointer-events-none left-2.5 top-2 transition-all duration-300;
 }
 
 .input-oval[type="password"] {
@@ -104,7 +104,8 @@
 
   .responsive-table tr {
     border: 1px solid #888;
-    margin-top: 5px;
+    margin-top: 20px;
+    border-radius: 10px;
   }
 
   .responsive-table td {

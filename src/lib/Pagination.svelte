@@ -1,10 +1,12 @@
 <script>
-  // import { settings } from "./../store/settings.js";
   export let pagination;
   export let refreshData;
 
   let page;
   let itemsxpage = pagination.limit;
+
+  let selectedOption = pagination.limit;
+  const options = ["10", "30", "50", pagination.total];
 
   if (pagination.offset === 0) {
     page = 1;
@@ -46,18 +48,15 @@
   <div class="mt-4">
     <label for="itemsxpage">Cant x página</label>
     <select
-      class="ml-2 border border-solid border-black  max-w-[80px]"
+      class="ml-2 border border-solid border-black max-w-[80px]"
       name="itemsxpage"
-      id="itemsxpage"
       required="required"
+      bind:value={selectedOption}
       on:change={changePage}
     >
-      <option selected={itemsxpage === "10"} value="10">10</option>
-      <option selected={itemsxpage === "30"} value="30">30</option>
-      <option
-        selected={itemsxpage === pagination.total.toString()}
-        value={pagination.total}>Todos</option
-      >
+      {#each options as option}
+        <option value={option}>{option}</option>
+      {/each}
     </select>
   </div>
   <div class="mt-4">

@@ -2,6 +2,8 @@
   import { onMount } from "svelte";
   import { goto } from "$app/navigation";
   import { isLogged, credentials, notification } from "../store/stores.js";
+  // import { setSettings } from "../store/settings.js";
+  import { settings } from "./../store/stores";
   import Footer from "../lib/Footer.svelte";
   import Snackbar from "../lib/Snackbar.svelte";
   import NavDashboard from "../lib/Nav-dashboard.svelte";
@@ -15,6 +17,7 @@
     console.log("Mount Dashboard");
     if (!$isLogged) {
       const user = localStorage.getItem("user");
+      const lsettings = localStorage.getItem("settings");
       if (user) {
         console.log("user", JSON.parse(user));
         isLogged.login();
@@ -22,11 +25,15 @@
       } else {
         goto("/");
       }
+      if (lsettings) {
+        settings.setSettings(JSON.parse(lsettings));
+      }
     }
   });
 </script>
 
 <Snackbar />
+
 <div class="g-content {fullWidth ? 'animate' : ''}">
   <div class="g-header">
     <NavDashboard {fullDisplay} />

@@ -23,11 +23,11 @@
   <div
     on:click={() => hide()}
     transition:fade
-    class="w-screen h-screen fixed top-0 left-0 flex justify-center items-center bg-gray-900 opacity-90 z-10"
+    class="w-screen h-full fixed top-0 left-0 flex justify-center items-start bg-gray-900 opacity-90 z-10"
   >
     <div
       on:click|stopPropagation
-      class="bg-gray-200 text-black rounded-md px-8 py-10 relative max-w-lg opacity-95"
+      class="bg-gray-200 text-black rounded-md px-8 py-10 relative opacity-95"
     >
       <span
         on:click={() => hide()}

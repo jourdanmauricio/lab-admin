@@ -16,7 +16,7 @@
 } -->
 
 <nav class="bg-gray-900 h-full">
-  <ul class="menu text-white flex flex-col">
+  <ul class="-white flex flex-col">
     <li class="mt-4">
       <a
         class="flex rounded text-white py-1 pl-5 bg-transparent hover:bg-secondaryColor {$page
@@ -42,7 +42,7 @@
     <li class="mt-4">
       <a
         class="flex rounded text-white py-1 pl-5 bg-transparent hover:bg-secondaryColor {$page
-          .url.pathname === '/setings'
+          .url.pathname === '/settings'
           ? 'bg-secondaryColor'
           : 'transparent'}"
         href="/settings"

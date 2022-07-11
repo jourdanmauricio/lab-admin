@@ -60,3 +60,18 @@ const createNotification = () => {
 };
 
 export const notification = createNotification();
+
+const createSettings = () => {
+  const { subscribe, update, set } = writable({ itemsxpage: 10 });
+  return {
+    subscribe,
+    changeQuantity: (quantity) => {
+      update((settings) => (settings = { ...settings, itemsxpage: quantity }));
+    },
+    setSettings: (value) => {
+      set(value);
+    },
+  };
+};
+
+export const settings = createSettings();

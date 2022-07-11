@@ -46,7 +46,7 @@
       >
     </a>
   </div>
-  <div><h1>{currentPage}</h1></div>
+
   <ul class="flex">
     {#each nav as item}
       <li>
@@ -57,6 +57,12 @@
         >
       </li>
     {/each}
+    <li>
+      <i
+        class="mr-4 material-icons cursor-pointer text-yellow-500 active:text-gray-400"
+        >help_center</i
+      >
+    </li>
     <li>
       <button class="mr-4" on:click={logout}>
         <i class="material-icons" style="color: red;">logout</i>
