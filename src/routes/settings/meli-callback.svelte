@@ -11,9 +11,9 @@
 
   let isLoading = true;
 
-  onMount(() => {
+  onMount(async () => {
     try {
-      data = replaceCode(code, state);
+      data = await replaceCode(code, state);
       console.log("data", data);
     } catch (error) {
       notification.show(error, "error");
