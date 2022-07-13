@@ -69,11 +69,12 @@ export const replaceCode = async (code) => {
     console.log("data", data);
     console.log("url", url);
 
-    const credentialsMl = await axios({
-      method: "post",
-      url,
-      data,
+    const res = await fetch(url, {
+      method: "POST",
+      body: JSON.stringify(data),
+      // headers: {"Content-type": "application/json; charset=UTF-8"}
     });
+    credentialsMl = await res.json();
     // const rta = await service.update(state, resMl);
     console.log("CredentialsMl: ", credentialsMl);
   } catch (error) {
