@@ -11,7 +11,16 @@
     }
     try {
       const uri = await authMl({ nickname });
-      // window.open(uri, "_blank");
+      window.open(uri, "_blank");
+    } catch (error) {
+      notification.show(error, "error");
+    }
+  }
+
+  async function deleteUserMl() {
+    try {
+      await delUserMl();
+      nickname = "";
     } catch (error) {
       notification.show(error, "error");
     }
