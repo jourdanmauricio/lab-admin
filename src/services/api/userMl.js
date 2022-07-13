@@ -74,7 +74,7 @@ export const replaceCode = async (code) => {
       body: JSON.stringify(data),
       // headers: {"Content-type": "application/json; charset=UTF-8"}
     });
-    credentialsMl = await res.json();
+    const credentialsMl = await res.json();
     // const rta = await service.update(state, resMl);
     console.log("CredentialsMl: ", credentialsMl);
   } catch (error) {
