@@ -1,7 +1,7 @@
 <script>
-  import { getUserMl } from "./../../services/api/userMl.js";
-  import { authMl } from "./../../services/api/auth.js";
-  import { notification } from "../../store/stores";
+  import { delUserMl, authMl } from "./../../services/api/userMl.js";
+  import { credentials, notification } from "../../store/stores";
+  import { onMount } from "svelte";
 
   let nickname = "";
   async function getUriMl() {
@@ -11,29 +11,28 @@
     }
     try {
       const uri = await authMl({ nickname });
-      console.log("uri", uri);
-      window.open(uri, "_blank");
+      // window.open(uri, "_blank");
     } catch (error) {
-      console.log("ERROR!!!!!!!!!!!!!!", error);
       notification.show(error, "error");
-      // console.log(error);
     }
   }
+  onMount(() => {
+    nickname = $credentials.userMl ? $credentials.userMl.nickname : "";
+  });
 </script>
 
 <div class="relative mt-8 inline-block">
   <input
-    bind:value={nickname}
     class="input-oval max-w-xs"
     name="nickname"
     type="text"
+    bind:value={nickname}
   />
   <label class="label-oval" for="nickname">Nickname</label>
 </div>
 <button on:click={getUriMl} class="btn ripple inline-block ml-4"
   >Autorizar</button
 >
-
-<button on:click={getUserMl} class="btn ripple inline-block mt-10"
-  >Confirmar</button
+<button on:click={delUserMl} class="btn ripple inline-block ml-4"
+  >Desvincular</button
 >

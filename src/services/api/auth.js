@@ -14,18 +14,3 @@ export const login = async (formUser) => {
     throw error;
   }
 };
-
-export const authMl = async (data) => {
-  try {
-    const response = await Api.post("/usersml/authML", data);
-    console.log("response", response);
-    return response;
-  } catch (error) {
-    console.log("ERROR ", error);
-    let message = "";
-    message = error.response.data
-      ? `${error.response.data.statusCode}: ${error.response.data.message}`
-      : "Error Obteniendo URI ML 😞";
-    throw message;
-  }
-};
