@@ -50,9 +50,11 @@ export const delUserMl = async () => {
   }
 };
 
-export const replaceCode = async (code, state) => {
+export const replaceCode = async (code) => {
   try {
     // GET ML -> change code for access_token
+
+    console.log("CHANGE TOKEN");
 
     const credentialsMl = await axios({
       method: "post",
@@ -69,10 +71,10 @@ export const replaceCode = async (code, state) => {
     console.log("CredentialsMl: ", credentialsMl);
   } catch (error) {
     console.log("error", error);
-    let message = "";
-    message = error.response.data
-      ? `${error.response.data.statusCode}: ${error.response.data.message}`
-      : "Error obteniendo token ML 😞";
-    throw message;
+    // let message = "";
+    // message = error.response.data
+    //   ? `${error.response.data.statusCode}: ${error.response.data.message}`
+    //   : "Error obteniendo token ML 😞";
+    // throw message;
   }
 };
