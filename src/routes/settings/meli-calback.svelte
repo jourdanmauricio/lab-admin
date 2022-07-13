@@ -10,6 +10,9 @@
 
 <h1>Estamos sincronizando con Mercado Libre....</h1>
 
+<p>{code}</p>
+<p>{state}</p>
+
 {#if isLoading}
   <Spinner />
 {/if}
