@@ -1,4 +1,8 @@
 <script>
+  import {
+    createCustomer,
+    updateCustomer,
+  } from "./../../services/api/profile.js";
   import { credentials, notification } from "./../../store/stores";
   import ModalChangePass from "./../../lib/profile/Modal-change-Pass.svelte";
   import { variables } from "$lib/variables";
@@ -30,40 +34,17 @@
     if (Object.keys(errors).length === 0) {
       isLoading = true;
       let url, method;
+
+      formUser.userId = $credentials.id;
+      delete formUser.role;
+      let res;
       try {
         if ($credentials.customer) {
-          url = `${variables.basePath}/customers/${$credentials.customer.id}`;
-          method = "PATCH";
+          res = await updateCustomer(formUser);
         } else {
-          url = `${variables.basePath}/customers`;
-          method = "POST";
+          res = await createCustomer(formUser);
         }
-
-        formUser.userId = $credentials.id;
-        delete formUser.role;
-
-        const res = await fetch(url, {
-          method: method,
-          body: JSON.stringify(formUser),
-          headers: {
-            "content-type": "application/json",
-            Authorization: `Bearer ${$credentials.token}`,
-          },
-        });
-        const data = await res.json();
-        if (res.status === 201) {
-          const user = $credentials;
-          user.customer = data;
-          localStorage.setItem("user", JSON.stringify(user));
-          credentials.setCredentials(user);
-          notification.show("Perfil actualizado correctamente 👌", "success");
-        } else {
-          let message = "";
-          message = res.statusText
-            ? `${res.status}: ${res.statusText}`
-            : "Error actualizando el perfil 😞";
-          throw message;
-        }
+        notification.show("Perfil actualizado correctamente 👌", "success");
       } catch (err) {
         notification.show(err, "error");
       } finally {
@@ -72,15 +53,6 @@
     }
   }
 </script>
-
-<!-- <section class="personal">
-  <h2>{$credentials.email}</h2>
-  <button class="btn ripple btn-local">Eliminar cuenta</button>
-
-  <button class="btn ripple btn-local" on:click={() => getModal().open()}
-    >Cambiar contraseña</button
-  >
-</section> -->
 
 <div class="flex flex-wrap justify-between gap-y-2">
   <h2 class="text-lg">{$credentials.email}</h2>
@@ -198,8 +170,6 @@
   input:-webkit-autofill,
   input:-webkit-autofill:hover,
   input:-webkit-autofill:focus {
-    /* -webkit-text-fill-color: #141e30; */
     transition: background-color 5000s ease-in-out 0s;
-    /* caret-color: var(--principal-color); */
   }
 </style>

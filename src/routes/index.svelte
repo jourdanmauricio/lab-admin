@@ -1,10 +1,10 @@
 <script>
+  import { login } from "./../services/api/auth";
   import Snackbar from "./../lib/Snackbar.svelte";
   import Footer from "./../lib/Footer.svelte";
   import NavHome from "$lib/Nav-home.svelte";
-  import { isLogged, credentials, notification } from "../store/stores.js";
+  import { notification } from "../store/stores.js";
   import { goto } from "$app/navigation";
-  import { variables } from "$lib/variables";
   import { validateFields } from "../helpers/validateFileds";
   import Spinner from "../lib/Spinner.svelte";
 
@@ -32,27 +32,12 @@
     if (Object.keys(errors).length === 0) {
       isLoading = true;
       try {
-        const res = await fetch(`${variables.basePath}/auth/login`, {
-          method: "POST",
-          body: JSON.stringify(formUser),
-          headers: {
-            "content-type": "application/json",
-          },
-        });
-        const data = await res.json();
-        if (res.status === 200) {
-          isLogged.login();
-          data.user.token = data.token;
-          localStorage.setItem("user", JSON.stringify(data.user));
-          credentials.setCredentials(data.user);
-          console.log("user:", data.user);
-          notification.show("Bienvenido!!!", "info");
-          goto("/dashboard");
-        } else {
-          throw "Error en Login";
-        }
+        const res = await login(formUser);
+        localStorage.setItem("user", JSON.stringify(res.user));
+        notification.show("Bienvenido!!!", "info");
+        goto("/dashboard");
       } catch (err) {
-        notification.show(err, "error");
+        notification.show("Error en Login", "error");
       } finally {
         isLoading = false;
       }
@@ -63,11 +48,11 @@
 <NavHome />
 <Snackbar />
 
-<div class="h-screen" id="inicio">
-  <h2>Inicio</h2>
-</div>
+{#if isLoading}
+  <Spinner />
+{/if}
 
-<div class="h-screen" id="login">
+<div class="mt-10" id="login">
   <div
     class="ml-auto mr-auto text-center w-2/4 min-w-280 max-w-550 p-10 bg-gray-900 box-border	shadow-3xl rounded-lg"
   >
@@ -115,12 +100,14 @@
     </form>
   </div>
 </div>
+
+<div class="h-screen" id="inicio">
+  <h2>Inicio</h2>
+</div>
+
 <div class="h-screen" id="contacto">
   <h2>Contacto</h2>
 </div>
-{#if isLoading}
-  <Spinner />
-{/if}
 
 <Footer />
 

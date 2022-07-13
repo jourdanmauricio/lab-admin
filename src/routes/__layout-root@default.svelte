@@ -1,8 +1,8 @@
 <script>
+  import axios from "axios";
   import { onMount } from "svelte";
   import { goto } from "$app/navigation";
-  import { isLogged, credentials, notification } from "../store/stores.js";
-  // import { setSettings } from "../store/settings.js";
+  import { isLogged, credentials } from "../store/stores.js";
   import { settings } from "./../store/stores";
   import Footer from "../lib/Footer.svelte";
   import Snackbar from "../lib/Snackbar.svelte";
@@ -22,6 +22,7 @@
         console.log("user", JSON.parse(user));
         isLogged.login();
         credentials.setCredentials(JSON.parse(user));
+        // axios.defaults.headers.common["Authorization"] = `Bearer ${user.token}`;
       } else {
         goto("/");
       }

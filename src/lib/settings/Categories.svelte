@@ -1,7 +1,15 @@
 <script>
-  import { credentials, notification } from "./../../store/stores";
+  import {
+    searchPredictor,
+    getAtribsCat,
+  } from "./../../services/api/categoriesML.js";
+  import {
+    createCategory,
+    deleteCategory,
+    getCategories,
+  } from "./../../services/api/categories.js";
+  import { notification } from "./../../store/stores";
   import Spinner from "./../../lib/Spinner.svelte";
-  import { variables } from "$lib/variables";
   import Pagination from "./../../lib/Pagination.svelte";
   import Modal2 from "./../../lib/Modal2.svelte";
   import { settings } from "./../../store/stores.js";
@@ -33,30 +41,7 @@
     e.target.blur();
     isLoading = true;
     try {
-      const res = await fetch(
-        `https://api.mercadolibre.com/sites/MLA/domain_discovery/search?q=${e.target.value}`,
-        {
-          method: "GET",
-        }
-      );
-      const data = await res.json();
-      if (data.length === 0) throw "Intenta con otra palabra";
-      if (res.status === 200) {
-        results = await Promise.all(
-          data.map((cat) =>
-            fetch(
-              `https://api.mercadolibre.com/categories/${cat.category_id}`
-            ).then((res) => res.json())
-          )
-        );
-        console.log("Resutlado", results);
-      } else {
-        let message = "";
-        message = res.statusText
-          ? `${res.status}: ${res.statusText}`
-          : "Error obteniendo categorías 😞";
-        throw message;
-      }
+      results = await searchPredictor(e.target.value);
     } catch (err) {
       notification.show(err, "error");
     } finally {
@@ -64,30 +49,20 @@
     }
   }
 
-  async function getAtribs() {
-    const urls = [
-      `https://api.mercadolibre.com/categories/${cat.id}/attributes`,
-      `https://api.mercadolibre.com/categories/${cat.id}/technical_specs/input`,
-    ];
-    try {
-      isLoading = true;
-      const atribs = await Promise.all(
-        urls.map((url) => fetch(url).then((res) => res.json()))
-      );
-      return atribs;
-    } catch (error) {
-      console.log(error);
-      notification.show(error, "error");
-    } finally {
-      isLoading = false;
-    }
-  }
   async function crear() {
+    let atribs = [];
     if (!cat) {
       notification.show("Seleccione una categoría", "warning");
       return;
     }
-    const atribs = await getAtribs();
+    try {
+      isLoading = true;
+      atribs = await getAtribsCat(cat.id);
+    } catch (error) {
+      notification.show(error, "error");
+    } finally {
+      isLoading = false;
+    }
 
     let fullName = "";
     cat.path_from_root.forEach((parent, index) => {
@@ -105,29 +80,13 @@
     };
     if (cat.picture) newCategory.picture = cat.picture;
     try {
-      const res = await fetch(`${variables.basePath}/categories`, {
-        method: "POST",
-        body: JSON.stringify(newCategory),
-        headers: {
-          "content-type": "application/json",
-          Authorization: `Bearer ${$credentials.token}`,
-        },
-      });
-      const data = await res.json();
-      if (res.status === 201) {
-        notification.show("Categoría creada", "success");
-        currentCat = null;
-        cat = null;
-        results = [];
-        loadData();
-        modalCreate.hide();
-      } else {
-        let message = "";
-        message = res.statusText
-          ? `${res.status}: ${res.statusText}`
-          : "Error creando la categoría 😞";
-        throw message;
-      }
+      const res = await createCategory(newCategory);
+      notification.show("Categoría creada", "success");
+      currentCat = null;
+      cat = null;
+      results = [];
+      loadData();
+      modalCreate.hide();
     } catch (err) {
       notification.show(err, "error");
     } finally {
@@ -141,34 +100,20 @@
   async function loadData() {
     try {
       isLoading = true;
-      let url = `${variables.basePath}/categories?limit=${pagination.limit}&offset=${pagination.offset}`;
-      if (search) url += `&q=${search}`;
-      const res = await fetch(url, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      let data = await res.json();
-      if (res.status === 200) {
-        console.log("data", data);
-        categories = data.results;
-        pagination = {
-          limit: data.paging.limit,
-          offset: data.paging.offset,
-          total: data.paging.total,
-          results: data.results.length,
-        };
-      } else {
-        let message = "";
-        message = res.statusText
-          ? `${res.status}: ${res.statusText}`
-          : "Error actualizando el perfil 😞";
-        throw message;
-      }
+      const data = await getCategories(
+        pagination.limit,
+        pagination.offset,
+        search
+      );
+      categories = data.results;
+      pagination = {
+        limit: data.paging.limit,
+        offset: data.paging.offset,
+        total: data.paging.total,
+        results: data.results.length,
+      };
     } catch (error) {
       notification.show(error, "error");
-      console.error(`Error recuperando las categorías: ${error}`);
     } finally {
       isLoading = false;
     }
@@ -213,29 +158,13 @@
     loadData();
   }
 
-  async function deleteCategory(id) {
-    console.log("Delete", id);
+  async function delCategory(id) {
     isLoading = true;
     try {
-      const res = await fetch(`${variables.basePath}/categories/${id}`, {
-        method: "DELETE",
-        headers: {
-          "content-type": "application/json",
-          Authorization: `Bearer ${$credentials.token}`,
-        },
-      });
-      const data = await res.json();
-      if (res.status === 201) {
-        notification.show(`Categoría eliminada`, "success");
-        loadData();
-        modalDelete.hide();
-      } else {
-        let message = "";
-        message = res.statusText
-          ? `${res.status}: ${res.statusText}`
-          : "Error eliminando la categoría 😞";
-        throw message;
-      }
+      await deleteCategory(id);
+      notification.show(`Categoría eliminada`, "success");
+      loadData();
+      modalDelete.hide();
     } catch (err) {
       notification.show(err, "error");
     } finally {
@@ -315,7 +244,7 @@
   <div class="mt-10 flex justify-between">
     <button
       class="ripple rounded bg-red-900 text-white py-1 px-10 "
-      on:click={deleteCategory(currentCat.id)}>Eliminar</button
+      on:click={delCategory(currentCat.id)}>Eliminar</button
     >
     <button class="ripple btn" on:click={() => modalDelete.hide()}
       >Cancelar</button
@@ -337,12 +266,14 @@
         name="description"
         required="required"
         on:keydown={(e) => {
-          if (e.key === "Enter" || e.key === "Tab") predictor(e);
+          if (e.key === "Enter") predictor(e);
         }}
         on:blur={predictor}
       />
       <label class="label-oval" for="description">Descripción</label>
     </div>
+
+    {results.length}
 
     {#if results.length > 0}
       <select
