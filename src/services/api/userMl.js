@@ -56,7 +56,7 @@ export const replaceCode = async (code, state) => {
 
     const credentialsMl = await axios({
       method: "post",
-      url: `${config.mlApi}/oauth/token`,
+      url: `${variables.basePathML}/oauth/token`,
       data: {
         grant_type: "authorization_code",
         client_id: variables.mlAppId,
