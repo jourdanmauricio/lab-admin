@@ -13,7 +13,8 @@
 
   onMount(async () => {
     try {
-      data = await replaceCode(code, state);
+      console.log("code", code);
+      data = await replaceCode(code);
       console.log("data", data);
     } catch (error) {
       notification.show(error, "error");
