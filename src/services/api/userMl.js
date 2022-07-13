@@ -56,16 +56,23 @@ export const replaceCode = async (code) => {
 
     console.log("CHANGE TOKEN");
 
+    const data = {
+      grant_type: "authorization_code",
+      client_id: variables.mlAppId,
+      client_secret: variables.mlSecret,
+      code: code,
+      redirect_uri: `${variables.frontend}/settings/meli-callback`,
+    };
+
+    const url = `${variables.basePathML}/oauth/token`;
+
+    console.log("data", data);
+    console.log("url", url);
+
     const credentialsMl = await axios({
       method: "post",
-      url: `${variables.basePathML}/oauth/token`,
-      data: {
-        grant_type: "authorization_code",
-        client_id: variables.mlAppId,
-        client_secret: variables.mlSecret,
-        code: code,
-        redirect_uri: `${variables.frontend}/settings/meli-callback`,
-      },
+      url,
+      data,
     });
     // const rta = await service.update(state, resMl);
     console.log("CredentialsMl: ", credentialsMl);
