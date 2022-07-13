@@ -17,6 +17,8 @@
       console.log("data", data);
     } catch (error) {
       notification.show(error, "error");
+    } finally {
+      isLoading = false;
     }
   });
 </script>
@@ -25,6 +27,8 @@
 <br /><br />
 <p>{code}</p>
 <p>{state}</p>
+
+{data}
 
 {#if isLoading}
   <Spinner />
