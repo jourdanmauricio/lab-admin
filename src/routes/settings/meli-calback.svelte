@@ -8,6 +8,8 @@
   let isLoading = true;
 </script>
 
+<h1>Estamos sincronizando con Mercado Libre....</h1>
+
 {#if isLoading}
   <Spinner />
 {/if}
