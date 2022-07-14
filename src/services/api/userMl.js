@@ -97,16 +97,15 @@ export const getApiMlUser = async (mlUserId) => {
   }
 };
 
-export const updUserMl = async (userMl) => {
+export const createUserMl = async (userMl) => {
   try {
-    const user = get(credentials);
     const mlUser = await Api.post("/usersml/authML", userMl);
     return mlUser;
   } catch (error) {
-    let message = "";
-    message = error.response.data
-      ? `${error.response.data.statusCode}: ${error.response.data.message}`
-      : "Error actualizando user ML 😞";
-    throw message;
+    //    let message = "";
+    //    message = error.response.data
+    //      ? `${error.response.data.statusCode}: ${error.response.data.message}`
+    //      : "Error actualizando user ML 😞";
+    throw error;
   }
 };

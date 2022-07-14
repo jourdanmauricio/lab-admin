@@ -53,8 +53,8 @@
       if (nickname !== dataMlUser.nickname)
         throw "No coincide el nickname ingresado con la autorización de Mercado Libre";
 
-      const upd = await updUserMl(mlUser);
-      console.log("upd", upd);
+      const rta = await createUserMl(mlUser);
+      console.log("rta", rta);
     } catch (error) {
       console.log("error!!!!!!", error);
       notification.show(error, "error");
