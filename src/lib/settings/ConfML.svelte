@@ -1,6 +1,6 @@
 <script>
   import { variables } from "$lib/variables";
-  import { delUserMl, authMl } from "./../../services/api/userMl.js";
+  import { delUserMl } from "./../../services/api/userMl.js";
   import { credentials, notification } from "../../store/stores";
   import { onMount } from "svelte";
 
@@ -11,10 +11,8 @@
       return;
     }
     try {
-      const state = Math.floor(Math.random() * 1000000);
+      const state = nickname + "-" + Math.floor(Math.random() * 1000000);
       const uri = `https://auth.mercadolibre.com.ar/authorization?response_type=code&client_id=${variables.mlAppId}&redirect_uri=${variables.frontend}/settings/meli-callback&state=${state}`;
-
-      // const uri = await authMl({ nickname });
       window.open(uri, "_blank");
     } catch (error) {
       notification.show(error, "error");

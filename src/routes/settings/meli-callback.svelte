@@ -44,16 +44,16 @@
         phone: dataMlUser.phone,
         sellerReputation: dataMlUser.seller_reputation,
         siteId: dataMlUser.site_id,
-        token: state,
       };
 
       console.log("mlUser", mlUser);
 
-      // const user = get(credentials);
-      const upd = await updUserMl(mlUser);
-      console.log("upd", upd);
+      const nickname = state.split("-")[0];
+      if (nickname !== dataMlUser.nickname)
+        throw "No coincide el nickname ingresado con la autorización de Mercado Libre";
 
-      // const rta = await service.update(state, resMl);
+      // const upd = await updUserMl(mlUser);
+      // console.log("upd", upd);
     } catch (error) {
       console.log("error!!!!!!", error);
       notification.show(error, "error");
