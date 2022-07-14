@@ -55,6 +55,7 @@
 
       // const rta = await service.update(state, resMl);
     } catch (error) {
+      console.log("error!!!!!!", error);
       notification.show(error, "error");
     } finally {
       isLoading = false;
