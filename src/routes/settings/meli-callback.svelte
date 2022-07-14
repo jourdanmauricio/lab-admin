@@ -4,7 +4,7 @@
   import {
     replaceCode,
     getApiMlUser,
-    updUserMl,
+    createUserMl,
   } from "./../../services/api/userMl.js";
   import { onMount } from "svelte";
   import { notification } from "../../store/stores";
