@@ -11,9 +11,23 @@
 
   const code = $page.url.searchParams.get("code");
   const state = $page.url.searchParams.get("state");
-  let data = null;
+  let mlUser = null;
 
   let isLoading = true;
+
+  async function setMlUser() {
+    try {
+      const nickname = state.split("-")[0];
+
+      if (nickname !== dataMlUser.nickname)
+        throw "No coincide el nickname ingresado con la autorización de Mercado Libre";
+
+      const rta = await createUserMl(mlUser);
+      console.log("rta", rta);
+    } catch (error) {
+      console.log("ERROR!!!!!!!!!!!!!", error);
+    }
+  }
 
   onMount(async () => {
     try {
@@ -22,7 +36,7 @@
       const dataMlUser = await getApiMlUser(dataCredentials.user_id);
       console.log("dataMlUser", dataMlUser);
 
-      const mlUser = {
+      mlUser = {
         userId: $credentials.id,
         accessToken: dataCredentials.access_token,
         expiresIn: dataCredentials.expires_in,
@@ -48,13 +62,6 @@
       };
 
       console.log("mlUser", mlUser);
-
-      const nickname = state.split("-")[0];
-      if (nickname !== dataMlUser.nickname)
-        throw "No coincide el nickname ingresado con la autorización de Mercado Libre";
-
-      const rta = await createUserMl(mlUser);
-      console.log("rta", rta);
     } catch (error) {
       console.log("error!!!!!!", error);
       notification.show(error, "error");
@@ -69,7 +76,7 @@
 <p>{code}</p>
 <p>{state}</p>
 
-{data}
+<button on:click={setMlUser}>Confirmar</button>
 
 {#if isLoading}
   <Spinner />
