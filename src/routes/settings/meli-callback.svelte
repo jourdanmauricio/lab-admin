@@ -7,7 +7,7 @@
     createUserMl,
   } from "./../../services/api/userMl.js";
   import { onMount } from "svelte";
-  import { notification } from "../../store/stores";
+  import { credentials, notification } from "../../store/stores";
 
   const code = $page.url.searchParams.get("code");
   const state = $page.url.searchParams.get("state");
@@ -23,7 +23,7 @@
       console.log("dataMlUser", dataMlUser);
 
       const mlUser = {
-        userId: dataCredentials.user_id,
+        userId: $credentials.id,
         accessToken: dataCredentials.access_token,
         expiresIn: dataCredentials.expires_in,
         refreshToken: dataCredentials.refresh_token,

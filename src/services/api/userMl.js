@@ -99,7 +99,7 @@ export const getApiMlUser = async (mlUserId) => {
 
 export const createUserMl = async (userMl) => {
   try {
-    const mlUser = await Api.post("/usersml/authML", userMl);
+    const mlUser = await Api.post("/usersml", userMl);
     return mlUser;
   } catch (error) {
     //    let message = "";
