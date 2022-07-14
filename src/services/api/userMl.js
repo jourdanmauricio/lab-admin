@@ -100,7 +100,7 @@ export const getApiMlUser = async (mlUserId) => {
 export const createUserMl = async (userMl) => {
   const user = get(credentials);
   Api.setAuth(user.token);
-  console.log("cred token", token);
+  console.log("cred token", user.token);
   try {
     const mlUser = await Api.post("/usersml", userMl);
     return mlUser;
