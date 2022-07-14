@@ -42,6 +42,6 @@
 <button on:click={getUriMl} class="btn ripple inline-block ml-4"
   >Autorizar</button
 >
-<button on:click={delUserMl} class="btn ripple inline-block ml-4"
+<button on:click={deleteUserMl} class="btn ripple inline-block ml-4"
   >Desvincular</button
 >
