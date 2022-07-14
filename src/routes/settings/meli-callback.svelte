@@ -64,6 +64,7 @@
         throw "No coincide el nickname ingresado con la autorización de Mercado Libre";
 
       console.log("mlUser", mlUser);
+      setMlUser();
     } catch (error) {
       console.log("error!!!!!!", error);
       notification.show(error, "error");
