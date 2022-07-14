@@ -86,6 +86,7 @@ export const replaceCode = async (code) => {
 export const getApiMlUser = async (mlUserId) => {
   try {
     const mlUser = await ApiMl.get(`/users/${mlUserId}`);
+    return mlUser;
   } catch (error) {
     console.log("error", error);
     let message = "";
