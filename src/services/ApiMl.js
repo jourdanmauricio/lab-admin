@@ -2,6 +2,7 @@ import axios from "axios";
 import { variables } from "$lib/variables";
 
 // Create a instance of axios to use the same base url.
+console.log("variables.basePath", variables.basePath);
 console.log("variables.basePathMl", variables.basePathMl);
 const axiosAPI = axios.create({
   baseURL: variables.basePathMl,
