@@ -1,7 +1,11 @@
 <script>
   import Spinner from "./../../lib/Spinner.svelte";
   import { page } from "$app/stores";
-  import { replaceCode, getApiMlUser } from "./../../services/api/userMl.js";
+  import {
+    replaceCode,
+    getApiMlUser,
+    updUserMl,
+  } from "./../../services/api/userMl.js";
   import { onMount } from "svelte";
   import { notification } from "../../store/stores";
 
@@ -13,25 +17,39 @@
 
   onMount(async () => {
     try {
-      console.log("code", code);
       const dataCredentials = await replaceCode(code);
       console.log("dataCredentials", dataCredentials);
       const dataMlUser = await getApiMlUser(dataCredentials.user_id);
-
       console.log("dataMlUser", dataMlUser);
 
-      // const credentialsMl = {
-      //   accessToken: res.access_token,
-      //   expiresIn: res.expires_in,
-      //   refreshToken: res.refresh_token,
-      //   scope: res.scope,
-      //   tokenType: res.token_type,
-      //   mlUserId: res.user_id,
-      //   // nickname,
-      // };
-      //
+      const mlUser = {
+        accessToken: dataCredentials.access_token,
+        expiresIn: dataCredentials.expires_in,
+        refreshToken: dataCredentials.refresh_token,
+        scope: dataCredentials.scope,
+        tokenType: dataCredentials.token_type,
+        mlUserId: dataCredentials.user_id,
+        address: dataMlUser.address,
+        buyerReputation: dataMlUser.buyer_reputation,
+        company: dataMlUser.company,
+        countryId: dataMlUser.country_id,
+        email: dataMlUser.email,
+        firstName: dataMlUser.first_name,
+        gender: dataMlUser.gender,
+        nickname: dataMlUser.nickname,
+        identification: dataMlUser.identification,
+        lastName: dataMlUser.last_name,
+        logo: dataMlUser.logo,
+        permalink: dataMlUser.permalink,
+        phone: dataMlUser.phone,
+        sellerReputation: dataMlUser.seller_reputation,
+        siteId: dataMlUser.site_id,
+        token: state,
+      };
+
       // const user = get(credentials);
-      // const upd = await Api.patch(`authML/${user.id}`);
+      const upd = await updUserMl(mlUser);
+      console.log("upd", upd);
 
       // const rta = await service.update(state, resMl);
     } catch (error) {

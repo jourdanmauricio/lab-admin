@@ -96,3 +96,17 @@ export const getApiMlUser = async (mlUserId) => {
     throw message;
   }
 };
+
+export const updUserMl = async (userMl) => {
+  try {
+    const user = get(credentials);
+    const mlUser = await Api.patch(`/usersml/authML/${user.id}`, userMl);
+    return mlUser;
+  } catch (error) {
+    let message = "";
+    message = error.response.data
+      ? `${error.response.data.statusCode}: ${error.response.data.message}`
+      : "Error actualizando user ML 😞";
+    throw message;
+  }
+};
