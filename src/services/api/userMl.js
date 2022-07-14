@@ -100,7 +100,7 @@ export const getApiMlUser = async (mlUserId) => {
 export const updUserMl = async (userMl) => {
   try {
     const user = get(credentials);
-    const mlUser = await Api.patch(`/usersml/authML/${user.id}`, userMl);
+    const mlUser = await Api.post("/usersml/authML", userMl);
     return mlUser;
   } catch (error) {
     let message = "";

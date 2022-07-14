@@ -23,6 +23,7 @@
       console.log("dataMlUser", dataMlUser);
 
       const mlUser = {
+        userId: dataCredentials.user_id,
         accessToken: dataCredentials.access_token,
         expiresIn: dataCredentials.expires_in,
         refreshToken: dataCredentials.refresh_token,
