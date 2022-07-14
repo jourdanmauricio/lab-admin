@@ -13,7 +13,8 @@
     try {
       const state = nickname + "-" + Math.floor(Math.random() * 1000000);
       const uri = `https://auth.mercadolibre.com.ar/authorization?response_type=code&client_id=${variables.mlAppId}&redirect_uri=${variables.frontend}/settings/meli-callback&state=${state}`;
-      window.open(uri, "_blank");
+      // window.open(uri, "_blank");
+      window.open(uri);
     } catch (error) {
       notification.show(error, "error");
     }
