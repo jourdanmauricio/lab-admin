@@ -62,6 +62,7 @@
 
 <form class="mt-10" on:submit|preventDefault={handleSubmit}>
   <div class="grid grid-cols-2 gap-10">
+    {$credentials.customer}
     <div class="relative">
       <input
         class="input-oval"
