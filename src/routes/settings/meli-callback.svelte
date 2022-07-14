@@ -17,10 +17,9 @@
 
   async function setMlUser() {
     try {
-      const nickname = state.split("-")[0];
+      console.log("mlUser", mlUser);
 
-      if (nickname !== dataMlUser.nickname)
-        throw "No coincide el nickname ingresado con la autorización de Mercado Libre";
+      const nickname = state.split("-")[0];
 
       const rta = await createUserMl(mlUser);
       console.log("rta", rta);
@@ -60,6 +59,9 @@
         sellerReputation: dataMlUser.seller_reputation,
         siteId: dataMlUser.site_id,
       };
+
+      if (nickname !== dataMlUser.nickname)
+        throw "No coincide el nickname ingresado con la autorización de Mercado Libre";
 
       console.log("mlUser", mlUser);
     } catch (error) {
