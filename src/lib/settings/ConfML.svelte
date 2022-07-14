@@ -11,8 +11,8 @@
       return;
     }
     try {
-      const state = Math.floor(Math.random() * 8);
-      const uri = `${variables.basePathMl}/authorization?response_type=code&client_id=${variables.mlAppId}&redirect_uri=${variables.frontEnd}/settings/meli-callback&state=${state}`;
+      const state = Math.floor(Math.random() * 1000000);
+      const uri = `https://auth.mercadolibre.com.ar/authorization?response_type=code&client_id=${variables.mlAppId}&redirect_uri=${variables.frontEnd}/settings/meli-callback&state=${state}`;
 
       // const uri = await authMl({ nickname });
       window.open(uri, "_blank");
