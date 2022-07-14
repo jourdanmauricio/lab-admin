@@ -47,6 +47,8 @@
         token: state,
       };
 
+      console.log("mlUser", mlUser);
+
       // const user = get(credentials);
       const upd = await updUserMl(mlUser);
       console.log("upd", upd);
