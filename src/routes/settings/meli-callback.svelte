@@ -1,7 +1,7 @@
 <script>
   import Spinner from "./../../lib/Spinner.svelte";
   import { page } from "$app/stores";
-  import { replaceCode } from "./../../services/api/userMl.js";
+  import { replaceCode, getApiMlUser } from "./../../services/api/userMl.js";
   import { onMount } from "svelte";
   import { notification } from "../../store/stores";
 
