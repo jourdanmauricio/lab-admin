@@ -14,8 +14,26 @@
   onMount(async () => {
     try {
       console.log("code", code);
-      data = await replaceCode(code);
-      console.log("data", data);
+      const dataCredentials = await replaceCode(code);
+      console.log("dataCredentials", dataCredentials);
+      const dataMlUser = await getApiMlUser(dataCredentials.mlUserId);
+
+      console.log("dataMlUser", dataMlUser);
+
+      // const credentialsMl = {
+      //   accessToken: res.access_token,
+      //   expiresIn: res.expires_in,
+      //   refreshToken: res.refresh_token,
+      //   scope: res.scope,
+      //   tokenType: res.token_type,
+      //   mlUserId: res.user_id,
+      //   // nickname,
+      // };
+      //
+      // const user = get(credentials);
+      // const upd = await Api.patch(`authML/${user.id}`);
+
+      // const rta = await service.update(state, resMl);
     } catch (error) {
       notification.show(error, "error");
     } finally {

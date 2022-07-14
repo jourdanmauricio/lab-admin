@@ -1,8 +1,8 @@
 import Api from "../Api";
+import ApiMl from "../ApiMl";
 import { credentials } from "../../store/stores";
 import { variables } from "../../lib/variables";
 import { get } from "svelte/store";
-import axios from "axios";
 
 export const authMl = async (data) => {
   try {
@@ -54,8 +54,6 @@ export const replaceCode = async (code) => {
   try {
     // GET ML -> change code for access_token
 
-    console.log("CHANGE TOKEN");
-
     const data = {
       grant_type: "authorization_code",
       client_id: variables.mlAppId,
@@ -66,36 +64,34 @@ export const replaceCode = async (code) => {
 
     const url = `${variables.basePathML}/oauth/token`;
 
-    console.log("data", data);
-    console.log("url", url);
-
     const response = await fetch(url, {
       method: "POST",
       body: JSON.stringify(data),
-      // headers: {"Content-type": "application/json; charset=UTF-8"}
     });
     const res = await response.json();
-    const credentialsMl = {
-      accessToken: res.access_token,
-      expiresIn: res.expires_in,
-      refreshToken: res.refresh_token,
-      scope: res.scope,
-      tokenType: res.token_type,
-      mlUserId: res.user_id,
-      nickname,
-    };
 
-    const user = get(credentials);
-    const upd = await Api.patch(`authML/${user.id}`);
+    ApiMl.setAuth(res.access_token);
 
-    // const rta = await service.update(state, resMl);
-    console.log("CredentialsMl: ", credentialsMl);
+    return res;
   } catch (error) {
     console.log("error", error);
-    // let message = "";
-    // message = error.response.data
-    //   ? `${error.response.data.statusCode}: ${error.response.data.message}`
-    //   : "Error obteniendo token ML 😞";
-    // throw message;
+    let message = "";
+    message = error.response.data
+      ? `${error.response.data.statusCode}: ${error.response.data.message}`
+      : "Error obteniendo token ML 😞";
+    throw message;
+  }
+};
+
+export const getApiMlUser = async (mlUserId) => {
+  try {
+    const mlUser = await ApiMl.get(`/users/${mlUserId}`);
+  } catch (error) {
+    console.log("error", error);
+    let message = "";
+    message = error.response.data
+      ? `${error.response.data.statusCode}: ${error.response.data.message}`
+      : "Error obteniendo token ML 😞";
+    throw message;
   }
 };
