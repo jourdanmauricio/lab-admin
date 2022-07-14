@@ -19,8 +19,6 @@
     try {
       console.log("mlUser", mlUser);
 
-      const nickname = state.split("-")[0];
-
       const rta = await createUserMl(mlUser);
       console.log("rta", rta);
     } catch (error) {
@@ -59,6 +57,8 @@
         sellerReputation: dataMlUser.seller_reputation,
         siteId: dataMlUser.site_id,
       };
+
+      const nickname = state.split("-")[0];
 
       if (nickname !== dataMlUser.nickname)
         throw "No coincide el nickname ingresado con la autorización de Mercado Libre";
