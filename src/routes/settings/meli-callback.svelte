@@ -16,7 +16,7 @@
       console.log("code", code);
       const dataCredentials = await replaceCode(code);
       console.log("dataCredentials", dataCredentials);
-      const dataMlUser = await getApiMlUser(dataCredentials.mlUserId);
+      const dataMlUser = await getApiMlUser(dataCredentials.user_id);
 
       console.log("dataMlUser", dataMlUser);
 
