@@ -3,7 +3,7 @@ import { variables } from "$lib/variables";
 export const searchPredictor = async (value) => {
   try {
     const res = await fetch(
-      `${variables.basePathML}/sites/MLA/domain_discovery/search?q=${value}`,
+      `${variables.basePathMl}/sites/MLA/domain_discovery/search?q=${value}`,
       {
         method: "GET",
         headers: {
@@ -21,7 +21,7 @@ export const searchPredictor = async (value) => {
     try {
       results = await Promise.all(
         response.map((cat) =>
-          fetch(`${variables.basePathML}/categories/${cat.category_id}`).then(
+          fetch(`${variables.basePathMl}/categories/${cat.category_id}`).then(
             (res) => res.json()
           )
         )

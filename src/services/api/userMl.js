@@ -62,7 +62,7 @@ export const replaceCode = async (code) => {
       redirect_uri: `${variables.frontend}/settings/meli-callback`,
     };
 
-    const url = `${variables.basePathML}/oauth/token`;
+    const url = `${variables.basePathMl}/oauth/token`;
 
     const response = await fetch(url, {
       method: "POST",
