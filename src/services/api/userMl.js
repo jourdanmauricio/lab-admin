@@ -69,12 +69,25 @@ export const replaceCode = async (code) => {
     console.log("data", data);
     console.log("url", url);
 
-    const res = await fetch(url, {
+    const response = await fetch(url, {
       method: "POST",
       body: JSON.stringify(data),
       // headers: {"Content-type": "application/json; charset=UTF-8"}
     });
-    const credentialsMl = await res.json();
+    const res = await response.json();
+    const credentialsMl = {
+      accessToken: res.access_token,
+      expiresIn: res.expires_in,
+      refreshToken: res.refresh_token,
+      scope: res.scope,
+      tokenType: res.token_type,
+      mlUserId: res.user_id,
+      nickname,
+    };
+
+    const user = get(credentials);
+    const upd = await Api.patch(`authML/${user.id}`);
+
     // const rta = await service.update(state, resMl);
     console.log("CredentialsMl: ", credentialsMl);
   } catch (error) {
