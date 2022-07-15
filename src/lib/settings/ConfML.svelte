@@ -67,8 +67,8 @@
     </div>
   </div>
 </div>
-<div
-  class="mt-4 p-4 w-full  text-center bg-white rounded-lg border shadow-md sm:p-8 dark:bg-gray-300 dark:border-gray-800 {$credentials.userMl
+<!-- <div
+  class="mt-4 p-4 w-full  text-center bg-white rounded-lg border shadow-md sm:p-8 dark:bg-gray-300 dark:border-gray-800 {userMl
     ? 'hidden'
     : ''}"
 >
@@ -93,4 +93,4 @@
     {userMl.address.state}
     {userMl.address.zip_code}
   </p>
-</div>
+</div> -->
