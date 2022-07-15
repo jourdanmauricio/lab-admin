@@ -8,10 +8,8 @@ export const getUserMl = async () => {
   try {
     const user = get(credentials);
     const response = await Api.get(`/usersml/${user.id}`);
-    console.log("response", response);
     return response;
   } catch (error) {
-    console.log("error", error);
     let message = "";
     message = error.response.data
       ? `${error.response.data.statusCode}: ${error.response.data.message}`
@@ -86,16 +84,15 @@ export const getApiMlUser = async (mlUserId) => {
 export const createUserMl = async (userMl) => {
   const user = get(credentials);
   Api.setAuth(user.token);
-  console.log("cred token", user.token);
   try {
     const user = await Api.post("/usersml", userMl);
     credentials.setCredentials(user);
     return user;
   } catch (error) {
-    //    let message = "";
-    //    message = error.response.data
-    //      ? `${error.response.data.statusCode}: ${error.response.data.message}`
-    //      : "Error actualizando user ML 😞";
-    throw error;
+    let message = "";
+    message = error.response.data
+      ? `${error.response.data.statusCode}: ${error.response.data.message}`
+      : "Error actualizando user ML 😞";
+    throw message;
   }
 };

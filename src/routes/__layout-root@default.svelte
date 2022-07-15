@@ -1,5 +1,5 @@
 <script>
-  import axios from "axios";
+  import ApiMl from "../services/ApiMl";
   import { onMount } from "svelte";
   import { goto } from "$app/navigation";
   import { isLogged, credentials } from "../store/stores.js";
@@ -16,13 +16,16 @@
   onMount(async () => {
     console.log("Mount Dashboard");
     if (!$isLogged) {
-      const user = localStorage.getItem("user");
+      const user = JSON.parse(localStorage.getItem("user"));
       const lsettings = localStorage.getItem("settings");
       if (user) {
-        console.log("user", JSON.parse(user));
+        console.log("user", user);
         isLogged.login();
-        credentials.setCredentials(JSON.parse(user));
+        credentials.setCredentials(user);
         // axios.defaults.headers.common["Authorization"] = `Bearer ${user.token}`;
+        if (user.userMl) {
+          ApiMl.setAuth(user.userMl.accessToken);
+        }
       } else {
         goto("/");
       }

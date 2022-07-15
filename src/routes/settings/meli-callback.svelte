@@ -15,23 +15,10 @@
 
   let isLoading = true;
 
-  async function setMlUser() {
-    try {
-      console.log("mlUser", mlUser);
-
-      const rta = await createUserMl(mlUser);
-      console.log("rta", rta);
-    } catch (error) {
-      console.log("ERROR!!!!!!!!!!!!!", error);
-    }
-  }
-
   onMount(async () => {
     try {
       const dataCredentials = await replaceCode(code);
-      console.log("dataCredentials", dataCredentials);
       const dataMlUser = await getApiMlUser(dataCredentials.user_id);
-      console.log("dataMlUser", dataMlUser);
 
       mlUser = {
         userId: $credentials.id,
@@ -63,11 +50,9 @@
       if (nickname !== dataMlUser.nickname)
         throw "No coincide el nickname ingresado con la autorización de Mercado Libre";
 
-      console.log("mlUser", mlUser);
-      const rta = await setMlUser();
-      console.log("rta", rta);
+      await createUserMl(mlUser);
+      notification.show("Nickname vinculado", "success");
     } catch (error) {
-      console.log("error!!!!!!", error);
       notification.show(error, "error");
     } finally {
       isLoading = false;
@@ -79,8 +64,6 @@
 <br /><br />
 <p>{code}</p>
 <p>{state}</p>
-
-<button on:click={setMlUser}>Confirmar</button>
 
 {#if isLoading}
   <Spinner />

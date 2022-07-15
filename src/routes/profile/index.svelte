@@ -5,7 +5,6 @@
   } from "./../../services/api/profile.js";
   import { credentials, notification } from "./../../store/stores";
   import ModalChangePass from "./../../lib/profile/Modal-change-Pass.svelte";
-  import { variables } from "$lib/variables";
   import { validateFields } from "./../../helpers/validateFileds";
   import Spinner from "./../../lib/Spinner.svelte";
 
@@ -62,8 +61,6 @@
 
 <form class="mt-10" on:submit|preventDefault={handleSubmit}>
   <div class="grid grid-cols-2 gap-10">
-    <p>Name:</p>
-    {$credentials.customer.name}
     <div class="relative">
       <input
         class="input-oval"

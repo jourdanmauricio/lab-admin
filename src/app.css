@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .input-oval {
-  @apply bg-none bg-transparent text-lg p-1 pl-2 block w-full border border-solid border-black rounded-lg;
+  @apply bg-none bg-transparent p-1 pl-2 block w-full border border-solid border-black rounded;
 }
 
 .label-oval {
@@ -22,7 +22,7 @@
 }
 
 .btn {
-  @apply rounded bg-secondaryColor text-white py-1 px-10;
+  @apply rounded bg-secondaryColor text-white py-1 px-10 border border-solid border-black;
 }
 
 .error {
@@ -71,6 +71,7 @@
 }
 .responsive-table td,
 .responsive-table th {
+  font-size: 14px;
   padding: 2px 6px;
   border: 1px solid #ccc;
   text-align: center;
