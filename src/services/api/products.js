@@ -17,6 +17,7 @@ export const postproducts = async (newProducts) => {
     const results = await Promise.all(
       newProducts.map(async (prod) => {
         const newProd = {
+          mlId: prod.id,
           attributes: prod.attributes,
           name: prod.title,
           price: prod.price,
@@ -30,7 +31,10 @@ export const postproducts = async (newProducts) => {
           saleTerms: prod.sale_terms,
           variations: prod.variations,
         };
-        await Api.post("/products", newProd);
+        let prod2 = await Api.post("/products", newProd);
+        prod2.mlId = prod.id;
+        // console.log("PRODID", prod2);
+        return prod2;
       })
     );
     return results;

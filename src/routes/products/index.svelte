@@ -3,7 +3,7 @@
   import { getApiCategoriesMl } from "./../../services/api/categoriesML.js";
   import { settings } from "./../../store/stores.js";
   import { notification } from "../../store/stores";
-  // import { createCategories } from "./../../services/api/categories.js";
+  import { createCategories } from "./../../services/api/categories.js";
   import { postproducts, deleteProduct } from "../../services/api/products.js";
   import {
     postproductsMl,
@@ -19,6 +19,7 @@
 
   async function importMl() {
     try {
+      isLoading = true;
       const mlApiItemsId = await getApiItemsMl();
       const mlApiProducts = await getApiProductsMl(mlApiItemsId.results);
       const mlProducts = await getProductsMl();
@@ -26,12 +27,12 @@
 
       let newCategoriesId = [];
       let newItems = [];
-      console.log("mlApiProducts", mlApiProducts);
+      let updItems = [];
       mlApiProducts.forEach((apiMlProd) => {
         const index = mlProducts.findIndex(
           (mlProd) => mlProd.id === apiMlProd.id
         );
-        if (index === -1) newItems.push(apiMlProd);
+        index === -1 ? newItems.push(apiMlProd) : updItems.push(apiMlProd);
         const index2 = allCategories.findIndex(
           (cat) => cat.id === apiMlProd.category_id
         );
@@ -44,11 +45,17 @@
         const newCategories = await getApiCategoriesMl(newCategoriesId);
         await createCategories(newCategories);
       }
-      const newProducts = await postproducts(mlApiProducts);
-      console.log("newProducts!!!!!!!!", newProducts);
-      const newProductsMl = await postproductsMl(newProducts);
+      const newProducts = await postproducts(newItems);
+      await postproductsMl(newProducts);
+
+      console.log("TODO: // update updItems", updItems);
+
+      loadData();
     } catch (error) {
+      console.log("ERRORRRR", error);
       notification.show(error, "error");
+    } finally {
+      isLoading = false;
     }
   }
 
@@ -190,8 +197,10 @@
   <thead>
     <tr>
       <th>ID</th>
+      <th>Imagen</th>
       <th>ML ID</th>
-      <th>Categoría</th>
+      <th>Estado</th>
+      <th>Producto</th>
       <th>Acciones</th>
     </tr>
   </thead>
@@ -199,7 +208,9 @@
     {#each products as product}
       <tr>
         <td>{product.id}</td>
-        <td>{product.mlId}</td>
+        <td><img src={product.thumbnail} alt="" /></td>
+        <td>{product.prodMl.id}</td>
+        <td>{product.prodMl.status}</td>
         <td>{product.name}</td>
         <td
           ><button on:click={handleDelete(product)} id={product.id}

@@ -33,11 +33,12 @@ export const getApiItemsMl = async () => {
     return itemsId;
   } catch (error) {
     let message = "";
-    message = error.response.data
-      ? `${error.response.data.status} ${error.response.data.error}: ${error.response.data.message}`
-      : "Error Obteniendo usuario ML 😞";
-    console.log("Error", error.response.data);
-    throw message;
+    console.log("ERROR", error);
+    // message = error.response.data
+    //   ? `${error.response.data.status} ${error.response.data.error}: ${error.response.data.message}`
+    //   : "Error Obteniendo usuario ML 😞";
+    // console.log("Error", error.response.data);
+    throw error;
   }
 };
 
@@ -52,10 +53,10 @@ export const getProductsMl = async () => {
 
 export const postproductsMl = async (newProducts) => {
   try {
-    console.log("createProductsMl", newProducts);
     const results = await Promise.all(
       newProducts.map(async (prod) => {
         const newProd = {
+          id: prod.mlId,
           prodId: prod.id,
           price: prod.price,
           quantity: prod.quantity,

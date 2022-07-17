@@ -18,9 +18,10 @@ function refreshToken() {
     refresh_token: user.userMl.refreshToken,
   };
 
-  console.log("data", data);
-
-  return axiosAPI.post("/oauth/token", data);
+  return axios.post(
+    "https://api.mercadolibre.com/oauth/token",
+    JSON.stringify(data)
+  );
 }
 
 // axiosAPI.interceptors.request.use(function () {
@@ -46,8 +47,16 @@ axiosAPI.interceptors.response.use(
           const userStore = getStore(credentials);
           const rs = await refreshToken();
           console.log("rs", rs);
+          const data = {
+            accessToken: rs.data.access_token,
+            expiresIn: rs.data.expires_in,
+            refreshToken: rs.data.refresh_token,
+            scope: rs.data.scope,
+            tokenType: rs.data.token_type,
+            userId: userStore.id,
+          };
 
-          const user = await Api.put(`/usersml/${userStore.userMl.id}`, rs);
+          const user = await Api.put(`/usersml/${userStore.userMl.id}`, data);
           credentials.setCredentials(user);
           localStorage.setItem("user", JSON.stringify(user));
           setAuth(rs.access_token);
