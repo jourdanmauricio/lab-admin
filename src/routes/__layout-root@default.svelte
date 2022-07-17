@@ -1,5 +1,6 @@
 <script>
   import ApiMl from "../services/ApiMl";
+  import Api from "../services/Api";
   import { onMount } from "svelte";
   import { goto } from "$app/navigation";
   import { isLogged, credentials } from "../store/stores.js";
@@ -22,7 +23,7 @@
         console.log("user", user);
         isLogged.login();
         credentials.setCredentials(user);
-        // axios.defaults.headers.common["Authorization"] = `Bearer ${user.token}`;
+        Api.setAuth(user.token);
         if (user.userMl) {
           ApiMl.setAuth(user.userMl.accessToken);
         }

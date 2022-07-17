@@ -1,5 +1,14 @@
 import Api from "../Api";
 
+export const getAllCategories = async () => {
+  try {
+    const categories = await Api.get("/categories/all");
+    return categories;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const getCategories = async (limit, offset, search) => {
   try {
     let paramSearch = !search ? "" : `&q=${search}`;
@@ -17,10 +26,12 @@ export const getCategories = async (limit, offset, search) => {
   }
 };
 
-export const createCategory = async (newCategory) => {
+export const createCategories = async (newCategories) => {
   try {
-    const response = await Api.post("/categories", newCategory);
-    return response;
+    const results = await Promise.all(
+      newCategories.map(async (cat) => await Api.post("/categories", cat))
+    );
+    return results;
   } catch (error) {
     let message = "";
     message = error.response.data

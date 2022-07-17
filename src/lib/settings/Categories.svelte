@@ -1,12 +1,12 @@
 <script>
   import {
     searchPredictor,
-    getAtribsCat,
+    getApiCategoriesMl,
   } from "./../../services/api/categoriesML.js";
   import {
-    createCategory,
     deleteCategory,
     getCategories,
+    createCategories,
   } from "./../../services/api/categories.js";
   import { notification } from "./../../store/stores";
   import Spinner from "./../../lib/Spinner.svelte";
@@ -50,37 +50,14 @@
   }
 
   async function crear() {
-    let atribs = [];
     if (!cat) {
       notification.show("Seleccione una categoría", "warning");
       return;
     }
     try {
       isLoading = true;
-      atribs = await getAtribsCat(cat.id);
-    } catch (error) {
-      notification.show(error, "error");
-    } finally {
-      isLoading = false;
-    }
-
-    let fullName = "";
-    cat.path_from_root.forEach((parent, index) => {
-      fullName += index === 0 ? parent.name : ` / ${parent.name}`;
-    });
-
-    const newCategory = {
-      mlId: cat.id,
-      name: cat.name,
-      fullName: fullName,
-      pathFromRoot: cat.path_from_root,
-      settings: cat.settings,
-      attributes: atribs[0],
-      attributes_oblg: atribs[1],
-    };
-    if (cat.picture) newCategory.picture = cat.picture;
-    try {
-      const res = await createCategory(newCategory);
+      const newCategories = await getApiCategoriesMl([cat.id]);
+      await createCategories(newCategories);
       notification.show("Categoría creada", "success");
       currentCat = null;
       cat = null;
@@ -204,8 +181,7 @@
 <table id="tblData" class="responsive-table">
   <thead>
     <tr>
-      <th>Id</th>
-      <th>ML ID</th>
+      <th>ID</th>
       <th>Categoría</th>
       <th>Acciones</th>
     </tr>
@@ -214,7 +190,6 @@
     {#each categories as category}
       <tr>
         <td>{category.id}</td>
-        <td>{category.mlId}</td>
         <td>{category.fullName}</td>
         <td
           ><button on:click={handleDelete(category)} id={category.id}
@@ -231,7 +206,7 @@
 
 <Modal2 bind:this={modalDelete}>
   <h2 class="text-2xl text-center">
-    Eliminar Categoría {currentCat.mlId} - {currentCat.name}
+    Eliminar Categoría {currentCat.id} - {currentCat.name}
   </h2>
   <div class="py-4">
     <div class="w-full border-t border-gray-900" />
@@ -273,6 +248,7 @@
       <label class="label-oval" for="description">Descripción</label>
     </div>
 
+    <!-- {results} -->
     {results.length}
 
     {#if results.length > 0}
@@ -293,7 +269,7 @@
             class="h-fit whitespace-normal border border-gray-600 border-solid"
             value={category}
           >
-            {#each category.path_from_root as parent, index}
+            {#each category.pathFromRoot as parent, index}
               {#if index === 0}
                 {parent.name}
               {:else}
@@ -332,12 +308,9 @@
       content: "Id";
     }
     td:nth-of-type(2):before {
-      content: "ML ID";
-    }
-    td:nth-of-type(3):before {
       content: "Categoría";
     }
-    td:nth-of-type(4):before {
+    td:nth-of-type(3):before {
       content: "Acciones";
     }
     input:-webkit-autofill,

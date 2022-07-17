@@ -1,4 +1,37 @@
 import { variables } from "$lib/variables";
+import axios from "axios";
+
+export const getApiCategoriesMl = async (mlCategoriesIds) => {
+  try {
+    return await Promise.all(
+      mlCategoriesIds.map(async (cat) => {
+        let mlCategory = await axios(
+          `${variables.basePathMl}/categories/${cat}`
+        );
+        let atribs = await getAtribsCat(cat);
+
+        let fullName = "";
+        mlCategory.data.path_from_root.forEach((parent, index) => {
+          fullName += index === 0 ? parent.name : ` / ${parent.name}`;
+        });
+
+        const newCategory = {
+          id: mlCategory.data.id,
+          name: mlCategory.data.name,
+          fullName: fullName,
+          pathFromRoot: mlCategory.data.path_from_root,
+          settings: mlCategory.data.settings,
+          picture: mlCategory.data.picture,
+          attributes: atribs[0],
+          attributes_oblg: atribs[1],
+        };
+        return newCategory;
+      })
+    );
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export const searchPredictor = async (value) => {
   try {
@@ -14,29 +47,14 @@ export const searchPredictor = async (value) => {
     const response = await res.json();
     console.log("response pedictor: ", response);
 
+    let categoriesMl = [];
+    response.forEach((cat) => categoriesMl.push(cat.category_id));
+
     if (response.length === 0) throw "Intenta con otra palabra";
 
-    let results = [];
+    const results = await getApiCategoriesMl(categoriesMl);
+    console.log("results", results);
 
-    try {
-      results = await Promise.all(
-        response.map((cat) =>
-          fetch(`${variables.basePathMl}/categories/${cat.category_id}`).then(
-            (res) => res.json()
-          )
-        )
-      );
-    } catch (error) {
-      console.log(error);
-    }
-
-    // await Promise.all(
-    //   response.map((cat) =>
-    //     ApiML.get(`/categories/${cat.category_id}`).then((data) =>
-    //       results.push(data)
-    //     )
-    //   )
-    // );
     return results;
   } catch (error) {
     console.log("error predictor", error);

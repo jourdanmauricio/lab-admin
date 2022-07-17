@@ -11,59 +11,65 @@ const axiosAPI = axios.create({
 
 function refreshToken() {
   const user = getStore(credentials);
-  return axiosAPI.post("/oauth/token", {
+  const data = {
     grant_type: "refresh_token",
     client_id: variables.mlAppId,
     client_secret: variables.mlSecret,
     refresh_token: user.userMl.refreshToken,
-  });
+  };
+
+  console.log("data", data);
+
+  return axiosAPI.post("/oauth/token", data);
 }
 
 // axiosAPI.interceptors.request.use(function () {
 //   console.log("INTERCEPTOR REQUEST");
 // });
 
-// axiosAPI.interceptors.response.use(
-//   function (response) {
-//     console.log("INTERCEPTOR RESPONSE1");
-//     return response;
-//   },
-//   async function (error) {
-//     // Any status codes that falls outside the range of 2xx cause this function to trigger
-//     // Do something with response error
-//     console.log("INTERCEPTOR RESPONSE2");
-//     const originalConfig = err.config;
-//     if (err.response) {
-//       // Access Token was expired
-//       if (err.response.status === 401 && !originalConfig._retry) {
-//         console.log("Access Token was expired");
-//         originalConfig._retry = true;
-//         try {
-//           const userStore = getStore(credentials);
-//           const rs = await refreshToken();
-//           const user = await Api.put(`/usersml/${userStore.userMl.id}`, rs);
-//           credentials.setCredentials(user);
-//           localStorage.setItem("user", JSON.stringify(user));
-//           setAuth(rs.access_token);
-//           return instance(originalConfig);
-//         } catch (_error) {
-//           if (_error.response && _error.response.data) {
-//             return Promise.reject(_error.response.data);
-//           }
-//           return Promise.reject(_error);
-//         }
-//       }
-//       if (err.response.status === 403 && err.response.data) {
-//         return Promise.reject(err.response.data);
-//       }
-//     }
-//     return Promise.reject(error);
-//   }
-// );
+axiosAPI.interceptors.response.use(
+  function (response) {
+    // console.log("INTERCEPTOR RESPONSE1");
+    return response;
+  },
+  async function (err) {
+    // Any status codes that falls outside the range of 2xx cause this function to trigger
+    // Do something with response error
+    console.log("INTERCEPTOR RESPONSE2");
+    const originalConfig = err.config;
+    if (err.response) {
+      console.log("err.response", err.response);
+      if (err.response.status === 401 && !originalConfig._retry) {
+        console.log("Access Token was expired");
+        originalConfig._retry = true;
+        try {
+          const userStore = getStore(credentials);
+          const rs = await refreshToken();
+          console.log("rs", rs);
+
+          const user = await Api.put(`/usersml/${userStore.userMl.id}`, rs);
+          credentials.setCredentials(user);
+          localStorage.setItem("user", JSON.stringify(user));
+          setAuth(rs.access_token);
+          return instance(originalConfig);
+        } catch (_error) {
+          if (_error.response && _error.response.data) {
+            return Promise.reject(_error.response.data);
+          }
+          return Promise.reject(_error);
+        }
+      }
+      if (err.response.status === 403 && err.response.data) {
+        return Promise.reject(err.response.data);
+      }
+    }
+    return Promise.reject(error);
+  }
+);
 
 // implement a method to execute all the request from here.
 const apiRequest = (method, url, request) => {
-  console.log("Method - url", method, url);
+  // console.log("Method - url", method, url);
   const headers = {
     // Authorization: `Bearer ${user.token}`,
   };

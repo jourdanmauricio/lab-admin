@@ -5,7 +5,7 @@
   import { onMount } from "svelte";
 
   let nickname = "";
-  const userMl = $credentials.userMl;
+  $: userMl = $credentials.userMl;
   async function getUriMl() {
     if (nickname.trim().length === 0) {
       notification.show("Ingresa el usuario de Mercado Libre", "warning");
@@ -67,30 +67,30 @@
     </div>
   </div>
 </div>
-<!-- <div
-  class="mt-4 p-4 w-full  text-center bg-white rounded-lg border shadow-md sm:p-8 dark:bg-gray-300 dark:border-gray-800 {userMl
-    ? 'hidden'
-    : ''}"
->
-  <p>
-    {userMl.firstName}
-    {userMl.lastName} - {userMl.identification.type}
-    {userMl.identification.number} - ML ID {userMl.mlUserId}
-  </p>
-  <hr class="border-gray-700" />
+{#if userMl}
+  <div
+    class="mt-4 p-4 w-full  text-center bg-white rounded-lg border shadow-md sm:p-8 dark:bg-gray-300 dark:border-gray-800"
+  >
+    <p>
+      {userMl.firstName}
+      {userMl.lastName} - {userMl.identification.type}
+      {userMl.identification.number} - ML ID {userMl.mlUserId}
+    </p>
+    <hr class="border-gray-700" />
 
-  <p class="mt-4 text-left text-gray-600">
-    {userMl.email}
-  </p>
-  <p class="text-left text-gray-600">
-    {userMl.phone.area_code}
-    {userMl.phone.extension}
-    {userMl.phone.number}
-  </p>
-  <p class="text-left text-gray-600">
-    {userMl.address.address}
-    {userMl.address.city}
-    {userMl.address.state}
-    {userMl.address.zip_code}
-  </p>
-</div> -->
+    <p class="mt-4 text-left text-gray-600">
+      {userMl.email}
+    </p>
+    <p class="text-left text-gray-600">
+      {userMl.phone.area_code}
+      {userMl.phone.extension}
+      {userMl.phone.number}
+    </p>
+    <p class="text-left text-gray-600">
+      {userMl.address.address}
+      {userMl.address.city}
+      {userMl.address.state}
+      {userMl.address.zip_code}
+    </p>
+  </div>
+{/if}
