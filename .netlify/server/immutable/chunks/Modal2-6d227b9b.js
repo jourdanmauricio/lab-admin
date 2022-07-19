@@ -20,8 +20,8 @@ __export(stdin_exports, {
   M: () => Modal2
 });
 module.exports = __toCommonJS(stdin_exports);
-var import_index_9af3cff5 = require("./index-9af3cff5.js");
-const Modal2 = (0, import_index_9af3cff5.c)(($$result, $$props, $$bindings, slots) => {
+var import_index_7bf676ca = require("./index-7bf676ca.js");
+const Modal2 = (0, import_index_7bf676ca.c)(($$result, $$props, $$bindings, slots) => {
   let shown = false;
   function show() {
     shown = true;
@@ -35,6 +35,6 @@ const Modal2 = (0, import_index_9af3cff5.c)(($$result, $$props, $$bindings, slot
     $$bindings.hide(hide);
   return `
 
-${shown ? `<div class="${"w-screen h-full fixed top-0 left-0 flex justify-center items-start bg-gray-900 opacity-90 z-10"}"><div class="${"bg-gray-200 text-black rounded-md px-8 py-10 relative opacity-95"}"><span class="${"absolute top-2 right-4 text-4xl cursor-pointer text-gray-900 hover:-translate-y-0.5 transition-transform"}">\xD7</span>
+${shown ? `<div class="${"w-screen h-full fixed top-0 left-0 flex justify-center items-start bg-gray-900 opacity-90 z-10"}"><div class="${"mt-20 bg-gray-200 text-black rounded-md px-8 py-10 relative opacity-95"}"><span class="${"absolute top-2 right-4 text-4xl cursor-pointer text-gray-900 hover:-translate-y-0.5 transition-transform"}">\xD7</span>
       ${slots.default ? slots.default({}) : ``}</div></div>` : ``}`;
 });

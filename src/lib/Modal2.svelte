@@ -27,7 +27,7 @@
   >
     <div
       on:click|stopPropagation
-      class="bg-gray-200 text-black rounded-md px-8 py-10 relative opacity-95"
+      class="mt-20 bg-gray-200 text-black rounded-md px-8 py-10 relative opacity-95"
     >
       <span
         on:click={() => hide()}

@@ -27,8 +27,8 @@ __export(stdin_exports, {
   stylesheets: () => stylesheets
 });
 module.exports = __toCommonJS(stdin_exports);
-var module2 = __toESM(require("../entries/pages/settings/meli-calback.svelte.js"));
+var module2 = __toESM(require("../entries/pages/settings/meli-callback.svelte.js"));
 const index = 13;
-const file = "immutable/pages/settings/meli-calback.svelte-6e7691a0.js";
-const imports = ["immutable/pages/settings/meli-calback.svelte-6e7691a0.js", "immutable/chunks/index-4f1ad350.js", "immutable/chunks/Spinner-872b22fe.js", "immutable/chunks/stores-b90126a5.js"];
+const file = "immutable/pages/settings/meli-callback.svelte-44cac747.js";
+const imports = ["immutable/pages/settings/meli-callback.svelte-44cac747.js", "immutable/chunks/index-0aaf1736.js", "immutable/chunks/Spinner-49cce8fe.js", "immutable/chunks/stores-e1e60e7b.js", "immutable/chunks/userMl-0ad8af49.js", "immutable/chunks/Api-fa5e3c2d.js", "immutable/chunks/variables-fe727d2d.js", "immutable/chunks/ApiMl-be1e444e.js", "immutable/chunks/stores-f890a40b.js", "immutable/chunks/index-c5878c8b.js"];
 const stylesheets = ["immutable/assets/Spinner-633e321b.css"];

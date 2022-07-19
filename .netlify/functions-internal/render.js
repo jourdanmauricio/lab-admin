@@ -2,10 +2,10 @@ const { init } = require('../serverless.js');
 
 exports.handler = init({
 	appDir: "_app",
-	assets: new Set(["favicon.png"]),
-	mimeTypes: {".png":"image/png"},
+	assets: new Set(["favicon.png","images/logos/ML.webp"]),
+	mimeTypes: {".png":"image/png",".webp":"image/webp"},
 	_: {
-		entry: {"file":"immutable/start-534efc01.js","imports":["immutable/start-534efc01.js","immutable/chunks/index-4f1ad350.js","immutable/chunks/index-aee7e1b1.js","immutable/chunks/singletons-cdeec3fd.js"],"stylesheets":[]},
+		entry: {"file":"immutable/start-9fb1ae8e.js","imports":["immutable/start-9fb1ae8e.js","immutable/chunks/index-0aaf1736.js","immutable/chunks/index-c5878c8b.js","immutable/chunks/singletons-cdeec3fd.js"],"stylesheets":[]},
 		nodes: [
 			() => Promise.resolve().then(() => require('../server/nodes/0.js')),
 			() => Promise.resolve().then(() => require('../server/nodes/1.js')),
@@ -92,11 +92,11 @@ exports.handler = init({
 			},
 			{
 				type: 'page',
-				id: "settings/meli-calback",
-				pattern: /^\/settings\/meli-calback\/?$/,
+				id: "settings/meli-callback",
+				pattern: /^\/settings\/meli-callback\/?$/,
 				names: [],
 				types: [],
-				path: "/settings/meli-calback",
+				path: "/settings/meli-callback",
 				shadow: null,
 				a: [0,3,10,14],
 				b: [1,1]

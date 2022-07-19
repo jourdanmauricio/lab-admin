@@ -20,8 +20,8 @@ __export(stdin_exports, {
   P: () => Pagination
 });
 module.exports = __toCommonJS(stdin_exports);
-var import_index_9af3cff5 = require("./index-9af3cff5.js");
-const Pagination = (0, import_index_9af3cff5.c)(($$result, $$props, $$bindings, slots) => {
+var import_index_7bf676ca = require("./index-7bf676ca.js");
+const Pagination = (0, import_index_7bf676ca.c)(($$result, $$props, $$bindings, slots) => {
   let { pagination } = $$props;
   let { refreshData } = $$props;
   let page;
@@ -39,13 +39,13 @@ const Pagination = (0, import_index_9af3cff5.c)(($$result, $$props, $$bindings, 
   if ($$props.refreshData === void 0 && $$bindings.refreshData && refreshData !== void 0)
     $$bindings.refreshData(refreshData);
   return `<div class="${"flex flex-col sm:flex-row items-center justify-between"}"><div class="${"mt-4"}"><label for="${"itemsxpage"}">Cant x p\xE1gina</label>
-    <select class="${"ml-2 border border-solid border-black max-w-[80px]"}" name="${"itemsxpage"}" required="${"required"}">${(0, import_index_9af3cff5.b)(options, (option) => {
-    return `<option${(0, import_index_9af3cff5.h)("value", option, 0)}>${(0, import_index_9af3cff5.e)(option)}</option>`;
+    <select class="${"ml-2 border border-solid border-black max-w-[80px]"}" name="${"itemsxpage"}" required="${"required"}">${(0, import_index_7bf676ca.b)(options, (option) => {
+    return `<option${(0, import_index_7bf676ca.i)("value", option, 0)}>${(0, import_index_7bf676ca.e)(option)}</option>`;
   })}</select></div>
   <div class="${"mt-4"}"><button ${page === 1 ? "disabled" : ""} class="${"ml-10 font-bold hover:underline disabled:text-gray-500 disabled:font-normal"}" name="${"first"}">&lt; &lt;</button>
     <button ${page === 1 ? "disabled" : ""} class="${"ml-10 font-bold hover:underline disabled:text-gray-500 disabled:font-normal"}" name="${"prev"}">&lt;</button>
-    <select ${pages === 1 ? "disabled" : ""} class="${"ml-10 border border-solid border-black max-w-[50px]"}" name="${"page"}" id="${"page"}" required="${"required"}">${(0, import_index_9af3cff5.b)(Array(pages), (_, index) => {
-    return `<option ${index === page - 1 ? "selected" : ""}${(0, import_index_9af3cff5.h)("value", index + 1, 0)}>${(0, import_index_9af3cff5.e)(index + 1)}</option>`;
+    <select ${pages === 1 ? "disabled" : ""} class="${"ml-10 border border-solid border-black max-w-[50px]"}" name="${"page"}" id="${"page"}" required="${"required"}">${(0, import_index_7bf676ca.b)(Array(pages), (_, index) => {
+    return `<option ${index === page - 1 ? "selected" : ""}${(0, import_index_7bf676ca.i)("value", index + 1, 0)}>${(0, import_index_7bf676ca.e)(index + 1)}</option>`;
   })}</select>
 
     <button ${page === pages ? "disabled" : ""} class="${"ml-10 font-bold hover:underline disabled:text-gray-500 disabled:font-normal"}" name="${"next"}">&gt;</button>

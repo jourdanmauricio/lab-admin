@@ -20,8 +20,8 @@ __export(stdin_exports, {
   default: () => Dashboard
 });
 module.exports = __toCommonJS(stdin_exports);
-var import_index_9af3cff5 = require("../../../immutable/chunks/index-9af3cff5.js");
-const Dashboard = (0, import_index_9af3cff5.c)(($$result, $$props, $$bindings, slots) => {
+var import_index_7bf676ca = require("../../../immutable/chunks/index-7bf676ca.js");
+const Dashboard = (0, import_index_7bf676ca.c)(($$result, $$props, $$bindings, slots) => {
   return `<h1 class="${"text-purple-800"}">-Dashboard</h1>
 
 <button class="${"btn"}">Logout</button>`;

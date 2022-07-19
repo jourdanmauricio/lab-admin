@@ -19,18 +19,27 @@ var stdin_exports = {};
 __export(stdin_exports, {
   c: () => credentials,
   i: () => isLogged,
+  l: () => loading,
   n: () => notification,
   s: () => settings,
+  v: () => variables,
   w: () => writable
 });
 module.exports = __toCommonJS(stdin_exports);
-var import_index_9af3cff5 = require("./index-9af3cff5.js");
+var import_index_7bf676ca = require("./index-7bf676ca.js");
+const variables = {
+  basePath: "http://localhost:3100/api/v1",
+  basePathMl: "https://api.mercadolibre.com",
+  mlAppId: "658670237995191",
+  mlSecret: "GMau7wlNu4qJUoCX7baMfw1VvygrXCoB",
+  frontend: "https://labranzas-admin.netlify.app"
+};
 const subscriber_queue = [];
-function writable(value, start = import_index_9af3cff5.n) {
+function writable(value, start = import_index_7bf676ca.n) {
   let stop;
   const subscribers = /* @__PURE__ */ new Set();
   function set(new_value) {
-    if ((0, import_index_9af3cff5.d)(value, new_value)) {
+    if ((0, import_index_7bf676ca.d)(value, new_value)) {
       value = new_value;
       if (stop) {
         const run_queue = !subscriber_queue.length;
@@ -50,11 +59,11 @@ function writable(value, start = import_index_9af3cff5.n) {
   function update(fn) {
     set(fn(value));
   }
-  function subscribe(run, invalidate = import_index_9af3cff5.n) {
+  function subscribe(run, invalidate = import_index_7bf676ca.n) {
     const subscriber = [run, invalidate];
     subscribers.add(subscriber);
     if (subscribers.size === 1) {
-      stop = start(set) || import_index_9af3cff5.n;
+      stop = start(set) || import_index_7bf676ca.n;
     }
     run(value);
     return () => {
@@ -119,6 +128,16 @@ const createNotification = () => {
   };
 };
 const notification = createNotification();
+const createLoading = () => {
+  const { subscribe, update, set } = writable(false);
+  return {
+    subscribe,
+    show: (value) => {
+      update((loading2) => value);
+    }
+  };
+};
+const loading = createLoading();
 const createSettings = () => {
   const { subscribe, update, set } = writable({ itemsxpage: 10 });
   return {

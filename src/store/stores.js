@@ -61,6 +61,19 @@ const createNotification = () => {
 
 export const notification = createNotification();
 
+const createLoading = () => {
+  const { subscribe, update, set } = writable(false);
+
+  return {
+    subscribe,
+    show: (value) => {
+      update((loading) => (loading = value));
+    },
+  };
+};
+
+export const loading = createLoading();
+
 const createSettings = () => {
   const { subscribe, update, set } = writable({ itemsxpage: 10 });
   return {

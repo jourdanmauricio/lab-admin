@@ -60,7 +60,7 @@ axiosAPI.interceptors.response.use(
           credentials.setCredentials(user);
           localStorage.setItem("user", JSON.stringify(user));
           setAuth(rs.access_token);
-          return instance(originalConfig);
+          return axiosAPI(originalConfig);
         } catch (_error) {
           if (_error.response && _error.response.data) {
             return Promise.reject(_error.response.data);

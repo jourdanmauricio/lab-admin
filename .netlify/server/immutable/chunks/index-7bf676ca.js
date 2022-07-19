@@ -23,8 +23,9 @@ __export(stdin_exports, {
   d: () => safe_not_equal,
   e: () => escape,
   f: () => null_to_empty,
-  g: () => getContext,
-  h: () => add_attribute,
+  g: () => get_store_value,
+  h: () => getContext,
+  i: () => add_attribute,
   m: () => missing_component,
   n: () => noop,
   o: () => onDestroy,
@@ -52,6 +53,11 @@ function subscribe(store, ...callbacks) {
   }
   const unsub = store.subscribe(...callbacks);
   return unsub.unsubscribe ? () => unsub.unsubscribe() : unsub;
+}
+function get_store_value(store) {
+  let value;
+  subscribe(store, (_) => value = _)();
+  return value;
 }
 function null_to_empty(value) {
   return value == null ? "" : value;

@@ -20,13 +20,13 @@ __export(stdin_exports, {
   default: () => Routes
 });
 module.exports = __toCommonJS(stdin_exports);
-var import_index_9af3cff5 = require("../../immutable/chunks/index-9af3cff5.js");
-var import_Api_c88b9546 = require("../../immutable/chunks/Api-c88b9546.js");
-var import_Snackbar_050ebf01 = require("../../immutable/chunks/Snackbar-050ebf01.js");
+var import_index_7bf676ca = require("../../immutable/chunks/index-7bf676ca.js");
+var import_Api_a77dc7b1 = require("../../immutable/chunks/Api-a77dc7b1.js");
+var import_ApiMl_f5c181ef = require("../../immutable/chunks/ApiMl-f5c181ef.js");
+var import_Snackbar_7f929ea8 = require("../../immutable/chunks/Snackbar-7f929ea8.js");
 var import_axios = require("axios");
-var import_variables_09701ff1 = require("../../immutable/chunks/variables-09701ff1.js");
-var import_stores_68392f64 = require("../../immutable/chunks/stores-68392f64.js");
-const Nav_home = (0, import_index_9af3cff5.c)(($$result, $$props, $$bindings, slots) => {
+var import_stores_c1931941 = require("../../immutable/chunks/stores-c1931941.js");
+const Nav_home = (0, import_index_7bf676ca.c)(($$result, $$props, $$bindings, slots) => {
   let showMenu = "hidden";
   return `<nav class="${"bg-gray-900 shadow-md"}"><div class="${"max-w-6xl mx-auto px-2 sm:px-6 lg:px-8"}"><div class="${"relative flex items-center justify-between h-16"}"><div class="${"absolute left-0 inset-y-0 right-0 flex items-center sm:hidden"}">
         
@@ -52,7 +52,7 @@ const Nav_home = (0, import_index_9af3cff5.c)(($$result, $$props, $$bindings, sl
       </div></div>
 
   
-  <div class="${(0, import_index_9af3cff5.e)(showMenu) + " sm:hidden"}" id="${"mobile-menu"}"><div class="${"px-2 pt-2 pb-3 space-y-1"}">
+  <div class="${(0, import_index_7bf676ca.e)(showMenu) + " sm:hidden"}" id="${"mobile-menu"}"><div class="${"px-2 pt-2 pb-3 space-y-1"}">
       <a href="${"#inicio"}" class="${"bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium"}" aria-current="${"page"}">Inicio</a>
       <a href="${"#contacto"}" class="${"text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"}">Contacto</a>
 
@@ -63,24 +63,24 @@ const css = {
   code: "input.svelte-l9e4of:-webkit-autofill,input.svelte-l9e4of:-webkit-autofill:hover,input.svelte-l9e4of:-webkit-autofill:focus{-webkit-text-fill-color:white;-webkit-transition:background-color 5000s ease-in-out 0s;transition:background-color 5000s ease-in-out 0s;caret-color:white}",
   map: null
 };
-const Routes = (0, import_index_9af3cff5.c)(($$result, $$props, $$bindings, slots) => {
+const Routes = (0, import_index_7bf676ca.c)(($$result, $$props, $$bindings, slots) => {
   let errors = {};
   let email = "admin@integriprod.com";
   let password = "integriprod";
   $$result.css.add(css);
-  return `${(0, import_index_9af3cff5.v)(Nav_home, "NavHome").$$render($$result, {}, {}, {})}
-${(0, import_index_9af3cff5.v)(import_Snackbar_050ebf01.S, "Snackbar").$$render($$result, {}, {}, {})}
+  return `${(0, import_index_7bf676ca.v)(Nav_home, "NavHome").$$render($$result, {}, {}, {})}
+${(0, import_index_7bf676ca.v)(import_Snackbar_7f929ea8.S, "Snackbar").$$render($$result, {}, {}, {})}
 
 ${``}
 
 <div class="${"mt-10"}" id="${"login"}"><div class="${"ml-auto mr-auto text-center w-2/4 min-w-280 max-w-550 p-10 bg-gray-900 box-border shadow-3xl rounded-lg"}"><h2 class="${"text-center text-3xl p-0 text-white"}">Login</h2>
 
-    <form><div class="${"relative mt-16"}"><input class="${"input-oval text-white valid:border-white focus:border-white invalid:border-white svelte-l9e4of"}" type="${"text"}" name="${"email"}" required="${"required"}"${(0, import_index_9af3cff5.h)("value", email, 0)}>
+    <form><div class="${"relative mt-16"}"><input class="${"input-oval text-white valid:border-white focus:border-white invalid:border-white svelte-l9e4of"}" type="${"text"}" name="${"email"}" required="${"required"}"${(0, import_index_7bf676ca.i)("value", email, 0)}>
         <label class="${"label-oval text-white"}" for="${"email"}">Email</label>
-        ${errors.email ? `<p class="${"error"}"><small style="${"color: red"}">${(0, import_index_9af3cff5.e)(errors.email)}</small></p>` : ``}</div>
-      <div class="${"relative mt-16"}"><input class="${"input-oval text-white valid:border-white focus:border-white invalid:border-white svelte-l9e4of"}" type="${"password"}" name="${"password"}" required="${"required"}"${(0, import_index_9af3cff5.h)("value", password, 0)}>
+        ${errors.email ? `<p class="${"error"}"><small style="${"color: red"}">${(0, import_index_7bf676ca.e)(errors.email)}</small></p>` : ``}</div>
+      <div class="${"relative mt-16"}"><input class="${"input-oval text-white valid:border-white focus:border-white invalid:border-white svelte-l9e4of"}" type="${"password"}" name="${"password"}" required="${"required"}"${(0, import_index_7bf676ca.i)("value", password, 0)}>
         <label class="${"label-oval text-white"}" for="${"password"}">Password</label>
-        ${errors.password ? `<p class="${"error"}"><small style="${"color: red"}">${(0, import_index_9af3cff5.e)(errors.password)}</small></p>` : ``}</div>
+        ${errors.password ? `<p class="${"error"}"><small style="${"color: red"}">${(0, import_index_7bf676ca.e)(errors.password)}</small></p>` : ``}</div>
 
       <p class="${"text-right text-white cursor-pointer mt-8"}"><a class="${""}" href="${"/forgot-password"}">\xBFOlvid\xF3 su contrase\xF1a?</a></p>
 
@@ -90,5 +90,5 @@ ${``}
 
 <div class="${"h-screen"}" id="${"contacto"}"><h2>Contacto</h2></div>
 
-${(0, import_index_9af3cff5.v)(import_Snackbar_050ebf01.F, "Footer").$$render($$result, {}, {}, {})}`;
+${(0, import_index_7bf676ca.v)(import_Snackbar_7f929ea8.F, "Footer").$$render($$result, {}, {}, {})}`;
 });

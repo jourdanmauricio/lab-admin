@@ -29,6 +29,6 @@ __export(stdin_exports, {
 module.exports = __toCommonJS(stdin_exports);
 var module2 = __toESM(require("../entries/pages/settings/index.svelte.js"));
 const index = 12;
-const file = "immutable/pages/settings/index.svelte-b4c9ba53.js";
-const imports = ["immutable/pages/settings/index.svelte-b4c9ba53.js", "immutable/chunks/index-4f1ad350.js", "immutable/chunks/Api-fc6a3f42.js", "immutable/chunks/axios-27be36bc.js", "immutable/chunks/variables-09701ff1.js", "immutable/chunks/stores-5ec40e1c.js", "immutable/chunks/index-aee7e1b1.js", "immutable/chunks/auth-2ca5aeb2.js", "immutable/chunks/Spinner-872b22fe.js", "immutable/chunks/Pagination-910665f7.js", "immutable/chunks/Modal2-75b9afde.js"];
-const stylesheets = ["immutable/assets/pages/settings/index.svelte-5667c1c4.css", "immutable/assets/Spinner-633e321b.css"];
+const file = "immutable/pages/settings/index.svelte-5521c078.js";
+const imports = ["immutable/pages/settings/index.svelte-5521c078.js", "immutable/chunks/index-0aaf1736.js", "immutable/chunks/variables-fe727d2d.js", "immutable/chunks/userMl-0ad8af49.js", "immutable/chunks/Api-fa5e3c2d.js", "immutable/chunks/ApiMl-be1e444e.js", "immutable/chunks/stores-f890a40b.js", "immutable/chunks/index-c5878c8b.js", "immutable/chunks/categories-bbbba924.js", "immutable/chunks/Spinner-49cce8fe.js", "immutable/chunks/Pagination-7b3967b6.js", "immutable/chunks/Modal2-84329069.js"];
+const stylesheets = ["immutable/assets/pages/settings/index.svelte-33f05a4c.css", "immutable/assets/Spinner-633e321b.css"];

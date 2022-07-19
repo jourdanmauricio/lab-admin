@@ -1,9 +1,10 @@
 <script>
+  import Spinner from "./../lib/Spinner.svelte";
   import ApiMl from "../services/ApiMl";
   import Api from "../services/Api";
   import { onMount } from "svelte";
   import { goto } from "$app/navigation";
-  import { isLogged, credentials } from "../store/stores.js";
+  import { isLogged, credentials, loading } from "../store/stores.js";
   import { settings } from "./../store/stores";
   import Footer from "../lib/Footer.svelte";
   import Snackbar from "../lib/Snackbar.svelte";
@@ -39,6 +40,10 @@
 
 <Snackbar />
 
+{#if $loading}
+  <Spinner />
+{/if}
+
 <div class="g-content {fullWidth ? 'animate' : ''}">
   <div class="g-header">
     <NavDashboard {fullDisplay} />
@@ -70,16 +75,13 @@
       "g-footer g-footer";
     overflow-x: hidden;
   }
-
   .g-header {
     grid-area: g-header;
   }
-
   .g-side {
     grid-area: g-side;
     transition: all 0.5s;
   }
-
   .g-main {
     grid-area: g-main;
     transition: all 0.5s;
@@ -92,7 +94,6 @@
     width: calc(100% + 180px);
     transform: translateX(-180px);
   }
-
   .animate .g-side {
     transform: translateX(-180px);
   }

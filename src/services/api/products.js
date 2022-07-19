@@ -48,10 +48,15 @@ export const postproducts = async (newProducts) => {
   }
 };
 
-export const deleteProduct = async (id) => {
+export const deleteProduct = async (ids) => {
   try {
-    const res = await Api.delete(`/products/${id}`);
-    return res;
+    const results = await Promise.all(
+      ids.map(async (prodId) => {
+        const res = await Api.delete(`/products/${prodId}`);
+        return res;
+      })
+    );
+    return results;
   } catch (error) {
     console.log("Error", error);
     let message = "";

@@ -24,9 +24,9 @@ __export(stdin_exports, {
 });
 module.exports = __toCommonJS(stdin_exports);
 var import_axios = __toESM(require("axios"));
-var import_variables_09701ff1 = require("./variables-09701ff1.js");
+var import_stores_c1931941 = require("./stores-c1931941.js");
 const axiosAPI = import_axios.default.create({
-  baseURL: import_variables_09701ff1.v.basePath
+  baseURL: import_stores_c1931941.v.basePath
 });
 const apiRequest = (method, url, request) => {
   console.log("Method - url", method, url);

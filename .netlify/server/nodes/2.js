@@ -29,6 +29,6 @@ __export(stdin_exports, {
 module.exports = __toCommonJS(stdin_exports);
 var module2 = __toESM(require("../entries/pages/__layout-root@default.svelte.js"));
 const index = 2;
-const file = "immutable/pages/__layout-root@default.svelte-0246d1d4.js";
-const imports = ["immutable/pages/__layout-root@default.svelte-0246d1d4.js", "immutable/chunks/index-4f1ad350.js", "immutable/chunks/axios-27be36bc.js", "immutable/chunks/navigation-88dbfef8.js", "immutable/chunks/singletons-cdeec3fd.js", "immutable/chunks/stores-5ec40e1c.js", "immutable/chunks/index-aee7e1b1.js", "immutable/chunks/Snackbar-29f4c45c.js", "immutable/chunks/stores-b90126a5.js"];
-const stylesheets = ["immutable/assets/pages/__layout-root@default.svelte-4c6d08d4.css", "immutable/assets/Snackbar-326231ef.css"];
+const file = "immutable/pages/__layout-root@default.svelte-1e85b7b9.js";
+const imports = ["immutable/pages/__layout-root@default.svelte-1e85b7b9.js", "immutable/chunks/index-0aaf1736.js", "immutable/chunks/Spinner-49cce8fe.js", "immutable/chunks/ApiMl-be1e444e.js", "immutable/chunks/Api-fa5e3c2d.js", "immutable/chunks/variables-fe727d2d.js", "immutable/chunks/stores-f890a40b.js", "immutable/chunks/index-c5878c8b.js", "immutable/chunks/navigation-88dbfef8.js", "immutable/chunks/singletons-cdeec3fd.js", "immutable/chunks/Snackbar-80aa7177.js", "immutable/chunks/stores-e1e60e7b.js"];
+const stylesheets = ["immutable/assets/pages/__layout-root@default.svelte-4c6d08d4.css", "immutable/assets/Spinner-633e321b.css", "immutable/assets/Snackbar-326231ef.css"];

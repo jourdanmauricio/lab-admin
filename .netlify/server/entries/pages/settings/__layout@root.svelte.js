@@ -20,7 +20,7 @@ __export(stdin_exports, {
   default: () => _layout_root
 });
 module.exports = __toCommonJS(stdin_exports);
-var import_index_9af3cff5 = require("../../../immutable/chunks/index-9af3cff5.js");
-const _layout_root = (0, import_index_9af3cff5.c)(($$result, $$props, $$bindings, slots) => {
+var import_index_7bf676ca = require("../../../immutable/chunks/index-7bf676ca.js");
+const _layout_root = (0, import_index_7bf676ca.c)(($$result, $$props, $$bindings, slots) => {
   return `${slots.default ? slots.default({}) : ``}`;
 });
