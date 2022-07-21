@@ -1,5 +1,7 @@
 <script>
   import DeleteAction from "./DeleteAction.svelte";
+  import PriceAction from "./PriceAction.svelte";
+  import StatusAction from "./StatusAction.svelte";
   import { traduction } from "./../../helpers/traduction";
   export let items;
   export let action;
@@ -59,14 +61,16 @@
   </div>
 </div>
 
-<div class="mt-10 flex justify-between">
-  <!-- <button class="ripple rounded bg-red-900 text-white py-1 px-10 "
+<!-- <button class="ripple rounded bg-red-900 text-white py-1 px-10 "
     >Eliminar</button
   > -->
 
-  {#if action === "actionDeleteProd"}
-    <DeleteAction {items} {hideModalMassive} />
-  {/if}
-  <button class="ripple btn" on:click={hideModalMassive(false)}>Cancelar</button
-  >
-</div>
+{#if action === "actionDeleteProd"}
+  <DeleteAction {items} {hideModalMassive} />
+{/if}
+{#if action === "changePriceProd"}
+  <PriceAction {items} {hideModalMassive} />
+{/if}
+{#if action === "changeStatusProd"}
+  <StatusAction {items} {hideModalMassive} />
+{/if}

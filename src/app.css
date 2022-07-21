@@ -56,6 +56,10 @@
   transition: transform 0.5s, opacity 1s;
 }
 
+/* input[type="radio"]:checked {
+  background-color: tealColor
+} */
+
 .responsive-table {
   width: 100%;
   border-collapse: collapse;

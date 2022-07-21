@@ -248,9 +248,6 @@
       <label class="label-oval" for="description">Descripción</label>
     </div>
 
-    <!-- {results} -->
-    {results.length}
-
     {#if results.length > 0}
       <select
         class="block ml-auto mr-auto justify-center mt-4 w-fit border bg-transparent overflow-y-hidden"

@@ -15,7 +15,7 @@ export const getApiProductsMl = async (mlItems) => {
     return ApiMl.get(
       "items?ids=" +
         items2 +
-        "&attributes=id,attributes,title,price,category_id,title,thumbnail,available_quantity,sold_quantity,status,pictures,sale_terms,variations,start_time,description"
+        "&attributes=id,attributes,title,price,category_id,title,thumbnail,available_quantity,sold_quantity,status,pictures,sale_terms,variations,start_time,description,seller_custom_field"
     )
       .then((res) => res.forEach((element) => detItems.push(element.body)))
       .catch((err) => console.log(err));
@@ -58,6 +58,7 @@ export const postproductsMl = async (newProducts) => {
         const newProd = {
           id: prod.mlId,
           prodId: prod.id,
+          sku: prod.sku,
           price: prod.price,
           quantity: prod.quantity,
           status: prod.status,

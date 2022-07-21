@@ -20,6 +20,7 @@ export const getApiCategoriesMl = async (mlCategoriesIds) => {
           name: mlCategory.data.name,
           fullName: fullName,
           pathFromRoot: mlCategory.data.path_from_root,
+          childrenCategories: mlCategory.data.children_categories,
           settings: mlCategory.data.settings,
           picture: mlCategory.data.picture,
           attributes: atribs[0],
@@ -35,16 +36,10 @@ export const getApiCategoriesMl = async (mlCategoriesIds) => {
 
 export const searchPredictor = async (value) => {
   try {
-    const res = await fetch(
-      `${variables.basePathMl}/sites/MLA/domain_discovery/search?q=${value}`,
-      {
-        method: "GET",
-        headers: {
-          "content-type": "application/json",
-        },
-      }
+    const res = await axios(
+      `${variables.basePathMl}/sites/MLA/domain_discovery/search?q=${value}`
     );
-    const response = await res.json();
+    const response = res.data;
     console.log("response pedictor: ", response);
 
     let categoriesMl = [];
@@ -64,14 +59,25 @@ export const searchPredictor = async (value) => {
 
 export const getAtribsCat = async (catId) => {
   const urls = [
-    `https://api.mercadolibre.com/categories/${catId}/attributes`,
-    `https://api.mercadolibre.com/categories/${catId}/technical_specs/input`,
+    `${variables.basePathMl}/categories/${catId}/attributes`,
+    `${variables.basePathMl}/categories/${catId}/technical_specs/input`,
   ];
   try {
     const atribs = await Promise.all(
       urls.map((url) => fetch(url).then((res) => res.json()))
     );
     return atribs;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getApiAllCategoriesMl = async () => {
+  try {
+    const categories = await axios(
+      `${variables.basePathMl}/sites/MLA/categories`
+    );
+    return categories.data;
   } catch (error) {
     throw error;
   }

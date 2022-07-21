@@ -88,3 +88,23 @@ const createSettings = () => {
 };
 
 export const settings = createSettings();
+
+const createProduct = () => {
+  const { subscribe, update, set } = writable({
+    site_id: "MLA",
+    sale_terms: [],
+    status: "active",
+  });
+
+  return {
+    subscribe,
+    setProduct: (product) => {
+      set({ site_id: "MLA", sale_terms: [], status: "active" });
+    },
+    updateProduct: (property) => {
+      update((product) => (product = { ...product, ...property }));
+    },
+  };
+};
+
+export const newProduct = createProduct();

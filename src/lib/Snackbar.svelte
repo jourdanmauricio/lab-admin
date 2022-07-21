@@ -44,8 +44,13 @@
     background-color: #333;
   }
 
+  .warning {
+    background-color: orange;
+  }
+
   .snackbar.show {
     visibility: visible;
+    z-index: 20;
     -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
     animation: fadein 0.5s, fadeout 0.5s 2.5s;
   }

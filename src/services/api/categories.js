@@ -29,7 +29,10 @@ export const getCategories = async (limit, offset, search) => {
 export const createCategories = async (newCategories) => {
   try {
     const results = await Promise.all(
-      newCategories.map(async (cat) => await Api.post("/categories", cat))
+      newCategories.map(async (cat) => {
+        delete cat.childrenCategories;
+        await Api.post("/categories", cat);
+      })
     );
     return results;
   } catch (error) {

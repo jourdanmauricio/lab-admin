@@ -20,6 +20,7 @@ export const postproducts = async (newProducts) => {
           mlId: prod.id,
           attributes: prod.attributes,
           name: prod.title,
+          sku: prod.seller_custom_field,
           price: prod.price,
           quantity: prod.available_quantity,
           soldQuantity: prod.sold_quantity,
@@ -48,11 +49,29 @@ export const postproducts = async (newProducts) => {
   }
 };
 
-export const deleteProduct = async (ids) => {
+export const patchProduct = async (products) => {
   try {
     const results = await Promise.all(
-      ids.map(async (prodId) => {
-        const res = await Api.delete(`/products/${prodId}`);
+      products.map(async (prod) => {
+        return await Api.patch(`/products/${prod.id}`, prod);
+      })
+    );
+    return results;
+  } catch (error) {
+    console.log("ERRORRRR", error);
+    let message = "";
+    message = error.response.data
+      ? `${error.response.data.statusCode}: ${error.response.data.message}`
+      : "Error Creando categoría 😞";
+    throw message;
+  }
+};
+
+export const deleteProduct = async (items) => {
+  try {
+    const results = await Promise.all(
+      items.map(async (prod) => {
+        const res = await Api.delete(`/products/${prod.id}`);
         return res;
       })
     );

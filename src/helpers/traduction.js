@@ -6,5 +6,11 @@ export function traduction(text) {
       return "Modificar estado";
     case "changePriceProd":
       return "Modificar precio";
+    case "active":
+      return "Activo";
+    case "paused":
+      return "Pausado";
+    case "closed":
+      return "Finalizado";
   }
 }

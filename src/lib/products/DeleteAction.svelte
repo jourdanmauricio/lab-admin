@@ -19,7 +19,13 @@
   }
 </script>
 
-<button
-  class="ripple rounded bg-red-900 text-white py-1 px-10"
-  on:click={deleteProds}>Eliminar</button
->
+<div class="mt-10 flex justify-between">
+  <button class="ripple btn" on:click={hideModalMassive(false)}>Cancelar</button
+  >
+  <button
+    class="ripple rounded bg-red-900 text-white py-1 px-10"
+    on:click={deleteProds}
+  >
+    Eliminar
+  </button>
+</div>

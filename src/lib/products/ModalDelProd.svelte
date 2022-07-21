@@ -5,10 +5,10 @@
   export let currentProd;
   export let hideModalDelete;
 
-  async function delProduct(id) {
+  async function delProduct(item) {
     loading.show(true);
     try {
-      await deleteProduct([id]);
+      await deleteProduct([item]);
       notification.show("Producto eliminado", "success");
       hideModalDelete(true);
     } catch (err) {
@@ -31,7 +31,7 @@
 <div class="mt-10 flex justify-between">
   <button
     class="ripple rounded bg-red-900 text-white py-1 px-10 "
-    on:click={delProduct(currentProd.id)}>Eliminar</button
+    on:click={delProduct(currentProd)}>Eliminar</button
   >
   <button class="ripple btn" on:click={hideModalDelete(false)}>Cancelar</button>
 </div>

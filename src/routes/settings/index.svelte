@@ -1,4 +1,5 @@
 <script>
+  import ConfProd from "./../../lib/settings/ConfProd.svelte";
   import ConfML from "./../../lib/settings/ConfML.svelte";
   import Categories from "./../../lib/settings/Categories.svelte";
   import General from "./../../lib/settings/General.svelte";
@@ -22,7 +23,7 @@
   </TabPanel>
 
   <TabPanel>
-    <h2>Third panel</h2>
+    <ConfProd />
   </TabPanel>
 
   <TabPanel>

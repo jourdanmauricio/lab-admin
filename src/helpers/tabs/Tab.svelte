@@ -19,7 +19,7 @@
     border-bottom: 2px solid white;
     border-radius: 0;
     margin: 0;
-    color: #ccc;
+    color: #555;
     margin-right: 20px;
   }
 

@@ -1,5 +1,6 @@
 <script>
   import { fade } from "svelte/transition";
+  export let width = "";
 
   let shown = false;
 
@@ -23,11 +24,13 @@
   <div
     on:click={() => hide()}
     transition:fade
-    class="w-screen h-full fixed top-0 left-0 flex justify-center items-start bg-gray-900 opacity-90 z-10"
+    class="w-screen h-full fixed top-0 left-0 flex justify-center items-start bg-gray-900 opacity-95 z-10"
   >
+    <!-- h-full -->
     <div
+      transition:fade
       on:click|stopPropagation
-      class="mt-20 bg-gray-200 text-black rounded-md px-8 py-10 relative opacity-95"
+      class="mt-10 {width} bg-gray-200 text-black rounded-md px-8 py-10 relative opacity-95"
     >
       <span
         on:click={() => hide()}

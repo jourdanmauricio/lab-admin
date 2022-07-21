@@ -1,26 +1,28 @@
 <script>
-  import ModalMassiveAction from "./../../lib/products/ModalMassiveAction.svelte";
   import { fade } from "svelte/transition";
-  import { exportTableToExcel } from "../../helpers/exportTableToExcel";
-  import { tooltip } from "./../../lib/tooltip/tooltip";
-  import ModalDelProd from "../../lib/products/ModalDelProd.svelte";
   import { onMount, tick } from "svelte";
+  import { goto } from "$app/navigation";
+  import { tooltip } from "./../../lib/tooltip/tooltip";
   import { clickOutside } from "./../../helpers/clickOutside";
-  import { getApiCategoriesMl } from "./../../services/api/categoriesML.js";
+  import { exportTableToExcel } from "../../helpers/exportTableToExcel";
   import { loading, settings } from "./../../store/stores.js";
   import { notification } from "../../store/stores";
+  import { traduction } from "../../helpers/traduction";
+  import Modal2 from "./../../lib/Modal2.svelte";
+  import Pagination from "./../../lib/Pagination.svelte";
+  import ModalMassiveAction from "./../../lib/products/ModalMassiveAction.svelte";
+  import ModalDelProd from "../../lib/products/ModalDelProd.svelte";
+  import { getAllCategories } from "../../services/api/categories";
+  import { getApiCategoriesMl } from "./../../services/api/categoriesML.js";
   import { createCategories } from "./../../services/api/categories.js";
   import { postproducts } from "../../services/api/products.js";
+  import { getProducts } from "../../services/api/products";
   import {
     postproductsMl,
     getProductsMl,
     getApiProductsMl,
     getApiItemsMl,
   } from "../../services/api/productsMl.js";
-  import Modal2 from "./../../lib/Modal2.svelte";
-  import Pagination from "./../../lib/Pagination.svelte";
-  import { getProducts } from "../../services/api/products";
-  import { getAllCategories } from "../../services/api/categories";
 
   let modalDelete;
   let modalMassive;
@@ -29,6 +31,7 @@
   let more = false;
   let currentProd = null;
   let selected = [];
+  let selItems = [];
   let action = "Acción masiva";
   let pagination = {
     limit: $settings.itemsxpage,
@@ -37,7 +40,16 @@
 
   function changeAction(e) {
     if (e.target.value === "Acción masiva") return;
+    selItems = [];
     action = e.target.value;
+    selected.forEach(
+      (item) =>
+        (selItems = [
+          ...selItems,
+          ...products.filter((prod) => prod.id === item),
+        ])
+    );
+
     modalMassive.show();
   }
 
@@ -172,10 +184,13 @@
       {#if more}
         <ul
           transition:fade
-          class="absolute bg-secondaryColor z-10 border border-t-0 px-10 py-1 border-gray-900"
+          class="absolute bg-secondaryColor z-10 border border-t-0 px-1 py-1 border-gray-900"
         >
           <li class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700">
-            <button class="flex items-center">
+            <button
+              class="flex items-center"
+              on:click={() => goto("/products/newProduct")}
+            >
               <i class="material-icons text-teal-700">add_circle</i>
               <span class="ml-2">Nuevo Producto</span>
             </button>
@@ -235,6 +250,7 @@
       >
       <th>ID</th>
       <th>Imagen</th>
+      <th>Sku</th>
       <th>Categoría</th>
       <th>Estado</th>
       <th>Precio</th>
@@ -256,8 +272,9 @@
         >
         <td>{product.id}</td>
         <td><img class="w-20" src={product.thumbnail} alt="" /></td>
+        <td>{product.sku}</td>
         <td>{product.categoryId}</td>
-        <td>{product.status}</td>
+        <td>{traduction(product.status)}</td>
         <td>{product.price}</td>
         <td>{product.name}</td>
         <td>
@@ -295,5 +312,5 @@
 </Modal2>
 
 <Modal2 bind:this={modalMassive}>
-  <ModalMassiveAction items={selected} {action} {hideModalMassive} />
+  <ModalMassiveAction items={selItems} {action} {hideModalMassive} />
 </Modal2>
