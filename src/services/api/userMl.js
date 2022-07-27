@@ -89,6 +89,7 @@ export const createUserMl = async (userMl) => {
     credentials.setCredentials(user);
     return user;
   } catch (error) {
+    console.log("ERRRRRRRROR", error);
     let message = "";
     message = error.response.data
       ? `${error.response.data.statusCode}: ${error.response.data.message}`

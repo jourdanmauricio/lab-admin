@@ -29,19 +29,19 @@
         token_type: dataCredentials.token_type,
         ml_user_id: dataCredentials.user_id,
         address: dataMlUser.address,
-        buyerReputation: dataMlUser.buyer_reputation,
+        buyer_reputation: dataMlUser.buyer_reputation,
         company: dataMlUser.company,
         countryId: dataMlUser.country_id,
         email: dataMlUser.email,
-        firstName: dataMlUser.first_name,
+        first_name: dataMlUser.first_name,
         gender: dataMlUser.gender,
         nickname: dataMlUser.nickname,
         identification: dataMlUser.identification,
-        lastName: dataMlUser.last_name,
+        last_name: dataMlUser.last_name,
         logo: dataMlUser.logo,
         permalink: dataMlUser.permalink,
         phone: dataMlUser.phone,
-        sellerReputation: dataMlUser.seller_reputation,
+        seller_reputation: dataMlUser.seller_reputation,
         siteId: dataMlUser.site_id,
       };
 
@@ -53,6 +53,7 @@
       await createUserMl(mlUser);
       notification.show("Nickname vinculado", "success");
     } catch (error) {
+      console.log("ERROR", error);
       notification.show(error, "error");
     } finally {
       isLoading = false;
