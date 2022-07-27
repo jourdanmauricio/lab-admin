@@ -31,7 +31,7 @@
         address: dataMlUser.address,
         buyer_reputation: dataMlUser.buyer_reputation,
         company: dataMlUser.company,
-        countryId: dataMlUser.country_id,
+        country_id: dataMlUser.country_id,
         email: dataMlUser.email,
         first_name: dataMlUser.first_name,
         gender: dataMlUser.gender,
@@ -42,7 +42,7 @@
         permalink: dataMlUser.permalink,
         phone: dataMlUser.phone,
         seller_reputation: dataMlUser.seller_reputation,
-        siteId: dataMlUser.site_id,
+        site_id: dataMlUser.site_id,
       };
 
       const nickname = state.split("-")[0];
