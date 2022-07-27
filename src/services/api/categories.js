@@ -26,11 +26,25 @@ export const getCategories = async (limit, offset, search) => {
   }
 };
 
+export const getCategory = async (catId) => {
+  try {
+    const response = await Api.get(`/categories/${catId}`);
+    return response;
+  } catch (error) {
+    console.log("error", error);
+    let message = "";
+    message = error.response.data
+      ? `${error.response.data.statusCode}: ${error.response.data.message}`
+      : "Error Obteniendo categoría 😞";
+    throw message;
+  }
+};
+
 export const createCategories = async (newCategories) => {
   try {
     const results = await Promise.all(
       newCategories.map(async (cat) => {
-        delete cat.childrenCategories;
+        delete cat.children_categories;
         await Api.post("/categories", cat);
       })
     );
@@ -44,9 +58,9 @@ export const createCategories = async (newCategories) => {
   }
 };
 
-export const deleteCategory = async (categoryId) => {
+export const deleteCategory = async (category_id) => {
   try {
-    const res = await Api.delete(`/categories/${categoryId}`);
+    const res = await Api.delete(`/categories/${category_id}`);
     return res;
   } catch (error) {
     console.log("Error", error);

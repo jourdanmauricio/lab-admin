@@ -1,4 +1,5 @@
 import { writable } from "svelte/store";
+import { get } from "svelte/store";
 
 const createUserLogin = () => {
   const { subscribe, update, set } = writable(false);
@@ -89,22 +90,34 @@ const createSettings = () => {
 
 export const settings = createSettings();
 
+let newProduct = {
+  site_id: "MLA",
+  sale_terms: [],
+  category_id: "",
+  category: {},
+  variations: [],
+  sku: null,
+};
+
 const createProduct = () => {
-  const { subscribe, update, set } = writable({
-    site_id: "MLA",
-    sale_terms: [],
-    status: "active",
-  });
+  const { subscribe, update, set } = writable(newProduct);
 
   return {
     subscribe,
     setProduct: (product) => {
-      set({ site_id: "MLA", sale_terms: [], status: "active" });
+      set(product);
     },
-    updateProduct: (property) => {
+    update: (property) => {
       update((product) => (product = { ...product, ...property }));
+      let prop = Object.keys(property)[0];
+      let proper = get(product).properties;
+      if (prop !== "properties")
+        if (proper) {
+          let index = proper.findIndex((el) => el === prop);
+          if (index === -1) proper.push(prop);
+        }
     },
   };
 };
 
-export const newProduct = createProduct();
+export const product = createProduct();

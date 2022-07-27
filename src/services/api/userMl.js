@@ -67,9 +67,9 @@ export const replaceCode = async (code) => {
   }
 };
 
-export const getApiMlUser = async (mlUserId) => {
+export const getApiMlUser = async (ml_user_id) => {
   try {
-    const mlUser = await ApiMl.get(`/users/${mlUserId}`);
+    const mlUser = await ApiMl.get(`/users/${ml_user_id}`);
     return mlUser;
   } catch (error) {
     console.log("error", error);

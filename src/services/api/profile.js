@@ -22,7 +22,10 @@ export const createCustomer = async (formUser) => {
 
 export const updateCustomer = async (formUser) => {
   try {
-    const response = await Api.patch(`/customers/${formUser.userId}`, formUser);
+    const response = await Api.patch(
+      `/customers/${formUser.user_id}`,
+      formUser
+    );
     const user = get(credentials);
     user.customer = response;
     credentials.setCredentials(user);

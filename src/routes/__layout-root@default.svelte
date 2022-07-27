@@ -26,7 +26,7 @@
         credentials.setCredentials(user);
         Api.setAuth(user.token);
         if (user.userMl) {
-          ApiMl.setAuth(user.userMl.accessToken);
+          ApiMl.setAuth(user.userMl.access_token);
         }
       } else {
         goto("/");

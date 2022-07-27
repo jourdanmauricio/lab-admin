@@ -61,7 +61,7 @@
             name="categories"
           />
           <label class="cursor-pointer" for={category.id}
-            >{category.fullName}</label
+            >{category.full_name}</label
           >
         </div>
       {/each}

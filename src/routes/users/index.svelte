@@ -1,4 +1,5 @@
 <script>
+  import { postUser } from "./../../services/api/user.js";
   import Pagination from "./../../lib/Pagination.svelte";
   import Modal2 from "./../../lib/Modal2.svelte";
   import Spinner from "./../../lib/Spinner.svelte";
@@ -7,6 +8,7 @@
   import { variables } from "$lib/variables";
   import { onMount, tick } from "svelte";
   import { validateFields } from "./../../helpers/validateFileds";
+  import { postSetting } from "../../services/api/settings.js";
 
   let modalDelete;
   let modalCreate;
@@ -67,27 +69,17 @@
     if (Object.keys(errors).length === 0) {
       isLoading = true;
       try {
-        const res = await fetch(`${variables.basePath}/users/admin`, {
-          method: "POST",
-          body: JSON.stringify(formUser),
-          headers: {
-            "content-type": "application/json",
-            Authorization: `Bearer ${$credentials.token}`,
-          },
-        });
-        const data = await res.json();
-        if (res.status === 201) {
-          notification.show(`Usuario ${data.newUser.email} creado`, "success");
-          loadData();
-          // users = [...users, data.newUser];
-          modalCreate.hide();
-        } else {
-          let message = "";
-          message = res.statusText
-            ? `${res.status}: ${res.statusText}`
-            : "Error creando usuario 😞";
-          throw message;
+        const res = await postUser(formUser);
+        if (res.newUser.role === "admin") {
+          const data = {
+            user_id: res.newUser.id,
+            setting: { status: "", listingType: "", condition: "" },
+          };
+          postSetting(data);
         }
+        notification.show("Usuario Creado", "success");
+        loadData();
+        modalCreate.hide();
       } catch (err) {
         notification.show(err, "error");
       } finally {

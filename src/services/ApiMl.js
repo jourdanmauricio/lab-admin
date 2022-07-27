@@ -9,13 +9,13 @@ const axiosAPI = axios.create({
   baseURL: variables.basePathMl,
 });
 
-function refreshToken() {
+function refresh_token() {
   const user = getStore(credentials);
   const data = {
     grant_type: "refresh_token",
     client_id: variables.mlAppId,
     client_secret: variables.mlSecret,
-    refresh_token: user.userMl.refreshToken,
+    refresh_token: user.userMl.refresh_token,
   };
 
   return axios.post(
@@ -45,15 +45,15 @@ axiosAPI.interceptors.response.use(
         originalConfig._retry = true;
         try {
           const userStore = getStore(credentials);
-          const rs = await refreshToken();
+          const rs = await refresh_token();
           console.log("rs", rs);
           const data = {
-            accessToken: rs.data.access_token,
-            expiresIn: rs.data.expires_in,
-            refreshToken: rs.data.refresh_token,
+            access_token: rs.data.access_token,
+            expires_in: rs.data.expires_in,
+            refresh_token: rs.data.refresh_token,
             scope: rs.data.scope,
-            tokenType: rs.data.token_type,
-            userId: userStore.id,
+            token_type: rs.data.token_type,
+            user_id: userStore.id,
           };
 
           const user = await Api.put(`/usersml/${userStore.userMl.id}`, data);

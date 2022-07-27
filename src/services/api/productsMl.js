@@ -15,7 +15,7 @@ export const getApiProductsMl = async (mlItems) => {
     return ApiMl.get(
       "items?ids=" +
         items2 +
-        "&attributes=id,attributes,title,price,category_id,title,thumbnail,available_quantity,sold_quantity,status,pictures,sale_terms,variations,start_time,description,seller_custom_field"
+        "&attributes=id,attributes,title,price,category_id,title,thumbnail,listing_type_id,condition,available_quantity,sold_quantity,status,pictures,sale_terms,variations,start_time,description,seller_custom_field"
     )
       .then((res) => res.forEach((element) => detItems.push(element.body)))
       .catch((err) => console.log(err));
@@ -28,7 +28,7 @@ export const getApiItemsMl = async () => {
   try {
     const user = get(credentials);
     const itemsId = await ApiMl.get(
-      `users/${user.userMl.mlUserId}/items/search`
+      `users/${user.userMl.ml_user_id}/items/search`
     );
     return itemsId;
   } catch (error) {
@@ -39,6 +39,26 @@ export const getApiItemsMl = async () => {
     //   : "Error Obteniendo usuario ML 😞";
     // console.log("Error", error.response.data);
     throw error;
+  }
+};
+
+export const patchApiProductMl = async (mlItems) => {
+  try {
+    const results = await Promise.all(
+      mlItems.map(async (prod) => {
+        let id = prod.id;
+        delete prod.id;
+        await ApiMl.put(`items/${id}`, prod);
+      })
+    );
+    return results;
+  } catch (error) {
+    console.log("ERRORRRR", error);
+    let message = "";
+    message = error.response.data
+      ? `${error.response.data.statusCode}: ${error.response.data.message}`
+      : "Error Creando categoría 😞";
+    throw message;
   }
 };
 
@@ -57,12 +77,12 @@ export const postproductsMl = async (newProducts) => {
       newProducts.map(async (prod) => {
         const newProd = {
           id: prod.mlId,
-          prodId: prod.id,
-          sku: prod.sku,
+          prod_id: prod.id,
+          seller_custom_field: prod.seller_custom_field,
           price: prod.price,
-          quantity: prod.quantity,
+          available_quantity: prod.available_quantity,
           status: prod.status,
-          startTime: prod.startTime,
+          start_time: prod.start_time,
         };
         await Api.post("/productsMl", newProd);
       })

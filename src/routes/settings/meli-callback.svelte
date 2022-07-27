@@ -21,13 +21,13 @@
       const dataMlUser = await getApiMlUser(dataCredentials.user_id);
 
       mlUser = {
-        userId: $credentials.id,
-        accessToken: dataCredentials.access_token,
-        expiresIn: dataCredentials.expires_in,
-        refreshToken: dataCredentials.refresh_token,
+        user_id: $credentials.id,
+        access_token: dataCredentials.access_token,
+        expires_in: dataCredentials.expires_in,
+        refresh_token: dataCredentials.refresh_token,
         scope: dataCredentials.scope,
-        tokenType: dataCredentials.token_type,
-        mlUserId: dataCredentials.user_id,
+        token_type: dataCredentials.token_type,
+        ml_user_id: dataCredentials.user_id,
         address: dataMlUser.address,
         buyerReputation: dataMlUser.buyer_reputation,
         company: dataMlUser.company,

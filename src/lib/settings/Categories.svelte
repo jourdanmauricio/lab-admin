@@ -190,7 +190,7 @@
     {#each categories as category}
       <tr>
         <td>{category.id}</td>
-        <td>{category.fullName}</td>
+        <td>{category.full_name}</td>
         <td
           ><button on:click={handleDelete(category)} id={category.id}
             ><i class="material-icons" style="color: red">delete</i></button

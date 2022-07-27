@@ -8,25 +8,25 @@
   import Pictures from "./Pictures.svelte";
   import Attributes from "./Attributes.svelte";
   import Variations from "./Variations.svelte";
-  import { onMount } from "svelte";
-
-  export let category;
-
-  onMount(() => {
-    console.log("Category", category);
-  });
 </script>
 
 <div class="mt-6">
   <Tabs>
     <TabList>
+      <Tab>Variaciones</Tab>
       <Tab>Atributos</Tab>
       <Tab>Cacterísticas</Tab>
       <Tab>Descripción</Tab>
+      <Tab>Imágenes</Tab>
     </TabList>
 
     <TabPanel>
-      <Attributes {category} />
+      <Variations />
+    </TabPanel>
+
+    <TabPanel>
+      <!-- <Attributes {category} /> -->
+      <Attributes />
     </TabPanel>
 
     <TabPanel>
@@ -35,6 +35,10 @@
 
     <TabPanel>
       <Description />
+    </TabPanel>
+
+    <TabPanel>
+      <Pictures />
     </TabPanel>
   </Tabs>
 </div>

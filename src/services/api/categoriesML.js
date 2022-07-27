@@ -10,17 +10,17 @@ export const getApiCategoriesMl = async (mlCategoriesIds) => {
         );
         let atribs = await getAtribsCat(cat);
 
-        let fullName = "";
+        let full_name = "";
         mlCategory.data.path_from_root.forEach((parent, index) => {
-          fullName += index === 0 ? parent.name : ` / ${parent.name}`;
+          full_name += index === 0 ? parent.name : ` / ${parent.name}`;
         });
 
         const newCategory = {
           id: mlCategory.data.id,
           name: mlCategory.data.name,
-          fullName: fullName,
-          pathFromRoot: mlCategory.data.path_from_root,
-          childrenCategories: mlCategory.data.children_categories,
+          full_name: full_name,
+          path_from_root: mlCategory.data.path_from_root,
+          children_categories: mlCategory.data.children_categories,
           settings: mlCategory.data.settings,
           picture: mlCategory.data.picture,
           attributes: atribs[0],

@@ -1,21 +1,13 @@
 <script>
-  import { newProduct } from "./../../store/stores.js";
+  import { product } from "./../../store/stores.js";
   import Properties from "./../../lib/products/Properties.svelte";
   import Category from "./../../lib/products/Category.svelte";
   import Title from "./../../lib/products/Title.svelte";
   import Sku from "../../lib/products/Sku.svelte";
   import { onMount } from "svelte";
 
-  // let newProduct = { site_id: "MLA" };
-  let category = {};
-
-  function setProperty(value) {
-    newProduct = { ...newProduct, ...value };
-    console.log("newProduct", newProduct);
-  }
-
   onMount(() => {
-    // newProduct.setProduct();
+    product.update({ action: "new" });
   });
 </script>
 
@@ -23,14 +15,18 @@
   <div class="grid grid-cols-12 gap-8">
     <Title />
     <Sku />
-    <Category bind:category />
+    <Category />
   </div>
-  {#if $newProduct.category_id}
-    <Properties {category} />
+  {#if $product.category_id.length > 0 && $product.seller_custom_field}
+    <Properties />
   {/if}
 
-  {JSON.stringify($newProduct)}
-  <!-- {#each Object.entries($newProduct) as [key, value]}
-    <p>{key} - {value}</p>
-  {/each} -->
+  <br /><br />
+  <hr />
+
+  {#each Object.entries($product) as [key, value]}
+    {#if key !== "category"}
+      <p>{key} - {JSON.stringify(value)}</p>
+    {/if}
+  {/each}
 </div>

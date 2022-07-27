@@ -1,24 +1,24 @@
 <script>
+  import { product } from "./../../store/stores.js";
   import Modal2 from "./../Modal2.svelte";
   import SearchCategory from "./SearchCategory.svelte";
-  import { newProduct } from "../../store/stores";
-
-  // export let setProperty;
-  export let category;
 
   let modalSearchCat;
 
   function hideModalSearchCat(cat) {
-    category = cat;
-    newProduct.updateProduct({ category_id: cat.id });
-    // setProperty({ category_id: cat.id });
+    product.update({ category: cat });
+    product.update({ category_id: cat.id });
+    product.update({ attributes: [] });
+    product.update({ variations: [] });
     modalSearchCat.hide();
   }
 </script>
 
 <div class="relative col-span-8">
-  <div class={!category.fullName ? "input-oval h-[33px]" : "input-oval"}>
-    {category.fullName || ""}
+  <div
+    class={!$product.category.full_name ? "input-oval h-[33px]" : "input-oval"}
+  >
+    {$product.category.full_name || ""}
   </div>
   <label class="label-oval" for="name">Categoría</label>
 </div>
@@ -29,8 +29,9 @@
     class="input-oval"
     type="search"
     name="sku"
-    bind:value={category.id}
+    value={$product.category_id}
   />
+  <!-- bind:value={category.id} -->
   <label class="label-oval" for="sku">Cat Id</label>
 </div>
 <button class="col-span-1" on:click={() => modalSearchCat.show()}

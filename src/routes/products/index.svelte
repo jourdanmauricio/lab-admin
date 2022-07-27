@@ -5,7 +5,7 @@
   import { tooltip } from "./../../lib/tooltip/tooltip";
   import { clickOutside } from "./../../helpers/clickOutside";
   import { exportTableToExcel } from "../../helpers/exportTableToExcel";
-  import { loading, settings } from "./../../store/stores.js";
+  import { loading, product, settings } from "./../../store/stores.js";
   import { notification } from "../../store/stores";
   import { traduction } from "../../helpers/traduction";
   import Modal2 from "./../../lib/Modal2.svelte";
@@ -136,6 +136,16 @@
     modalDelete.show();
   }
 
+  function handleEdit(prod) {
+    currentProd = prod;
+    product.setProduct(currentProd);
+    console.log("Edit", currentProd);
+    product.update({ action: "edit" });
+    product.update({ properties: [] });
+    // localStorage.setItem("product", JSON.stringify(currentProd));
+    goto("/products/editProduct");
+  }
+
   async function loadData() {
     try {
       loading.show(true);
@@ -159,6 +169,10 @@
     }
   }
 
+  function newProduct() {
+    product.update({ action: "new" });
+    goto("/products/newProduct");
+  }
   onMount(async () => {
     await tick();
     loadData();
@@ -187,10 +201,7 @@
           class="absolute bg-secondaryColor z-10 border border-t-0 px-1 py-1 border-gray-900"
         >
           <li class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700">
-            <button
-              class="flex items-center"
-              on:click={() => goto("/products/newProduct")}
-            >
+            <button class="flex items-center" on:click={newProduct}>
               <i class="material-icons text-teal-700">add_circle</i>
               <span class="ml-2">Nuevo Producto</span>
             </button>
@@ -272,11 +283,11 @@
         >
         <td>{product.id}</td>
         <td><img class="w-20" src={product.thumbnail} alt="" /></td>
-        <td>{product.sku}</td>
-        <td>{product.categoryId}</td>
+        <td>{product.seller_custom_field}</td>
+        <td>{product.category_id}</td>
         <td>{traduction(product.status)}</td>
         <td>{product.price}</td>
-        <td>{product.name}</td>
+        <td>{product.title}</td>
         <td>
           <div class="flex items-center justify-between">
             {#if product.prodMl}
@@ -287,7 +298,7 @@
                 <img class="w-8" src="./images/logos/ML.webp" alt="" />
               </button>
             {/if}
-            <button on:click={handleDelete(product)} id={product.id}
+            <button on:click={handleEdit(product)} id={product.id}
               ><i class="ml-1 px-1 material-icons text-teal-600 text-lg">edit</i
               ></button
             >

@@ -1,11 +1,13 @@
 <script>
-  import { newProduct } from "../../store/stores";
+  import { product } from "../../store/stores";
+
+  $: quantity = $product.available_quantity || "";
 </script>
 
 <div class="relative">
   <input
-    on:blur={(e) =>
-      newProduct.updateProduct({ available_quantity: e.target.value })}
+    on:change={(e) => product.update({ available_quantity: e.target.value })}
+    value={quantity}
     class="input-oval"
     type="number"
     name="quantity"

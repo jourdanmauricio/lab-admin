@@ -17,19 +17,21 @@ export const postproducts = async (newProducts) => {
     const results = await Promise.all(
       newProducts.map(async (prod) => {
         const newProd = {
-          mlId: prod.id,
+          ml_id: prod.id,
           attributes: prod.attributes,
-          name: prod.title,
-          sku: prod.seller_custom_field,
+          title: prod.title,
+          seller_custom_field: prod.seller_custom_field,
           price: prod.price,
-          quantity: prod.available_quantity,
-          soldQuantity: prod.sold_quantity,
+          available_quantity: prod.available_quantity,
+          sold_quantity: prod.sold_quantity,
           status: prod.status,
           pictures: prod.pictures,
+          listing_type_id: prod.listing_type_id,
+          condition: prod.condition,
           thumbnail: prod.thumbnail,
-          categoryId: prod.category_id,
-          startTime: prod.start_time,
-          saleTerms: prod.sale_terms,
+          category_id: prod.category_id,
+          start_time: prod.start_time,
+          sale_terms: prod.sale_terms,
           variations: prod.variations,
         };
         let prod2 = await Api.post("/products", newProd);

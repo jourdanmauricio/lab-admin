@@ -1,25 +1,31 @@
 <script>
-  import { newProduct } from "../../store/stores";
-  function updProduct(e) {
-    let saleTerms = $newProduct.sale_terms;
+  import { product } from "../../store/stores";
 
-    let found = saleTerms.find((el) => el.id === "PURCHASE_MAX_QUANTITY");
+  $: saleTerm = $product.sale_terms.find(
+    (saleTerm) => saleTerm.id === "PURCHASE_MAX_QUANTITY"
+  );
+
+  function updProduct(e) {
+    let sale_terms = $product.sale_terms;
+
+    let found = sale_terms.find((el) => el.id === "PURCHASE_MAX_QUANTITY");
     if (found) {
       found.value_name = e.target.value;
     } else {
-      saleTerms.push({
+      sale_terms.push({
         id: "PURCHASE_MAX_QUANTITY",
         value_name: e.target.value,
       });
     }
 
-    newProduct.updateProduct({ sale_terms: saleTerms });
+    product.update({ sale_terms: sale_terms });
   }
 </script>
 
 <div class="relative">
   <input
-    on:blur={updProduct}
+    on:change={updProduct}
+    value={saleTerm ? saleTerm.value_name : ""}
     class="input-oval"
     type="number"
     name="maxQuantity"

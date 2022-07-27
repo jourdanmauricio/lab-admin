@@ -73,7 +73,7 @@
     <p>
       {userMl.firstName}
       {userMl.lastName} - {userMl.identification.type}
-      {userMl.identification.number} - ML ID {userMl.mlUserId}
+      {userMl.identification.number} - ML ID {userMl.ml_user_id}
     </p>
     <hr class="border-gray-700" />
 

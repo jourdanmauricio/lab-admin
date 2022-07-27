@@ -1,10 +1,13 @@
 <script>
-  import { newProduct } from "../../store/stores";
+  import { credentials, product } from "../../store/stores";
+
+  $: status = $product.status ? $product.status : $credentials.settings.status;
 </script>
 
 <div class="relative">
   <select
-    on:change={(e) => newProduct.updateProduct({ status: e.target.value })}
+    value={status}
+    on:change={(e) => product.update({ status: e.target.value })}
     class="input-oval"
     name="status"
     id="status"

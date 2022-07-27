@@ -1,4 +1,5 @@
 <script>
+  import Warranty from "./Warranty.svelte";
   import ListingType from "./ListingType.svelte";
   import Condition from "./Condition.svelte";
   import MaxQuantity from "./MaxQuantity.svelte";
@@ -14,4 +15,7 @@
   <MaxQuantity />
   <Condition />
   <ListingType />
+</div>
+<div class="mt-8 grid gap-8 grid-cols-1 sm:grid-cols-4">
+  <Warranty />
 </div>

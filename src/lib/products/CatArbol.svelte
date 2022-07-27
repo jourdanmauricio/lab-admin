@@ -12,14 +12,14 @@
   let categories = [];
 
   async function handleSelectCat(category) {
-    if (category.childrenCategories.length === 0) {
+    if (category.children_categories.length === 0) {
       hideModalSearchCat(category);
     }
     try {
       loading.show(true);
       category = await getApiCategoriesMl([category.id]);
       let newCategories = [];
-      category[0].childrenCategories.map((cat) => newCategories.push(cat.id));
+      category[0].children_categories.map((cat) => newCategories.push(cat.id));
       categories = await getApiCategoriesMl(newCategories);
     } catch (error) {
       console.log("error", error);
@@ -32,7 +32,7 @@
     loading.show(true);
     try {
       categories = await getApiAllCategoriesMl();
-      categories.map((cat) => (cat.childrenCategories = [1]));
+      categories.map((cat) => (cat.children_categories = [1]));
       console.log("categories", categories);
     } catch (error) {
       console.log("error", error);
@@ -69,7 +69,7 @@
               <label class="cursor-pointer" for={category.id}
                 >{category.name}</label
               >
-              {#if category.childrenCategories.length > 0}
+              {#if category.children_categories.length > 0}
                 <i class="material-icons">chevron_right</i>
               {:else}
                 <i class="material-icons">check</i>

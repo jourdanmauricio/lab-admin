@@ -24,17 +24,15 @@
     }
     /* isPassword, isConfirmPassword, isEmail, isName, isPhone, isDocument, none */
     formData.append("name", "isName");
-    formData.append("lastName", "isName");
-    formData.append("documentType", "isName");
+    formData.append("last_name", "isName");
+    formData.append("document_type", "isName");
     formData.append("phone", "isPhone");
-    formData.append("documentNumber", "isDocument");
+    formData.append("document_number", "isDocument");
     errors = validateFields(formData);
 
     if (Object.keys(errors).length === 0) {
       isLoading = true;
-      let url, method;
-
-      formUser.userId = $credentials.id;
+      formUser.user_id = $credentials.id;
       delete formUser.role;
       let res;
       try {
@@ -81,15 +79,15 @@
       <input
         class="input-oval"
         type="text"
-        name="lastName"
+        name="last_name"
         on:input={resetFieldError}
-        value={$credentials.customer ? $credentials.customer.lastName : ""}
+        value={$credentials.customer ? $credentials.customer.last_name : ""}
         required="required"
       />
       <label class="label-oval" for="password">Apellido</label>
-      {#if errors.lastName}
+      {#if errors.last_name}
         <p class="error">
-          <small style="color: red"> {errors.lastName} </small>
+          <small style="color: red"> {errors.last_name} </small>
         </p>
       {/if}
     </div>
@@ -124,15 +122,15 @@
       <input
         class="input-oval"
         type="text"
-        name="documentType"
+        name="document_type"
         on:input={resetFieldError}
-        value={$credentials.customer ? $credentials.customer.documentType : ""}
+        value={$credentials.customer ? $credentials.customer.document_type : ""}
         required="required"
       />
-      <label class="label-oval" for="documentType">Tipo documento</label>
-      {#if errors.documentType}
+      <label class="label-oval" for="document_type">Tipo documento</label>
+      {#if errors.document_type}
         <p class="error">
-          <small style="color: red"> {errors.documentType} </small>
+          <small style="color: red"> {errors.document_type} </small>
         </p>
       {/if}
     </div>
@@ -140,17 +138,17 @@
       <input
         class="input-oval"
         type="text"
-        name="documentNumber"
+        name="document_number"
         on:input={resetFieldError}
         value={$credentials.customer
-          ? $credentials.customer.documentNumber
+          ? $credentials.customer.document_number
           : ""}
         required="required"
       />
-      <label class="label-oval" for="documentNumber">Número documento</label>
-      {#if errors.documentNumber}
+      <label class="label-oval" for="document_number">Número documento</label>
+      {#if errors.document_number}
         <p class="error">
-          <small style="color: red"> {errors.documentNumber} </small>
+          <small style="color: red"> {errors.document_number} </small>
         </p>
       {/if}
     </div>

@@ -1,16 +1,19 @@
 <script>
-  import { newProduct } from "../../store/stores";
+  import { product } from "../../store/stores";
+
+  $: price = $product.price || "";
 </script>
 
 <div class="relative">
   <input
-    on:blur={(e) => newProduct.updateProduct({ price: e.target.value })}
+    on:change={(e) => product.update({ price: e.target.value })}
+    value={price}
     class="input-oval"
     type="number"
     pattern="^\d*(\.\d{(0, 2)})?$"
     name="price"
     min="0"
-    step="1"
+    step="any"
     required
   />
   <label class="label-oval" for="price">Precio</label>

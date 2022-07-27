@@ -1,6 +1,7 @@
 import Api from "../Api";
 import ApiMl from "../ApiMl";
 import { credentials, isLogged } from "./../../store/stores";
+import { getSettings } from "./settings";
 
 export const login = async (formUser) => {
   try {
@@ -10,10 +11,13 @@ export const login = async (formUser) => {
 
     isLogged.login();
     response.user.token = response.token;
+    const settings = await getSettings(response.user.id);
+    response.user.settings = settings.setting;
+
     credentials.setCredentials(response.user);
 
     if (response.user.userMl) {
-      ApiMl.setAuth(response.user.userMl.accessToken);
+      ApiMl.setAuth(response.user.userMl.access_token);
     }
     return response;
   } catch (error) {

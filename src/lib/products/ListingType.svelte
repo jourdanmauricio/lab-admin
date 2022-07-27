@@ -1,11 +1,16 @@
 <script>
-  import { newProduct } from "../../store/stores";
+  import { credentials } from "./../../store/stores.js";
+  import { product } from "../../store/stores";
+
+  $: listing_type_id = $product.listing_type_id
+    ? $product.listing_type_id
+    : $credentials.settings.listing_type_id;
 </script>
 
 <div class="relative">
   <select
-    on:change={(e) =>
-      newProduct.updateProduct({ listing_type_id: e.target.value })}
+    value={listing_type_id}
+    on:change={(e) => product.update({ listing_type_id: e.target.value })}
     class="input-oval"
     name="listtingType"
     id="listtingType"
