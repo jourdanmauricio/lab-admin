@@ -69,10 +69,10 @@ axiosAPI.interceptors.response.use(
         }
       }
       if (err.response.status === 403 && err.response.data) {
-        return Promise.reject(err.response.data);
+        return Promise.reject(err);
       }
     }
-    return Promise.reject(error);
+    return Promise.reject(err);
   }
 );
 

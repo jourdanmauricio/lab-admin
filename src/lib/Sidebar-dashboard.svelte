@@ -15,8 +15,8 @@
   transition: 0.5s;
 } -->
 
-<nav class="bg-gray-900 h-full">
-  <ul class="-white flex flex-col">
+<nav class="flex flex-col bg-gray-900 h-full">
+  <ul class="flex flex-col grow">
     <li class="mt-4">
       <a
         class="flex rounded text-white py-1 pl-5 bg-transparent hover:bg-secondaryColor {$page
@@ -77,4 +77,5 @@
       </li>
     {/if}
   </ul>
+  <div class="text-white">Copyright © 2022 TiDev</div>
 </nav>

@@ -55,7 +55,27 @@ export const patchProduct = async (products) => {
   try {
     const results = await Promise.all(
       products.map(async (prod) => {
-        return await Api.patch(`/products/${prod.id}`, prod);
+        const newProd = {
+          id: prod.id,
+          ml_id: prod.mlId,
+          attributes: prod.attributes,
+          title: prod.title,
+          seller_custom_field: prod.seller_custom_field,
+          price: prod.price,
+          available_quantity: prod.available_quantity,
+          sold_quantity: prod.sold_quantity,
+          status: prod.status,
+          pictures: prod.pictures,
+          listing_type_id: prod.listing_type_id,
+          condition: prod.condition,
+          thumbnail: prod.thumbnail,
+          category_id: prod.category_id,
+          start_time: prod.start_time,
+          sale_terms: prod.sale_terms,
+          variations: prod.variations,
+        };
+
+        return await Api.patch(`/products/${newProd.id}`, newProd);
       })
     );
     return results;

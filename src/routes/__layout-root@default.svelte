@@ -57,9 +57,9 @@
     <slot />
   </div>
 
-  <div class="g-footer">
+  <!-- <div class="g-footer">
     <Footer />
-  </div>
+  </div> -->
 </div>
 
 <style>
@@ -68,13 +68,13 @@
     display: grid;
     height: 100vh;
     grid-template-columns: 180px minmax(0, 1fr);
-    grid-template-rows: 45px 1fr 30px;
+    grid-template-rows: 45px 1fr;
     grid-template-areas:
       "g-header g-header"
-      "g-side g-main"
-      "g-footer g-footer";
+      "g-side g-main";
     overflow-x: hidden;
   }
+  /* "g-footer g-footer"; */
   .g-header {
     grid-area: g-header;
   }
@@ -85,11 +85,11 @@
   .g-main {
     grid-area: g-main;
     transition: all 0.5s;
-    padding: 20px;
+    padding: 30px;
   }
-  .g-footer {
+  /* .g-footer {
     grid-area: g-footer;
-  }
+  } */
   .animate .g-main {
     width: calc(100% + 180px);
     transform: translateX(-180px);

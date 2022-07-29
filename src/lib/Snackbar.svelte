@@ -11,7 +11,7 @@
 
 {#if $notification.show}
   <div class={handleType()} on:click={notification.clear}>
-    {$notification.message}
+    {@html $notification.message}
   </div>
 {/if}
 
@@ -19,6 +19,7 @@
   .snackbar {
     visibility: hidden;
     min-width: 250px;
+    max-width: 360px;
     margin-left: -125px;
     background-color: #333;
     color: #fff;
@@ -51,6 +52,7 @@
   .snackbar.show {
     visibility: visible;
     z-index: 20;
+    font-size: 13px;
     -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
     animation: fadein 0.5s, fadeout 0.5s 2.5s;
   }

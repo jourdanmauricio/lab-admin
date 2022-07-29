@@ -9,11 +9,14 @@
   import { onMount } from "svelte";
   import { getCategory } from "../../services/api/categories.js";
   import { patchProduct } from "../../services/api/products";
-  import { patchApiProductMl } from "../../services/api/productsMl";
+  import {
+    patchApiProductMl,
+    patchProductsMl,
+  } from "../../services/api/productsMl";
 
   let application = {
     ml: true,
-    local: true,
+    local: false,
     web: false,
   };
 
@@ -29,12 +32,24 @@
   }
 
   async function updateProd() {
-    console.log("update", $product.properties);
+    console.log("update", $product);
     let body = {};
+
     $product.properties.forEach((property) => {
       switch (property) {
         case "attributes":
-          body.attributes = $product.attributes;
+          let attributes = [];
+          $product.attributes.map((attribute) => {
+            let atrib = {
+              id: attribute.id,
+            };
+            if (attribute.updated) {
+              atrib.value_id = attribute.value_id;
+              atrib.value_name = attribute.value_name;
+            }
+            attributes.push(atrib);
+          });
+          body.attributes = attributes;
           break;
         case "available_quantity":
           body.available_quantity = parseInt($product.available_quantity);
@@ -70,29 +85,32 @@
       }
     });
 
-    if (application.ml) {
-      body.id = $product.prodMl.id;
-      try {
-        console.log("Product", $product);
-        const res = await patchApiProductMl([body]);
-        console.log("res", res);
-        notification.show("Producto modificado", "success");
-        goto("/products");
-      } catch (error) {
-        notification.show(error, "error");
+    try {
+      if (application.ml) {
+        body.id = $product.prodMl.id;
+        const resApi = await patchApiProductMl([body]);
+        resApi[0].prod_id = $product.id;
+        const resMl = await patchProductsMl(resApi);
+        resApi[0].id = $product.id;
+        // resApi[0].mlId = $product.prodMl.id;
+        delete resApi[0].status;
+        delete resApi[0].available_quantity;
+        delete resApi[0].price;
+        delete resApi[0].sold_quantity;
+        delete resApi[0].start_time;
+        console.log("resApi", resApi[0]);
+        const res = await patchProduct(resApi);
       }
-    }
 
-    if (application.local) {
-      body.id = $product.id;
-      try {
+      if (application.local) {
+        body.id = $product.id;
         const res = await patchProduct([body]);
         console.log("res", res);
-        notification.show("Producto modificado", "success");
-        goto("/products");
-      } catch (error) {
-        notification.show(error, "error");
       }
+      notification.show("Producto modificado", "success");
+      goto("/products");
+    } catch (error) {
+      notification.show(error, "error");
     }
   }
 </script>
@@ -125,7 +143,7 @@
       <p>{key} - {JSON.stringify(value)}</p>
     {/if}
   {/each}
-  <div class="mt-4 flex justify-end">
+  <div class="mt-4 mb-6 flex justify-end">
     <button class="btn ripple">Cancelar</button>
     <button on:click={updateProd} class="ml-10 btn ripple">Modificar</button>
   </div>

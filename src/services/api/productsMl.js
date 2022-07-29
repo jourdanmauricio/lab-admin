@@ -48,7 +48,40 @@ export const patchApiProductMl = async (mlItems) => {
       mlItems.map(async (prod) => {
         let id = prod.id;
         delete prod.id;
-        await ApiMl.put(`items/${id}`, prod);
+        return await ApiMl.put(`items/${id}`, prod);
+      })
+    );
+    return results;
+  } catch (error) {
+    console.log("ERR!!!!", error);
+    let message = "";
+    if (error.response.data) {
+      message = `${error.response.status}: ${error.response.data.message}`;
+      if (error.response.data.cause.length > 0) {
+        error.response.data.cause.forEach((el) => {
+          if (el.type === "error") message += `<br> ${el.message}`;
+        });
+      }
+    }
+    if (message === "") message = "Error modificando el producto 😞";
+    throw message;
+  }
+};
+
+export const patchProductsMl = async (mlItems) => {
+  try {
+    const results = await Promise.all(
+      mlItems.map(async (prod) => {
+        const newProd = {
+          id: prod.id,
+          prod_id: prod.prod_id,
+          seller_custom_field: prod.seller_custom_field,
+          price: prod.price,
+          available_quantity: prod.available_quantity,
+          status: prod.status,
+          start_time: prod.start_time,
+        };
+        return await Api.patch(`/productsMl/${newProd.id}`, newProd);
       })
     );
     return results;
