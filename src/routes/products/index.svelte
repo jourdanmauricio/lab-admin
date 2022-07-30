@@ -142,7 +142,6 @@
     console.log("Edit", currentProd);
     product.update({ action: "edit" });
     product.update({ properties: [] });
-    // localStorage.setItem("product", JSON.stringify(currentProd));
     goto("/products/editProduct");
   }
 
@@ -229,9 +228,6 @@
       on:blur={loadData}
     />
   </div>
-  <!-- <button on:click={() => modalCreate.show()}
-    ><i class="material-icons mt-1 text-teal-700">add_circle</i></button
-  > -->
   <div class="w-40 relative">
     <select
       disabled={selected.length === 0}

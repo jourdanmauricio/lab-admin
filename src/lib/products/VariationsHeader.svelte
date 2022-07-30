@@ -1,8 +1,7 @@
 <script>
-  import { tooltip } from "./../../lib/tooltip/tooltip";
+  import { product } from "./../../store/stores.js";
   import Modal2 from "./../Modal2.svelte";
   import { notification } from "../../store/stores";
-
   import VartiationsAddCustomAttribute from "./VartiationsAddCustomAttribute.svelte";
 
   export let categoryVariations;
@@ -13,10 +12,7 @@
   let customAttribute = false;
 
   function newCustomAttribute() {
-    let index = categoryVariations.findIndex(
-      (atrib) => !atrib.tags.hasOwnProperty("allow_variations")
-    );
-    if (index !== -1) {
+    if (categoryVariations.hasOwnProperty("id")) {
       notification.show(
         "Solo se puede agregar un atributo personalizado",
         "error"
@@ -42,21 +38,27 @@
   <h2 class="pl-2 text-lg font-semibold">Variaciones</h2>
   {#if !customAttribute}
     <button
-      title="Agregar atributo personalizado"
-      use:tooltip
+      disabled={$product.variations.length > 0}
       class="hover:bg-gray-400 rounded-full transition duration-500"
       on:click={newCustomAttribute}
     >
-      <i class="px-2 material-icons leading-normal text-teal-700">add_circle</i>
+      <i
+        class="{$product.variations.length > 0
+          ? 'text-gray-500'
+          : 'text-teal-700'} px-2 material-icons leading-normal ">add_circle</i
+      >
     </button>
   {:else}
     <button
-      title="Eliminar atributo personalizado"
-      use:tooltip
+      disabled={$product.variations.length > 0}
       class="hover:bg-gray-400 rounded-full transition duration-500"
       on:click={removeCustom}
     >
-      <i class="px-2 material-icons leading-normal text-red-600">delete</i>
+      <i
+        class="{$product.variations.length > 0
+          ? 'text-gray-500'
+          : 'text-red-600'} px-2 material-icons leading-normal ">delete</i
+      >
     </button>
   {/if}
 </div>

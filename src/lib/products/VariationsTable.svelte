@@ -1,6 +1,14 @@
 <script>
   import { product } from "./../../store/stores.js";
+
   export let categoryVariations;
+
+  $: atribProdVariations =
+    $product.variations.length > 0
+      ? $product.variations[0].attribute_combinations.map(
+          (attribute) => attribute
+        )
+      : [];
 
   $: sku = (id) => {
     let sku = "";
@@ -9,20 +17,29 @@
         (variation) => variation.id === id
       );
       if (variation.attributes) {
-        let atribSku = variation.attributes.find((atrib) => atrib.id === "SKU");
+        let atribSku = variation.attributes.find(
+          (atrib) => atrib.id === "SELLER_SKU"
+        );
         if (atribSku) sku = atribSku.value_name;
       }
     }
     return sku;
   };
+
+  function deleteVariation(variation) {
+    const newVariations = $product.variations.filter(
+      (vari) => vari.id !== variation.id
+    );
+    product.update({ variations: newVariations });
+  }
 </script>
 
 <table class="mt-4 responsive-table">
   <thead>
     <th>Id</th>
     <th>Sku</th>
-    {#each categoryVariations as categoryVariation}
-      <th>{categoryVariation.name}</th>
+    {#each atribProdVariations as categoryVariation}
+      <th>{categoryVariation.name} </th>
     {/each}
     <th>Cantidad</th>
     <th>Acciones</th>
@@ -53,8 +70,10 @@
         <td>
           <i class="material-icons text-purple-400">edit_attributes</i>
           <i class="material-icons text-teal-400">photo</i>
-          <i class="material-icons text-red-400">delete</i></td
-        >
+          <button on:click={deleteVariation(variation)}>
+            <i class="material-icons text-red-400">delete</i>
+          </button>
+        </td>
       </tr>
     {/each}
     <tr />

@@ -15,7 +15,6 @@
       tags: { custom: true },
     };
     categoryVariations = [...categoryVariations, newAttribute];
-    console.log("categoryVariations", categoryVariations);
   }
 
   function removeCustomAttribute() {
@@ -23,7 +22,6 @@
       (categoryVariation) => !categoryVariation.tags.hasOwnProperty("custom")
     );
     categoryVariations = categoryVariations;
-    console.log("categoryVariations", categoryVariations);
   }
 </script>
 

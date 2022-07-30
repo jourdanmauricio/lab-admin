@@ -30,7 +30,7 @@
     <div
       transition:fade
       on:click|stopPropagation
-      class="mt-10 {width} bg-gray-200 text-black rounded-md px-8 py-10 relative opacity-95"
+      class="opt-container mt-10 h-[550px] overflow-y-scroll overflow-hidden {width} bg-gray-200 text-black rounded-md px-8 py-10 relative opacity-95"
     >
       <span
         on:click={() => hide()}
@@ -41,3 +41,15 @@
     </div>
   </div>
 {/if}
+
+<style>
+  .opt-container::-webkit-scrollbar {
+    width: 8px;
+    background: #0d141f;
+    border-radius: 0 8px 8px 0;
+  }
+  .opt-container::-webkit-scrollbar-thumb {
+    background: #777;
+    border-radius: 0 8px 8px 0;
+  }
+</style>

@@ -6,7 +6,6 @@
   import { goto } from "$app/navigation";
   import { isLogged, credentials, loading } from "../store/stores.js";
   import { settings } from "./../store/stores";
-  import Footer from "../lib/Footer.svelte";
   import Snackbar from "../lib/Snackbar.svelte";
   import NavDashboard from "../lib/Nav-dashboard.svelte";
   import SidebarDashboard from "../lib/Sidebar-dashboard.svelte";
@@ -19,6 +18,7 @@
     console.log("Mount Dashboard");
     if (!$isLogged) {
       const user = JSON.parse(localStorage.getItem("user"));
+      ApiMl.setAuth(user.userMl.access_token);
       const lsettings = localStorage.getItem("settings");
       if (user) {
         console.log("user", user);

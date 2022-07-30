@@ -24,13 +24,8 @@ function refresh_token() {
   );
 }
 
-// axiosAPI.interceptors.request.use(function () {
-//   console.log("INTERCEPTOR REQUEST");
-// });
-
 axiosAPI.interceptors.response.use(
   function (response) {
-    // console.log("INTERCEPTOR RESPONSE1");
     return response;
   },
   async function (err) {
@@ -60,6 +55,11 @@ axiosAPI.interceptors.response.use(
           credentials.setCredentials(user);
           localStorage.setItem("user", JSON.stringify(user));
           setAuth(rs.access_token);
+          console.log("setAuth funciona?");
+          console.log("nuevo token", rs.access_token);
+          console.log("credenciales", user.userMl.access_token);
+          console.log("originalConfig", originalConfig);
+          console.log("Modificar el token del header!!!!!");
           return axiosAPI(originalConfig);
         } catch (_error) {
           if (_error.response && _error.response.data) {
