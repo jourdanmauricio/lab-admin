@@ -1,7 +1,12 @@
 <script>
+  import Modal2 from "../Modal2.svelte";
+  import VariationsAttributes from "./VariationsAttributes.svelte";
   import { product } from "./../../store/stores.js";
 
   export let categoryVariations;
+
+  let modalShowAttributes;
+  let currentVariation;
 
   $: atribProdVariations =
     $product.variations.length > 0
@@ -32,6 +37,37 @@
     );
     product.update({ variations: newVariations });
   }
+
+  function variationAttributes(variation) {
+    currentVariation = variation;
+    modalShowAttributes.show();
+  }
+
+  function updateQuantity(value, variation) {
+    variation.available_quantity = value;
+    variation.updated = true;
+    let newData = $product.variations.map((el) => {
+      return el.id === variation.id ? variation : el;
+    });
+    product.update({ variations: newData });
+  }
+
+  function updateSku(value, variation) {
+    let sku = variation.attributes.find((vari) => vari.id === "SELLER_SKU");
+    if (sku) {
+      sku.value_name = value;
+    } else {
+      variation.attributes.push({
+        id: "SELLER_SKU",
+        value_name: value,
+      });
+    }
+    variation.updated = true;
+    let newData = $product.variations.map((el) => {
+      return el.id === variation.id ? variation : el;
+    });
+    product.update({ variations: newData });
+  }
 </script>
 
 <table class="mt-4 responsive-table">
@@ -50,6 +86,7 @@
         <td>{variation.id || ""}</td>
         <td
           ><input
+            on:change={(e) => updateSku(e.target.value, variation)}
             class="max-w-[100px] text-center border border-solid border-gray-400 rounded"
             type="text"
             value={sku(variation.id)}
@@ -61,6 +98,7 @@
 
         <td
           ><input
+            on:change={(e) => updateQuantity(e.target.value, variation)}
             class="max-w-[45px] text-center border border-solid border-gray-400 rounded"
             type="number"
             min="0"
@@ -68,7 +106,10 @@
           />
         </td>
         <td>
-          <i class="material-icons text-purple-400">edit_attributes</i>
+          <button on:click={variationAttributes(variation)}>
+            <i class="material-icons text-purple-400">edit_attributes</i>
+          </button>
+
           <i class="material-icons text-teal-400">photo</i>
           <button on:click={deleteVariation(variation)}>
             <i class="material-icons text-red-400">delete</i>
@@ -79,6 +120,10 @@
     <tr />
   </tbody>
 </table>
+
+<Modal2 width="w-11/12 lg:w-3/4" bind:this={modalShowAttributes}>
+  <VariationsAttributes {currentVariation} />
+</Modal2>
 
 {#each Object.entries($product.variations) as [key, value]}
   <p>{key} - {JSON.stringify(value)}</p>

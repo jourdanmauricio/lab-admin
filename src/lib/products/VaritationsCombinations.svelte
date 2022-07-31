@@ -145,6 +145,7 @@
             },
           ],
           price: $product.price || 0,
+          updated: true,
         };
         newVariations.push(variation);
       } else {

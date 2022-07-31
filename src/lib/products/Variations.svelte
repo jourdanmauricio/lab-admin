@@ -1,6 +1,6 @@
 <script>
-  import VariationsTable from "./VariationsTable.svelte";
   import { product } from "./../../store/stores.js";
+  import VariationsTable from "./VariationsTable.svelte";
   import VaritationsCombinations from "./VaritationsCombinations.svelte";
   import VariationsHeader from "./VariationsHeader.svelte";
 
