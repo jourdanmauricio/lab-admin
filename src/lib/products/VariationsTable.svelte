@@ -122,7 +122,7 @@
 </table>
 
 <Modal2 width="w-11/12 lg:w-3/4" bind:this={modalShowAttributes}>
-  <VariationsAttributes {currentVariation} />
+  <VariationsAttributes variation_id={currentVariation.id} />
 </Modal2>
 
 {#each Object.entries($product.variations) as [key, value]}

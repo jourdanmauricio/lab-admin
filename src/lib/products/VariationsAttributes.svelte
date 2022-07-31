@@ -1,6 +1,6 @@
 <script>
   import { product } from "./../../store/stores.js";
-  export let currentVariation;
+  export let variation_id;
 
   $: attribs = $product.category.attributes.filter(
     (attribute) =>
@@ -9,9 +9,12 @@
       attribute.tags.hasOwnProperty("variation_attribute")
   );
 
+  $: currentVariation = $product.variations.find(
+    (variation) => (variation.id = variation_id)
+  );
+
   $: attributes = attribs.map((atrib) => {
     let found = currentVariation.attributes.find((el) => el.id === atrib.id);
-    console.log("found", found);
     if (found) {
       found.value_type = atrib.value_type;
       found.tags = atrib.tags;
@@ -24,6 +27,7 @@
   });
 
   function handleNA(attribute) {
+    console.log("N/A");
     let newAttribute = Object.assign({}, attribute);
     newAttribute.updated = true;
     if (newAttribute.value_id === "-1" && newAttribute.value_name === null) {
@@ -33,10 +37,31 @@
       newAttribute.value_id = "-1";
       newAttribute.value_name = null;
     }
-    let newData = attributes.map((el) =>
-      el.id === attribute.id ? newAttribute : el
+
+    console.log("newAttribute", newAttribute);
+
+    let variation = Object.assign({}, currentVariation);
+    let found = currentVariation.attributes.findIndex(
+      (atrib) => atrib.id === newAttribute.id
     );
-    product.update({ attributes: newData });
+    console.log("found", found);
+    if (found === -1)
+      currentVariation.attributes = [
+        ...currentVariation.attributes,
+        newAttribute,
+      ];
+
+    variation.attributes = currentVariation.attributes.map((el) => {
+      return el.id === newAttribute.id ? newAttribute : el;
+    });
+    variation.updated = true;
+
+    console.log("variation", variation);
+    let newData = $product.variations.map((el) => {
+      return el.id === variation.id ? variation : el;
+    });
+
+    product.update({ variations: newData });
   }
 
   function handleChange(attribute, e, type = "") {
@@ -104,11 +129,28 @@
         newAttribute.value_name = e.target.value;
         break;
     }
-    let newData = attributes.map((el) => {
+
+    let variation = Object.assign({}, currentVariation);
+    let found = currentVariation.attributes.findIndex(
+      (atrib) => atrib.id === newAttribute.id
+    );
+
+    if (found === -1)
+      currentVariation.attributes = [
+        ...currentVariation.attributes,
+        newAttribute,
+      ];
+
+    variation.attributes = currentVariation.attributes.map((el) => {
       return el.id === newAttribute.id ? newAttribute : el;
     });
+    variation.updated = true;
 
-    product.update({ attributes: newData });
+    let newData = $product.variations.map((el) => {
+      return el.id === variation.id ? variation : el;
+    });
+
+    product.update({ variations: newData });
   }
 </script>
 
@@ -271,8 +313,6 @@
     {/each}
   </tbody>
 </table>
-
-<h1>Variations Attributos</h1>
 
 <!-- {#each Object.entries(attribs) as [key, value]}
   <p>{key} - {JSON.stringify(value)}</p>
