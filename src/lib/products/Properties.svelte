@@ -8,6 +8,7 @@
   import Pictures from "./Pictures.svelte";
   import Attributes from "./Attributes.svelte";
   import Variations from "./Variations.svelte";
+  import { product } from "../../store/stores";
 </script>
 
 <div class="mt-6">
@@ -17,7 +18,9 @@
       <Tab>Atributos</Tab>
       <Tab>Cacterísticas</Tab>
       <Tab>Descripción</Tab>
-      <Tab>Imágenes</Tab>
+      {#if $product.variations.length === 0}
+        <Tab>Imágenes</Tab>
+      {/if}
     </TabList>
 
     <TabPanel>
@@ -37,8 +40,10 @@
       <Description />
     </TabPanel>
 
-    <TabPanel>
-      <Pictures />
-    </TabPanel>
+    {#if $product.variations.length === 0}
+      <TabPanel>
+        <Pictures />
+      </TabPanel>
+    {/if}
   </Tabs>
 </div>

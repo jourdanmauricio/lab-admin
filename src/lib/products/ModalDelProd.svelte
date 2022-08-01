@@ -20,7 +20,7 @@
 </script>
 
 <h2 class="text-xl text-center">
-  Eliminar producto - {currentProd.name}
+  Eliminar producto - {currentProd.title}
 </h2>
 <div class="py-4">
   <div class="w-full border-t border-gray-900" />

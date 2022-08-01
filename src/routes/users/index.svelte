@@ -240,7 +240,7 @@
           <td>{user.customer ? user.customer.documentNumber : ""}</td>
           <td
             ><button on:click={handleDelete(user)} id={user.id}
-              ><i class="material-icons" style="color: red">delete</i></button
+              ><i class="material-icons bg-red-700">delete</i></button
             ></td
           >
         </tr>

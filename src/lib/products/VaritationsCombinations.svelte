@@ -18,11 +18,8 @@
   };
 
   $: newSku = () => {
-    // let sku;
     let sku = 1;
     if (!$product.variations.length === 0) {
-      // sku = 1;
-      // } else {
       let max = 1;
       $product.variations.forEach((variation) => {
         let varSku = variation.attributes.find(
@@ -36,11 +33,7 @@
               max = varSku3;
               sku = max;
             }
-            // } else {
-            //   sku = 1;
           }
-          // } else {
-          //   sku = 1;
         }
       });
     }
@@ -137,7 +130,7 @@
           id: `${$product.seller_custom_field}--${sku}`,
           attribute_combinations: newVar,
           available_quantity: 1,
-          pictures: [],
+          picture_ids: [],
           attributes: [
             {
               id: "SELLER_SKU",

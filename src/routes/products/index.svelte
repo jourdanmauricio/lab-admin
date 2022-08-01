@@ -23,9 +23,11 @@
     getApiProductsMl,
     getApiItemsMl,
   } from "../../services/api/productsMl.js";
+  import ProductDetail from "../../lib/products/ProductDetail.svelte";
 
   let modalDelete;
   let modalMassive;
+  let modalProductDetail;
   let products = [];
   let search = null;
   let more = false;
@@ -172,6 +174,12 @@
     product.update({ action: "new" });
     goto("/products/newProduct");
   }
+
+  function handleDetail(prod) {
+    currentProd = prod;
+    modalProductDetail.show();
+  }
+
   onMount(async () => {
     await tick();
     loadData();
@@ -258,10 +266,11 @@
       <th>ID</th>
       <th>Imagen</th>
       <th>Sku</th>
-      <th>Categoría</th>
+      <!-- <th>Categoría</th> -->
       <th>Estado</th>
       <th>Precio</th>
       <th>Producto</th>
+      <th>Info</th>
       <th>Acciones</th>
     </tr>
   </thead>
@@ -280,20 +289,32 @@
         <td>{product.id}</td>
         <td><img class="w-20" src={product.thumbnail} alt="" /></td>
         <td>{product.seller_custom_field}</td>
-        <td>{product.category_id}</td>
+        <!-- <td>{product.category_id}</td> -->
         <td>{traduction(product.status)}</td>
         <td>{product.price}</td>
         <td>{product.title}</td>
         <td>
-          <div class="flex items-center justify-between">
+          <div class="flex items-baseline justify-between">
             {#if product.prodMl}
               <button
-                title={`${product.prodMl.id}<br>${product.prodMl.status}<br>${product.prodMl.price}`}
+                class="w-[16px;] ml-1"
+                title={`${product.prodMl.id}<br>${traduction(
+                  product.prodMl.status
+                )}<br>${product.prodMl.price}`}
                 use:tooltip
               >
-                <img class="w-8" src="./images/logos/ML.webp" alt="" />
+                <img src="./images/logos/ML.png" alt="" />
               </button>
             {/if}
+            <button on:click={handleDetail(product)} id={product.id}
+              ><i class="ml-1 px-1 material-icons text-blue-600 text-lg"
+                >visibility</i
+              ></button
+            >
+          </div></td
+        >
+        <td>
+          <div class="flex items-center justify-between">
             <button on:click={handleEdit(product)} id={product.id}
               ><i class="ml-1 px-1 material-icons text-teal-600 text-lg">edit</i
               ></button
@@ -320,4 +341,8 @@
 
 <Modal2 bind:this={modalMassive}>
   <ModalMassiveAction items={selItems} {action} {hideModalMassive} />
+</Modal2>
+
+<Modal2 width="w-11/12 lg:w-3/4" bind:this={modalProductDetail}>
+  <ProductDetail {currentProd} />
 </Modal2>

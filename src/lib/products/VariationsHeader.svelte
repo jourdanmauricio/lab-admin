@@ -39,25 +39,20 @@
   {#if !customAttribute}
     <button
       disabled={$product.variations.length > 0}
-      class="hover:bg-gray-400 rounded-full transition duration-500"
       on:click={newCustomAttribute}
     >
       <i
         class="{$product.variations.length > 0
           ? 'text-gray-500'
-          : 'text-teal-700'} px-2 material-icons leading-normal ">add_circle</i
+          : 'text-teal-700'} btn-rounded material-icons">add_circle</i
       >
     </button>
   {:else}
-    <button
-      disabled={$product.variations.length > 0}
-      class="hover:bg-gray-400 rounded-full transition duration-500"
-      on:click={removeCustom}
-    >
+    <button disabled={$product.variations.length > 0} on:click={removeCustom}>
       <i
         class="{$product.variations.length > 0
           ? 'text-gray-500'
-          : 'text-red-600'} px-2 material-icons leading-normal ">delete</i
+          : 'text-red-600'} btn-rounded material-icons">delete</i
       >
     </button>
   {/if}

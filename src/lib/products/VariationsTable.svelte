@@ -2,10 +2,12 @@
   import Modal2 from "../Modal2.svelte";
   import VariationsAttributes from "./VariationsAttributes.svelte";
   import { product } from "./../../store/stores.js";
+  import VariationPictures from "./VariationPictures.svelte";
 
   export let categoryVariations;
 
   let modalShowAttributes;
+  let modalShowPictures;
   let currentVariation;
 
   $: atribProdVariations =
@@ -41,6 +43,11 @@
   function variationAttributes(variation) {
     currentVariation = variation;
     modalShowAttributes.show();
+  }
+
+  function variationPictures(variation) {
+    currentVariation = variation;
+    modalShowPictures.show();
   }
 
   function updateQuantity(value, variation) {
@@ -107,12 +114,15 @@
         </td>
         <td>
           <button on:click={variationAttributes(variation)}>
-            <i class="material-icons text-purple-400">edit_attributes</i>
+            <i class="btn-rounded material-icons text-purple-400"
+              >edit_attributes</i
+            >
           </button>
-
-          <i class="material-icons text-teal-400">photo</i>
+          <button on:click={variationPictures(variation)}>
+            <i class="btn-rounded material-icons text-teal-400">photo</i>
+          </button>
           <button on:click={deleteVariation(variation)}>
-            <i class="material-icons text-red-400">delete</i>
+            <i class="btn-rounded material-icons text-red-400">delete</i>
           </button>
         </td>
       </tr>
@@ -123,6 +133,10 @@
 
 <Modal2 width="w-11/12 lg:w-3/4" bind:this={modalShowAttributes}>
   <VariationsAttributes variation_id={currentVariation.id} />
+</Modal2>
+
+<Modal2 width="w-11/12 lg:w-3/4" bind:this={modalShowPictures}>
+  <VariationPictures variation_id={currentVariation.id} />
 </Modal2>
 
 {#each Object.entries($product.variations) as [key, value]}

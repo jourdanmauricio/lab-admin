@@ -25,6 +25,10 @@
   @apply rounded bg-secondaryColor text-white py-1 px-10 border border-solid border-black;
 }
 
+.btn-rounded {
+  @apply hover:bg-gray-400 rounded-full transition duration-500 px-2 leading-normal;
+}
+
 .error {
   @apply absolute top-10 right-4;
 }

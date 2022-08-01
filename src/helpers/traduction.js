@@ -12,5 +12,15 @@ export function traduction(text) {
       return "Pausado";
     case "closed":
       return "Finalizado";
+    case "under_review":
+      return "Revisión";
+    case "WARRANTY_TYPE":
+      return "Tipo de garantía";
+    case "WARRANTY_TIME":
+      return "Tiempo";
+    case "PURCHASE_MAX_QUANTITY":
+      return "Cantidad máxima por compra";
+    case "MANUFACTURING_TIME":
+      return "Tiempo de elaboración";
   }
 }

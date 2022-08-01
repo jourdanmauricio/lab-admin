@@ -80,6 +80,26 @@
         case "listing_type_id":
           body.listing_type_id = $product.listing_type_id;
           break;
+        case "variations":
+          let variations = [];
+          $product.variations.map((variation) => {
+            let vari = {
+              id: variation.id,
+            };
+            if (variation.updated) {
+              vari = variation;
+            }
+            delete vari.catalog_product_id;
+            delete vari.inventory_id;
+            delete vari.item_relations;
+            delete vari.sale_terms;
+            delete vari.seller_custom_field;
+            delete vari.updated;
+
+            variations.push(vari);
+          });
+          body.variations = variations;
+          break;
         default:
           break;
       }

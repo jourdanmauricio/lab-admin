@@ -10,7 +10,7 @@
   );
 
   $: currentVariation = $product.variations.find(
-    (variation) => (variation.id = variation_id)
+    (variation) => variation.id === variation_id
   );
 
   $: attributes = attribs.map((atrib) => {
