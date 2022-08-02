@@ -1,4 +1,5 @@
 <script>
+  import Description from "./../../lib/products/Description.svelte";
   import AppSelection from "./../../lib/products/AppSelection.svelte";
   import { goto } from "$app/navigation";
   import { notification, product } from "./../../store/stores.js";
@@ -10,6 +11,7 @@
   import { getCategory } from "../../services/api/categories.js";
   import { patchProduct } from "../../services/api/products";
   import {
+    patchApiDescriptionMl,
     patchApiProductMl,
     patchProductsMl,
   } from "../../services/api/productsMl";
@@ -32,6 +34,7 @@
 
   async function updateProd() {
     let body = {};
+    let bodyDesc = {};
     console.log("$product", $product);
     $product.properties.forEach((property) => {
       switch (property) {
@@ -52,8 +55,14 @@
         case "available_quantity":
           body.available_quantity = parseInt($product.available_quantity);
           break;
-        case "status":
-          body.status = $product.status;
+        case "condition":
+          body.condition = $product.condition;
+          break;
+        case "description":
+          bodyDesc = { plain_text: $product.description };
+          break;
+        case "listing_type_id":
+          body.listing_type_id = $product.listing_type_id;
           break;
         case "price":
           body.price = $product.price;
@@ -72,11 +81,8 @@
         case "sale_terms":
           body.sale_terms = $product.sale_terms;
           break;
-        case "condition":
-          body.condition = $product.condition;
-          break;
-        case "listing_type_id":
-          body.listing_type_id = $product.listing_type_id;
+        case "status":
+          body.status = $product.status;
           break;
         case "variations":
           let variations = [];
@@ -120,19 +126,31 @@
 
     try {
       if (application.ml) {
-        body.id = $product.prodMl.id;
-        const resApi = await patchApiProductMl([body]);
-        resApi[0].prod_id = $product.id;
-        const resMl = await patchProductsMl(resApi);
-        resApi[0].id = $product.id;
-        // resApi[0].mlId = $product.prodMl.id;
-        delete resApi[0].status;
-        delete resApi[0].available_quantity;
-        delete resApi[0].price;
-        delete resApi[0].sold_quantity;
-        delete resApi[0].start_time;
-        console.log("resApi", resApi[0]);
-        const res = await patchProduct(resApi);
+        if (Object.keys(body).length > 0) {
+          body.id = $product.prodMl.id;
+          const resApi = await patchApiProductMl([body]);
+          resApi[0].prod_id = $product.id;
+          const resMl = await patchProductsMl(resApi);
+          resApi[0].id = $product.id;
+          // resApi[0].mlId = $product.prodMl.id;
+          delete resApi[0].status;
+          delete resApi[0].available_quantity;
+          delete resApi[0].price;
+          delete resApi[0].sold_quantity;
+          delete resApi[0].start_time;
+          console.log("resApi", resApi[0]);
+          await patchProduct(resApi);
+        }
+
+        if (Object.keys(bodyDesc).length > 0) {
+          bodyDesc.id = $product.prodMl.id;
+          const descriptionMl = await patchApiDescriptionMl([bodyDesc]);
+          const description = {
+            id: $product.id,
+            description: descriptionMl[0].plain_text,
+          };
+          await patchProduct([description]);
+        }
       }
       if (application.local) {
         body.id = $product.id;

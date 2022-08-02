@@ -119,6 +119,8 @@
 
       console.log("TODO: // update updItems", updItems);
 
+      notification.show("Productos importador", "success");
+
       loadData();
     } catch (error) {
       console.log("ERRORRRR", error);

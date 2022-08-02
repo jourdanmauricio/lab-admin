@@ -15,9 +15,22 @@ export const getApiProductsMl = async (mlItems) => {
     return ApiMl.get(
       "items?ids=" +
         items2 +
-        "&attributes=id,attributes,title,price,category_id,title,thumbnail,listing_type_id,condition,available_quantity,sold_quantity,status,pictures,sale_terms,variations,start_time,description,seller_custom_field"
+        "&attributes=id,attributes,title,price,category_id,title,thumbnail,listing_type_id,condition,available_quantity,sold_quantity,status,pictures,sale_terms,variations,start_time,seller_custom_field"
     )
-      .then((res) => res.forEach((element) => detItems.push(element.body)))
+      .then((res) => {
+        res.forEach(async (element) => {
+          await ApiMl.get(`items/${element.body.id}/description`)
+            .then((resDesc) => {
+              element.body.description = resDesc.plain_text;
+            })
+            .catch((err) => {
+              if ((err.response.status = 404)) element.body.description = "";
+            })
+            .finally(() => {
+              detItems.push(element.body);
+            });
+        });
+      })
       .catch((err) => console.log(err));
   });
   await Promise.all(req).then(() => {});
@@ -91,6 +104,35 @@ export const patchProductsMl = async (mlItems) => {
     message = error.response.data
       ? `${error.response.data.statusCode}: ${error.response.data.message}`
       : "Error Creando categoría 😞";
+    throw message;
+  }
+};
+
+export const patchApiDescriptionMl = async (descriptions) => {
+  try {
+    const results = await Promise.all(
+      descriptions.map(async (description) => {
+        let id = description.id;
+        delete description.id;
+        return await ApiMl.put(
+          `items/${id}/description?api_version=2`,
+          description
+        );
+      })
+    );
+    return results;
+  } catch (error) {
+    console.log("ERR!!!!", error);
+    let message = "";
+    if (error.response.data) {
+      message = `${error.response.status}: ${error.response.data.message}`;
+      if (error.response.data.cause.length > 0) {
+        error.response.data.cause.forEach((el) => {
+          if (el.type === "error") message += `<br> ${el.message}`;
+        });
+      }
+    }
+    if (message === "") message = "Error modificando la descripción 😞";
     throw message;
   }
 };

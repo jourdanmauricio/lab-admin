@@ -54,12 +54,7 @@ axiosAPI.interceptors.response.use(
           const user = await Api.put(`/usersml/${userStore.userMl.id}`, data);
           credentials.setCredentials(user);
           localStorage.setItem("user", JSON.stringify(user));
-          setAuth(rs.access_token);
-          console.log("setAuth funciona?");
-          console.log("nuevo token", rs.access_token);
-          console.log("credenciales", user.userMl.access_token);
-          console.log("originalConfig", originalConfig);
-          console.log("Modificar el token del header!!!!!");
+          setAuth(rs.data.access_token);
           return axiosAPI(originalConfig);
         } catch (_error) {
           if (_error.response && _error.response.data) {
