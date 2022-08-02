@@ -1,8 +1,10 @@
 <script>
-  import VariationsAttributes from "./VariationsAttributes.svelte";
-  import VariationPictures from "./VariationPictures.svelte";
   import Modal2 from "../Modal2.svelte";
+  import VariationsAttributes from "./VariationsAttributes.svelte";
   import { product } from "./../../store/stores.js";
+  import VariationPictures from "./VariationPictures.svelte";
+
+  // export let categoryVariations;
 
   let modalShowAttributes;
   let modalShowPictures;

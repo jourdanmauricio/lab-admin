@@ -28,6 +28,7 @@
   });
 
   function handleNA(attribute) {
+    console.log("N/A");
     let newAttribute = Object.assign({}, attribute);
     newAttribute.updated = true;
     if (newAttribute.value_id === "-1" && newAttribute.value_name === null) {
@@ -38,10 +39,13 @@
       newAttribute.value_name = null;
     }
 
+    console.log("newAttribute", newAttribute);
+
     let variation = Object.assign({}, currentVariation);
     let found = currentVariation.attributes.findIndex(
       (atrib) => atrib.id === newAttribute.id
     );
+    console.log("found", found);
     if (found === -1)
       currentVariation.attributes = [
         ...currentVariation.attributes,
@@ -53,6 +57,7 @@
     });
     variation.updated = true;
 
+    console.log("variation", variation);
     let newData = $product.variations.map((el) => {
       return el.id === variation.id ? variation : el;
     });

@@ -1,15 +1,9 @@
 <script>
-  import { onMount } from "svelte";
   import { product } from "./../../store/stores.js";
   import { notification } from "../../store/stores";
-  import VartiationsAddCustomAttribute from "./VartiationsAddCustomAttribute.svelte";
-  import Modal2 from "../Modal2.svelte";
+  import { onMount } from "svelte";
 
-  let modalAddCustomAttribute;
-
-  let attributesComb = {};
-  let customAttribute = {};
-  let attributes = [];
+  // export let categoryVariations;
 
   $: atribProdVariations =
     $product.variations.length > 0
@@ -18,21 +12,27 @@
         )
       : [];
 
+  let attributesComb = {};
+
   $: sortedByName = (values) => {
     return values.sort((a, b) => 0 - (a.name > b.name ? -1 : 1));
   };
+
   $: newSku = () => {
     let sku = 1;
-    if ($product.variations.length > 0) {
+    if (!$product.variations.length === 0) {
       let max = 1;
       $product.variations.forEach((variation) => {
         let varSku = variation.attributes.find(
           (atrib) => atrib.id === "SELLER_SKU"
         );
+        console.log("varSku", varSku);
         if (varSku) {
           let varSku2 = varSku.value_name.split("--");
+          console.log("varSku2", varSku2);
           if (varSku2.length > 1) {
             let varSku3 = parseInt(varSku2[1]) + 1;
+            console.log("varSku3", varSku3);
             if (varSku3 > max) {
               max = varSku3;
               sku = max;
@@ -160,79 +160,14 @@
     e.target.reset();
   }
 
-  // $: attributes = $product.category.attributes.filter((attribute) =>
-  //   attribute.tags.hasOwnProperty("allow_variations")
-  // );
-
-  function newCustomAttribute() {
-    if (customAttribute.hasOwnProperty("id")) {
-      notification.show(
-        "Solo se puede agregar un atributo personalizado",
-        "error"
-      );
-      return;
-    }
-    modalAddCustomAttribute.show();
-  }
-
-  function addCustom(attribute) {
-    modalAddCustomAttribute.hide();
-    customAttribute = {
-      id: attribute.toUpperCase(),
-      name: attribute,
-      tags: { custom: true },
-    };
-    attributes = [...attributes, customAttribute];
-  }
-
-  function removeCustom() {
-    customAttribute = {};
-    attributes = $product.category.attributes.filter((attribute) =>
-      attribute.tags.hasOwnProperty("allow_variations")
-    );
-  }
+  $: attributes = $product.category.attributes.filter((attribute) =>
+    attribute.tags.hasOwnProperty("allow_variations")
+  );
 
   onMount(() => {
-    attributes = $product.category.attributes.filter((attribute) =>
-      attribute.tags.hasOwnProperty("allow_variations")
-    );
-
-    if ($product.variations.length > 0) {
-      $product.variations[0].attribute_combinations.forEach((atrib) => {
-        let index = attributes.findIndex((atrib2) => atrib2.id === atrib.id);
-        if (index === -1) {
-          delete atrib.values;
-          customAttribute = atrib;
-          attributes.push(atrib);
-        }
-      });
-    }
+    console.log("mount variation COMB");
   });
 </script>
-
-<div class="flex items-center justify-between bg-gray-200">
-  <h2 class="pl-2 text-lg font-semibold">Variaciones</h2>
-  {#if !customAttribute.hasOwnProperty("id")}
-    <button
-      disabled={$product.variations.length > 0}
-      on:click={newCustomAttribute}
-    >
-      <i
-        class="{$product.variations.length > 0
-          ? 'text-gray-500'
-          : 'text-teal-700'} btn-rounded material-icons">add_circle</i
-      >
-    </button>
-  {:else}
-    <button disabled={$product.variations.length > 0} on:click={removeCustom}>
-      <i
-        class="{$product.variations.length > 0
-          ? 'text-gray-500'
-          : 'text-red-600'} btn-rounded material-icons">delete</i
-      >
-    </button>
-  {/if}
-</div>
 
 <div class="flex justify-center">
   <form on:submit|preventDefault={handleSubmit}>
@@ -284,7 +219,3 @@
     </ul>
   </form>
 </div>
-
-<Modal2 bind:this={modalAddCustomAttribute}>
-  <VartiationsAddCustomAttribute {addCustom} />
-</Modal2>

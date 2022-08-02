@@ -24,7 +24,6 @@
     if (!$product.action) goto("/products");
     let category = await getCategory($product.category_id);
     product.update({ category: category });
-    console.log("category", category);
   });
 
   function setApplication(e) {
@@ -32,9 +31,8 @@
   }
 
   async function updateProd() {
-    console.log("update", $product);
     let body = {};
-
+    console.log("$product", $product);
     $product.properties.forEach((property) => {
       switch (property) {
         case "attributes":
@@ -86,16 +84,31 @@
             let vari = {
               id: variation.id,
             };
-            if (variation.updated) {
-              vari = variation;
-            }
-            delete vari.catalog_product_id;
-            delete vari.inventory_id;
-            delete vari.item_relations;
-            delete vari.sale_terms;
-            delete vari.seller_custom_field;
-            delete vari.updated;
+            if (variation.updated === true) {
+              vari = Object.assign({}, variation);
+              vari.attributes = [];
+              variation.attributes.forEach((atrib) => {
+                vari.attributes.push({
+                  id: atrib.id,
+                  name: atrib.name,
+                  value_id: atrib.value_id ? atrib.value_id : "",
+                  value_name: atrib.value_name ? atrib.value_name : "",
+                });
+              });
 
+              let sku = variation.attributes.find(
+                (atrib) => atrib.id === "SELLER_SKU"
+              );
+
+              if (sku && sku.value_name === variation.id) delete vari.id;
+
+              delete vari.catalog_product_id;
+              delete vari.inventory_id;
+              delete vari.item_relations;
+              delete vari.sale_terms;
+              delete vari.seller_custom_field;
+              delete vari.updated;
+            }
             variations.push(vari);
           });
           body.variations = variations;
@@ -121,7 +134,6 @@
         console.log("resApi", resApi[0]);
         const res = await patchProduct(resApi);
       }
-
       if (application.local) {
         body.id = $product.id;
         const res = await patchProduct([body]);
