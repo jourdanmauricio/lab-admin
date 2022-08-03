@@ -1,12 +1,6 @@
 <script>
-  import Description from "./../../lib/products/Description.svelte";
-  import AppSelection from "./../../lib/products/AppSelection.svelte";
   import { goto } from "$app/navigation";
-  import { notification, product } from "./../../store/stores.js";
-  import Properties from "./../../lib/products/Properties.svelte";
-  import Category from "./../../lib/products/Category.svelte";
-  import Title from "./../../lib/products/Title.svelte";
-  import Sku from "../../lib/products/Sku.svelte";
+  import { credentials, notification, product } from "./../../store/stores.js";
   import { onMount } from "svelte";
   import { getCategory } from "../../services/api/categories.js";
   import { patchProduct } from "../../services/api/products";
@@ -15,10 +9,16 @@
     patchApiProductMl,
     patchProductsMl,
   } from "../../services/api/productsMl";
+  import Tabs from "../../helpers/tabs/Tabs.svelte";
+  import TabList from "../../helpers/tabs/TabList.svelte";
+  import Tab from "../../helpers/tabs/Tab.svelte";
+  import TabPanel from "../../helpers/tabs/TabPanel.svelte";
+  import EditLocal from "../../lib/products/EditLocal.svelte";
+  import EditMl from "../../lib/products/EditMl.svelte";
 
   let application = {
     ml: true,
-    local: false,
+    local: true,
     web: false,
   };
 
@@ -34,7 +34,8 @@
 
   async function updateProd() {
     let body = {};
-    let bodyDesc = {};
+    let mlBody = {};
+    let mlBodyDesc = {};
     console.log("$product", $product);
     $product.properties.forEach((property) => {
       switch (property) {
@@ -50,22 +51,52 @@
             }
             attributes.push(atrib);
           });
-          body.attributes = attributes;
+          mlBody.attributes = attributes;
           break;
         case "available_quantity":
           body.available_quantity = parseInt($product.available_quantity);
+          if (application.ml === true)
+            mlBody.available_quantity = parseInt($product.available_quantity);
+          break;
+        case "available_quantity_ml":
+          mlBody.available_quantity = parseInt($product.available_quantity_ml);
           break;
         case "condition":
-          body.condition = $product.condition;
+          mlBody.condition = $product.condition;
           break;
         case "description":
-          bodyDesc = { plain_text: $product.description };
+          mlBodyDesc = { plain_text: $product.description };
           break;
         case "listing_type_id":
-          body.listing_type_id = $product.listing_type_id;
+          mlBody.listing_type_id = $product.listing_type_id;
           break;
         case "price":
+          let variations3 = [];
           body.price = $product.price;
+          if (application.ml === true) {
+            let percent = $credentials.settings.price_percent_ml;
+            let price = $product.price + ($product.price * percent) / 100;
+            mlBody.price = price;
+            if ($product.variations.length > 0) {
+              $product.variations.forEach((vari) => {
+                variations3.push({ id: vari.id, price: price });
+              });
+              mlBody.variations = variations3;
+              delete mlBody.price;
+            }
+          }
+
+          break;
+        case "price_ml":
+          let mlVariations = [];
+          mlBody.price = $product.price_ml;
+          if ($product.variations.length > 0) {
+            $product.variations.forEach((vari) => {
+              mlVariations.push({ id: vari.id, price: $product.price_ml });
+            });
+            mlBody.variations = mlVariations;
+            delete mlBody.price;
+          }
           break;
         case "seller_custom_field":
           let sku = {
@@ -75,14 +106,18 @@
           let newData = $product.attributes.map((el) =>
             el.id === sku.id ? sku : el
           );
-          body.attributes = newData;
-          body.seller_custom_field = $product.seller_custom_field;
+          mlBody.attributes = newData;
+          mlBody.seller_custom_field = $product.seller_custom_field;
           break;
         case "sale_terms":
-          body.sale_terms = $product.sale_terms;
+          mlBody.sale_terms = $product.sale_terms;
           break;
         case "status":
           body.status = $product.status;
+          if (application.ml === true) mlBody.status = $product.status;
+          break;
+        case "status_ml":
+          mlBody.status = $product.status_ml;
           break;
         case "variations":
           let variations = [];
@@ -117,7 +152,7 @@
             }
             variations.push(vari);
           });
-          body.variations = variations;
+          mlBody.variations = variations;
           break;
         default:
           break;
@@ -125,26 +160,23 @@
     });
 
     try {
-      if (application.ml) {
-        if (Object.keys(body).length > 0) {
-          body.id = $product.prodMl.id;
-          const resApi = await patchApiProductMl([body]);
-          resApi[0].prod_id = $product.id;
-          const resMl = await patchProductsMl(resApi);
-          resApi[0].id = $product.id;
-          // resApi[0].mlId = $product.prodMl.id;
-          delete resApi[0].status;
-          delete resApi[0].available_quantity;
-          delete resApi[0].price;
-          delete resApi[0].sold_quantity;
-          delete resApi[0].start_time;
-          console.log("resApi", resApi[0]);
-          await patchProduct(resApi);
-        }
+      if (Object.keys(mlBody).length > 0) {
+        mlBody.id = $product.prodMl.id;
+        const resApi = await patchApiProductMl([mlBody]);
+        resApi[0].prod_id = $product.id;
+        const resMl = await patchProductsMl(resApi);
+        resApi[0].id = $product.id;
+        delete resApi[0].status;
+        delete resApi[0].available_quantity;
+        delete resApi[0].price;
+        delete resApi[0].sold_quantity;
+        delete resApi[0].start_time;
+        console.log("resApi", resApi[0]);
+        await patchProduct(resApi);
 
-        if (Object.keys(bodyDesc).length > 0) {
-          bodyDesc.id = $product.prodMl.id;
-          const descriptionMl = await patchApiDescriptionMl([bodyDesc]);
+        if (Object.keys(mlBodyDesc).length > 0) {
+          mlBodyDesc.id = $product.prodMl.id;
+          const descriptionMl = await patchApiDescriptionMl([mlBodyDesc]);
           const description = {
             id: $product.id,
             description: descriptionMl[0].plain_text,
@@ -152,10 +184,12 @@
           await patchProduct([description]);
         }
       }
-      if (application.local) {
+      if (Object.keys(body).length > 0) {
+        // if (application.local) {
         body.id = $product.id;
         const res = await patchProduct([body]);
         console.log("res", res);
+        // }
       }
       notification.show("Producto modificado", "success");
       goto("/products");
@@ -165,28 +199,23 @@
   }
 </script>
 
-<div class="mt-8 flex flex-col min-h-full">
+<div class=" flex flex-col min-h-full">
   <div class="flex-grow relative">
-    <div
-      name="appSelection"
-      class="flex flex-wrap justify-evenly border border-solid border-gray-900 rounded p-1"
-    >
-      <AppSelection {application} {setApplication} />
-    </div>
-    <label
-      class="pointer-events-none text-sm absolute left-2.5 -top-5"
-      for="appSelection">Aplicar</label
-    >
-    <div class="mt-8 grid grid-cols-12 gap-8">
-      <Title />
-      <Sku />
-      {#if $product.category}
-        <Category />
-      {/if}
-    </div>
-    {#if $product.category && $product.seller_custom_field}
-      <Properties />
-    {/if}
+    <Tabs>
+      <TabList>
+        <Tab>Local</Tab>
+        <Tab>ML</Tab>
+        <Tab>Web</Tab>
+      </TabList>
+
+      <TabPanel>
+        <EditLocal {application} {setApplication} />
+      </TabPanel>
+      <TabPanel>
+        <EditMl />
+      </TabPanel>
+      <TabPanel>Web</TabPanel>
+    </Tabs>
   </div>
   {#each Object.entries($product) as [key, value]}
     {#if key === "properties"}

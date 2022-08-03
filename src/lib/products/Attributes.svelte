@@ -86,12 +86,9 @@
           newAttribute.value_struct = { unit: "", number: "" };
         newAttribute.value_struct.number = e.target.value;
 
-        // newAttribute.value_name = attribute.value_unit
-        //   ? e.target.value + " " + attribute.value_unit
-        //   : e.target.value;
-
-        newAttribute.value_name =
-          e.target.value + " " + attribute.value_struct.unit;
+        newAttribute.value_name = attribute.value_unit
+          ? e.target.value + " " + attribute.value_unit
+          : e.target.value;
 
         console.log("attribute", newAttribute);
         break;

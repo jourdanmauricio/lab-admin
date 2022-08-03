@@ -15,7 +15,7 @@ export const getApiProductsMl = async (mlItems) => {
     return ApiMl.get(
       "items?ids=" +
         items2 +
-        "&attributes=id,attributes,title,price,category_id,title,thumbnail,listing_type_id,condition,available_quantity,sold_quantity,status,pictures,sale_terms,variations,start_time,seller_custom_field"
+        "&attributes=id,attributes,title,price,category_id,title,thumbnail,listing_type_id,condition,available_quantity,sold_quantity,status,permalink,pictures,sale_terms,variations,start_time,seller_custom_field"
     )
       .then((res) => {
         res.forEach(async (element) => {
@@ -92,6 +92,7 @@ export const patchProductsMl = async (mlItems) => {
           price: prod.price,
           available_quantity: prod.available_quantity,
           status: prod.status,
+          permalink: prod.permalink,
           start_time: prod.start_time,
         };
         return await Api.patch(`/productsMl/${newProd.id}`, newProd);
@@ -151,12 +152,13 @@ export const postproductsMl = async (newProducts) => {
     const results = await Promise.all(
       newProducts.map(async (prod) => {
         const newProd = {
-          id: prod.mlId,
-          prod_id: prod.id,
+          id: prod.id,
+          prod_id: prod.prod_id,
           seller_custom_field: prod.seller_custom_field,
           price: prod.price,
           available_quantity: prod.available_quantity,
           status: prod.status,
+          permalink: prod.permalink,
           start_time: prod.start_time,
         };
         await Api.post("/productsMl", newProd);

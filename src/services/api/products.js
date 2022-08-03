@@ -36,7 +36,7 @@ export const postproducts = async (newProducts) => {
           variations: prod.variations,
         };
         let prod2 = await Api.post("/products", newProd);
-        prod2.mlId = prod.id;
+        prod2.ml_id = prod.id;
         // console.log("PRODID", prod2);
         return prod2;
       })

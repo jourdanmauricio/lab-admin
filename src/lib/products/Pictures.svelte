@@ -96,10 +96,10 @@
           class:is-active={hovering === index}
           on:dragend={() => (hovering = null)}
         >
-          <div class="w-full md:p-3 ">
+          <div class="flex items-center w-full md:p-3">
             <img
               alt="gallery"
-              class="block object-cover object-center max-w-[180px] w-full h-full border border-solid border-secondaryColor rounded cursor-move"
+              class="block object-cover object-center max-w-[180px] w-full  border border-solid border-secondaryColor rounded cursor-move"
               src={picture.secure_url}
             />
           </div>

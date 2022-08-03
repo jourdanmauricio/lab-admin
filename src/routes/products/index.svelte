@@ -5,7 +5,12 @@
   import { tooltip } from "./../../lib/tooltip/tooltip";
   import { clickOutside } from "./../../helpers/clickOutside";
   import { exportTableToExcel } from "../../helpers/exportTableToExcel";
-  import { loading, product, settings } from "./../../store/stores.js";
+  import {
+    loading,
+    product,
+    settings,
+    credentials,
+  } from "./../../store/stores.js";
   import { notification } from "../../store/stores";
   import { traduction } from "../../helpers/traduction";
   import Modal2 from "./../../lib/Modal2.svelte";
@@ -114,12 +119,26 @@
         const newCategories = await getApiCategoriesMl(newCategoriesId);
         await createCategories(newCategories);
       }
-      const newProducts = await postproducts(newItems);
-      await postproductsMl(newProducts);
+      // Copio newItems para modificar el precio
+      const newItemsPrice = JSON.parse(JSON.stringify(newItems));
+
+      let percent = $credentials.settings.price_percent_ml;
+      if ($credentials.settings.hasOwnProperty("price_percent_ml")) {
+        newItemsPrice.forEach((itemPrice) => {
+          itemPrice.price =
+            itemPrice.price - itemPrice.price * (parseInt(percent) / 100);
+        });
+      }
+      const newProducts = await postproducts(newItemsPrice);
+      newItems.forEach((item) => {
+        let found = newProducts.find((newProd) => item.id === newProd.ml_id);
+        if (found) item.prod_id = found.id;
+      });
+      await postproductsMl(newItems);
 
       console.log("TODO: // update updItems", updItems);
 
-      notification.show("Productos importador", "success");
+      notification.show("Productos importados", "success");
 
       loadData();
     } catch (error) {

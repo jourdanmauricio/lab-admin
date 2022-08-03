@@ -24,8 +24,6 @@
     });
     header += ` - Cantidad ${variation.available_quantity}`;
     return header;
-    // let sku = variation.attributes.find((atrib) => atrib.id === "SELLER_SKU");
-    // if (sku) header += ` - SKU ${sku.value_name}`;
   }
 
   onMount(async () => {
@@ -50,7 +48,12 @@
   <tbody>
     <td>
       {#if currentProd.prodMl}
-        {currentProd.prodMl.id} <br />
+        <a
+          class="link"
+          href={currentProd.prodMl.permalink}
+          target="_blank"
+          rel="noopener noreferrer">{currentProd.prodMl.id}</a
+        ><br />
         {traduction(currentProd.prodMl.status)} <br />
         ${currentProd.prodMl.price} <br />
         {currentProd.prodMl.available_quantity} u
@@ -88,7 +91,7 @@
             ondragstart="return false;"
             ondrop="return false;"
             alt="gallery"
-            class="block object-cover object-center max-w-[100px] sm:max-w-[150px] w-full h-full border border-solid border-secondaryColor rounded "
+            class="block object-cover object-center max-w-[100px] sm:max-w-[150px] w-full border border-solid border-secondaryColor rounded "
             src={picture.secure_url}
           />
         </div>
@@ -130,7 +133,7 @@
                   ondragstart="return false;"
                   ondrop="return false;"
                   alt="gallery"
-                  class="block object-cover object-center max-w-[100px] sm:max-w-[150px] w-full h-full border border-solid border-secondaryColor rounded "
+                  class="block object-cover object-center max-w-[100px] sm:max-w-[150px] w-full border border-solid border-secondaryColor rounded "
                   src={varPicture(picture)}
                 />
               </div>

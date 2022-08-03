@@ -27,6 +27,10 @@
 
 {#if settings}
   <div class="h-screen">
+    <div class="py-4">
+      <span>Productos</span>
+      <div class="w-full border-t border-gray-900" />
+    </div>
     <div class="grid grid-cols-2 gap-8 mt-8">
       <div class="relative">
         <select
@@ -69,6 +73,34 @@
           <option value="refused">Reacondicionado</option>
         </select>
         <label class="label-oval" for="condition">Condición del item</label>
+      </div>
+    </div>
+    <div class="my-2 py-4">
+      <span>Sincronización</span>
+      <div class="w-full border-t border-gray-900" />
+    </div>
+
+    <!-- precio ML - WEB -->
+    <div class="mt-8 grid grid-cols-2 gap-8">
+      <div class="relative">
+        <input
+          class="input-oval"
+          type="number"
+          id="price_percent_ml"
+          bind:value={settings.price_percent_ml}
+          required
+        />
+        <label class="label-oval" for="price_percent_ml">% precio ML</label>
+      </div>
+      <div class="relative">
+        <input
+          class="input-oval"
+          type="number"
+          id="price_percent_ml"
+          bind:value={settings.price_percent_web}
+          required
+        />
+        <label class="label-oval" for="price_percent_ml">% precio Web</label>
       </div>
     </div>
     <div class="mt-12 flex justify-end items-end">
