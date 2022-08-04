@@ -28,6 +28,10 @@
     product.update({ category: category });
   });
 
+  function cancel() {
+    goto("/products");
+  }
+
   function setApplication(e) {
     application[e.target.id] = e.target.checked;
   }
@@ -70,6 +74,7 @@
         case "listing_type_id":
           mlBody.listing_type_id = $product.listing_type_id;
           break;
+
         case "price":
           let variations3 = [];
           body.price = $product.price;
@@ -86,6 +91,14 @@
             }
           }
 
+          break;
+
+        case "pictures":
+          mlBody.pictures = $product.pictures.map((el) => {
+            return {
+              id: el.id,
+            };
+          });
           break;
         case "price_ml":
           let mlVariations = [];
@@ -148,6 +161,7 @@
               delete vari.item_relations;
               delete vari.sale_terms;
               delete vari.seller_custom_field;
+              delete vari.sold_quantity;
               delete vari.updated;
             }
             variations.push(vari);
@@ -223,7 +237,7 @@
     {/if}
   {/each}
   <div class="mt-4 mb-6 flex justify-end">
-    <button class="btn ripple">Cancelar</button>
+    <button on:click={cancel} class="btn ripple">Cancelar</button>
     <button on:click={updateProd} class="ml-10 btn ripple">Modificar</button>
   </div>
 </div>

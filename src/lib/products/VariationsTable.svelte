@@ -58,6 +58,7 @@
   }
 
   function updateSku(value, variation) {
+    if (!variation.attributes) variation.attributes = [];
     let sku = variation.attributes.find((vari) => vari.id === "SELLER_SKU");
     if (sku) {
       sku.value_name = value;

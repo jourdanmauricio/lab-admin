@@ -80,18 +80,23 @@
 <!-- Imagenes del producto -->
 {#if currentProd.variations.length === 0}
   <h3 class="mt-4 text-xl text-center">Imágenes del producto</h3>
-  <div class="flex flex-wrap m-2 rounded shadow-2xl py-0 px-4 bg-white">
+
+  <div
+    class="flex flex-wrap rounded bg-white border border-solid border-gray-500 shadow"
+  >
     {#each currentProd.pictures as picture, index (picture.id)}
       <div
-        class="flex flex-wrap w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 item"
+        class="flex items-center justify-center flex-wrap  p-4 w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 item"
         id={picture.id}
       >
-        <div class="flex justify-center items-start relative w-full p-4 m-2">
+        <div
+          class="relative flex items-center justify-center h-24 w-24 rounded border boder-solid border-gray-700"
+        >
           <img
             ondragstart="return false;"
             ondrop="return false;"
             alt="gallery"
-            class="block object-cover object-center max-w-[100px] sm:max-w-[150px] w-full border border-solid border-secondaryColor rounded "
+            class="object-scale-down rounded h-full"
             src={picture.secure_url}
           />
         </div>
@@ -123,17 +128,21 @@
         transition:slide|local
         class="flex flex-wrap m-2 rounded shadow-2xl py-0 px-4 bg-white"
       >
-        <div class="flex flex-wrap m-2 rounded shadow-2xl py-0 px-4 bg-white">
+        <div
+          class="flex flex-wrap rounded bg-white border border-solid border-gray-500 shadow"
+        >
           {#each variation.picture_ids as picture, index (picture)}
-            <div class="flex flex-wrap w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 item">
+            <div
+              class="flex items-center justify-center flex-wrap  p-4 w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 item"
+            >
               <div
-                class="flex justify-center items-start relative w-full p-4 m-2"
+                class="relative flex items-center justify-center h-24 w-24 rounded border boder-solid border-gray-700"
               >
                 <img
                   ondragstart="return false;"
                   ondrop="return false;"
                   alt="gallery"
-                  class="block object-cover object-center max-w-[100px] sm:max-w-[150px] w-full border border-solid border-secondaryColor rounded "
+                  class="object-scale-down rounded h-full"
                   src={varPicture(picture)}
                 />
               </div>

@@ -6,7 +6,8 @@
     (attribute) =>
       // attribute.tags.hasOwnProperty("hidden") &&
       !attribute.tags.hasOwnProperty("allow_variations") &&
-      attribute.tags.hasOwnProperty("variation_attribute")
+      attribute.tags.hasOwnProperty("variation_attribute") &&
+      !attribute.tags.hasOwnProperty("read_only")
   );
 
   $: currentVariation = $product.variations.find(
@@ -14,6 +15,7 @@
   );
 
   $: attributes = attribs.map((atrib) => {
+    if (!currentVariation.attributes) currentVariation.attributes = [];
     let found = currentVariation.attributes.find((el) => el.id === atrib.id);
     if (found) {
       found.value_type = atrib.value_type;
