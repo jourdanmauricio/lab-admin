@@ -15,7 +15,6 @@ export const getProducts = async (limit, offset, search) => {
 export const getSkus = async () => {
   try {
     let skus = await Api.get("products/getSkus");
-    skus = skus.map((el) => el.seller_custom_field);
     return skus;
   } catch (error) {
     throw error;

@@ -91,7 +91,6 @@
         </select>
         <label class="label-oval" for="status">Estado</label>
       </div>
-
       <div class="relative">
         <select
           bind:value={settings.listingType}
@@ -105,7 +104,8 @@
         </select>
         <label class="label-oval" for="listingType">Tipo de publicación</label>
       </div>
-
+    </div>
+    <div class="grid grid-cols-2 gap-8 mt-8">
       <div class="relative">
         <select
           bind:value={settings.condition}
@@ -120,7 +120,26 @@
         </select>
         <label class="label-oval" for="condition">Condición del item</label>
       </div>
+      <div>
+        <div class="form-check">
+          <input
+            class="cursor-pointer accent-teal-600 h-4 w-4 transition duration-200 mt-1 float-left mr-2"
+            type="checkbox"
+            value=""
+            id="local"
+            bind:checked={settings.hintSku}
+          />
+          <label
+            class="form-check-label inline-block text-gray-800"
+            for="checkLocal"
+          >
+            Sugerir Sku
+          </label>
+        </div>
+      </div>
     </div>
+
+    <!-- Sincronización -->
     <div class="my-2 py-4">
       <span>Sincronización</span>
       <div class="w-full border-t border-gray-900" />

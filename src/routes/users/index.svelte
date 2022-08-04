@@ -73,7 +73,12 @@
         if (res.newUser.role === "admin") {
           const data = {
             user_id: res.newUser.id,
-            setting: { status: "", listingType: "", condition: "" },
+            setting: {
+              status: "",
+              listingType: "",
+              condition: "",
+              hintSku: false,
+            },
           };
           postSetting(data);
         }

@@ -1,4 +1,5 @@
 <script>
+  import { settings } from "./../store/stores.js";
   import { login } from "./../services/api/auth";
   import Snackbar from "./../lib/Snackbar.svelte";
   import Footer from "./../lib/Footer.svelte";
@@ -34,6 +35,10 @@
       try {
         const res = await login(formUser);
         localStorage.setItem("user", JSON.stringify(res.user));
+        const lsettings = localStorage.getItem("settings");
+        if (lsettings) {
+          settings.setSettings(JSON.parse(lsettings));
+        }
         notification.show("Bienvenido!!!", "info");
         goto("/dashboard");
       } catch (err) {

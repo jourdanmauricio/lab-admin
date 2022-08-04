@@ -1,38 +1,39 @@
 <script>
   import { onMount } from "svelte";
   import { getSkus } from "../../services/api/products";
-  import { product } from "../../store/stores";
+  import { credentials, notification, product } from "../../store/stores";
 
   let arraySkus2 = [];
+  let prodSkus = [];
 
   $: seller_custom_field = $product.seller_custom_field || "";
 
-  // function newSku() {
-  //   let sku = 1;
-  //   if ($product.variations.length > 0) {
-  //     let max = 1;
-  //     $product.variations.forEach((variation) => {
-  //       let varSku = variation.attributes.find(
-  //         (atrib) => atrib.id === "SELLER_SKU"
-  //       );
-  //       if (varSku) {
-  //         let varSku2 = varSku.value_name.split("--");
-  //         if (varSku2.length > 1) {
-  //           let varSku3 = parseInt(varSku2[1]) + 1;
-  //           if (varSku3 > max) {
-  //             max = varSku3;
-  //             sku = max;
-  //           }
-  //         }
-  //       }
-  //     });
-  //   }
-  //   return sku;
-  // }
-
-  // TODO: Add validation (if exists). Add setting config (if suggest)
-
   function handleChange(e) {
+    // Validación
+    let index = false;
+    if ($product.action === "edit") {
+      index = prodSkus.findIndex(
+        (el) =>
+          el.seller_custom_field === e.target.value && el.id !== $product.id
+      );
+    } else {
+      index = prodSkus.findIndex(
+        (el) => el.seller_custom_field === e.target.value
+      );
+    }
+    if (index !== -1) {
+      notification.show("El Sku pertnece a otro item", "error");
+      e.target.select();
+      return;
+    }
+
+    $credentials.settings.hintSku === true
+      ? updateSku(e)
+      : product.update({ seller_custom_field: e.target.value });
+  }
+
+  function updateSku(e) {
+    // Actualizo item y variaciones
     product.update({ seller_custom_field: e.target.value });
     if ($product.variations.length > 0) {
       let newVariations = [];
@@ -60,8 +61,10 @@
   onMount(async () => {
     let sigla;
     let siglas = [];
-    let arraySkus = await getSkus();
+    let arraySkus = [];
+    prodSkus = await getSkus();
     console.log("arraySkus", arraySkus);
+    arraySkus = prodSkus.map((el) => el.seller_custom_field);
 
     arraySkus.forEach((sku) => {
       if (sku !== null) {
@@ -88,40 +91,42 @@
   });
 </script>
 
-<div class="relative col-span-4">
-  {#if arraySkus2}
+{#if $credentials.settings.hintSku && $credentials.settings.hintSku === true}
+  <div class="relative col-span-4">
+    {#if arraySkus2}
+      <input
+        on:change={handleChange}
+        class="input-oval"
+        type="text"
+        autocomplete="off"
+        name="sku"
+        list="seller_custom_field"
+        value={seller_custom_field}
+      />
+      <label class="label-oval" for="sku">Sku</label>
+      <datalist id="seller_custom_field">
+        <select name="sku ">
+          {#each arraySkus2 as value}
+            <option>{value}</option>
+          {/each}
+          <option>{seller_custom_field}</option>
+        </select>
+      </datalist>
+    {/if}
+  </div>
+{:else}
+  <div class="relative col-span-3">
     <input
-      on:change={(e) => handleChange(e)}
+      on:change={handleChange}
+      value={seller_custom_field}
       class="input-oval"
       type="text"
-      autocomplete="off"
       name="sku"
-      list="seller_custom_field"
-      value={seller_custom_field}
+      required
     />
     <label class="label-oval" for="sku">Sku</label>
-    <datalist id="seller_custom_field">
-      <select name="sku ">
-        {#each arraySkus2 as value}
-          <option>{value}</option>
-        {/each}
-        <option>{seller_custom_field}</option>
-      </select>
-    </datalist>
-  {/if}
-</div>
-
-<!-- <div class="relative col-span-3">
-  <input
-    on:blur={(e) => product.update({ seller_custom_field: e.target.value })}
-    value={seller_custom_field}
-    class="input-oval"
-    type="text"
-    name="sku"
-    required
-  />
-  <label class="label-oval" for="sku">Sku</label> -->
-<!-- </div> -->
+  </div>
+{/if}
 <!-- <button class="col-span-1"
   ><i class="material-icons text-teal-500">skip_next</i></button
 > -->
