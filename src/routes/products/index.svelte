@@ -208,7 +208,7 @@
 </script>
 
 <caption
-  class="flex pl-0 pr-3 items-center justify-between flex-col sm:flex-row bg-secondaryColor text-white min-w-[320px] border py-1 border-gray-900"
+  class="flex pl-0 pr-3 items-center justify-between flex-col sm:flex-row bg-secondaryColor text-white min-w-[320px] border py-1 border-gray-900 rounded-t"
 >
   <div class="flex items-center">
     <div
@@ -287,11 +287,9 @@
       <th>ID</th>
       <th>Imagen</th>
       <th>Sku</th>
-      <!-- <th>Categoría</th> -->
       <th>Estado</th>
       <th>Precio</th>
       <th>Producto</th>
-      <th>Info</th>
       <th>Acciones</th>
     </tr>
   </thead>
@@ -310,32 +308,30 @@
         <td>{product.id}</td>
         <td><img class="w-20" src={product.thumbnail} alt="" /></td>
         <td>{product.seller_custom_field}</td>
-        <!-- <td>{product.category_id}</td> -->
-        <td>{traduction(product.status)}</td>
-        <td>{product.price}</td>
+        <td
+          ><p class="bg-blue-100 rounded">
+            {traduction(product.status)}
+          </p>
+          {#if product.prodMl}
+            <p class="mt-1 bg-yellow-50 rounded">
+              {traduction(product.prodMl.status)}
+            </p>
+          {/if}
+        </td>
+        <td
+          ><p class="bg-blue-100 rounded">${product.price}</p>
+          {#if product.prodMl}
+            <p class="mt-1 bg-yellow-50 rounded">${product.prodMl.price}</p>
+          {/if}
+        </td>
         <td>{product.title}</td>
         <td>
-          <div class="flex items-baseline justify-between">
-            {#if product.prodMl}
-              <button
-                class="w-[16px;] ml-1"
-                title={`${product.prodMl.id}<br>${traduction(
-                  product.prodMl.status
-                )}<br>${product.prodMl.price}`}
-                use:tooltip
-              >
-                <img src="./images/logos/ML.png" alt="" />
-              </button>
-            {/if}
+          <div class="flex items-center justify-between">
             <button on:click={handleDetail(product)} id={product.id}
               ><i class="ml-1 px-1 material-icons text-blue-600 text-lg"
                 >visibility</i
               ></button
             >
-          </div></td
-        >
-        <td>
-          <div class="flex items-center justify-between">
             <button on:click={handleEdit(product)} id={product.id}
               ><i class="ml-1 px-1 material-icons text-teal-600 text-lg">edit</i
               ></button

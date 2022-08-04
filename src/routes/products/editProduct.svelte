@@ -74,7 +74,6 @@
         case "listing_type_id":
           mlBody.listing_type_id = $product.listing_type_id;
           break;
-
         case "price":
           let variations3 = [];
           body.price = $product.price;
@@ -90,9 +89,7 @@
               delete mlBody.price;
             }
           }
-
           break;
-
         case "pictures":
           mlBody.pictures = $product.pictures.map((el) => {
             return {

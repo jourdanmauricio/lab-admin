@@ -181,21 +181,11 @@
 
 <style>
   .item {
-    padding: 0.5em 1em;
-  }
-
-  .item:not(:last-child) {
-    border-bottom: 1px solid #dbdbdb;
+    border-bottom: 1px solid #999;
   }
 
   .item.is-active {
     color: #fff;
     opacity: 0.4;
-  }
-  .upload {
-    display: flex;
-    height: 50px;
-    width: 50px;
-    cursor: pointer;
   }
 </style>

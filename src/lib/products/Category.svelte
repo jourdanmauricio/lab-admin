@@ -35,7 +35,7 @@
   <label class="label-oval" for="sku">Cat Id</label>
 </div>
 <button class="col-span-1" on:click={() => modalSearchCat.show()}
-  ><i class="material-icons">search</i></button
+  ><i class="material-icons text-teal-600 btn-rounded">search</i></button
 >
 
 <Modal2 width="w-11/12 lg:w-3/4" bind:this={modalSearchCat}>
