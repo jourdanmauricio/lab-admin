@@ -95,7 +95,7 @@
     try {
       loading.show(true);
       const mlApiItemsId = await getApiItemsMl();
-      const mlApiProducts = await getApiProductsMl(mlApiItemsId.results);
+      const mlApiProducts = await getApiProductsMl(mlApiItemsId);
       const mlProducts = await getProductsMl();
       const allCategories = await getAllCategories();
 

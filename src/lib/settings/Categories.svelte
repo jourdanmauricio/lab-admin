@@ -147,17 +147,22 @@
         <td>{category.id}</td>
         <td>{category.full_name}</td>
         <td>
-          <button on:click={handleShow(category)} id={category.id}>
-            <i class="material-icons text-blue-600">visibility</i>
-          </button>
+          <div class="flex items-center justify-between">
+            <button on:click={handleShow(category)} id={category.id}>
+              <i class="ml-1 px-1 material-icons text-blue-500 text-lg"
+                >visibility</i
+              >
+            </button>
 
-          <button
-            class="ml-4"
-            on:click={handleDelete(category)}
-            id={category.id}
-          >
-            <i class="material-icons text-red-600">delete</i>
-          </button>
+            <button
+              class="ml-4"
+              on:click={handleDelete(category)}
+              id={category.id}
+            >
+              <i class="ml-1 px-1 material-icons text-red-500 text-lg">delete</i
+              >
+            </button>
+          </div>
         </td>
       </tr>
     {/each}

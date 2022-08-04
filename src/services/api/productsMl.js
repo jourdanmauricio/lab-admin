@@ -40,10 +40,23 @@ export const getApiProductsMl = async (mlItems) => {
 export const getApiItemsMl = async () => {
   try {
     const user = get(credentials);
-    const itemsId = await ApiMl.get(
-      `users/${user.userMl.ml_user_id}/items/search`
-    );
-    return itemsId;
+    const res = await ApiMl.get(`users/${user.userMl.ml_user_id}/items/search`);
+    console.log("res", res);
+
+    const cantItems = res.paging.total;
+    const pages = [];
+    let items = [];
+    for (let i = 0; i < cantItems; i = i + res.paging.limit) pages.push(i);
+    const requests = pages.map((i) => {
+      return ApiMl.get(
+        `users/${user.userMl.ml_user_id}/items/search?limit=${res.paging.limit}&offset=${i}`
+      )
+        .then((res) => res.results)
+        .catch((err) => err);
+    });
+    await Promise.all(requests).then((values) => (items = values.flat()));
+    return items;
+    // return itemsId;
   } catch (error) {
     let message = "";
     console.log("ERROR", error);
