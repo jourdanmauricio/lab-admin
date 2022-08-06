@@ -24,12 +24,12 @@
   <div
     on:click={() => hide()}
     transition:fade
-    class="w-screen h-full fixed top-0 left-0 flex justify-center items-start bg-gray-900  z-10"
+    class="w-screen h-full fixed top-0 left-0 flex justify-center items-start bg-gray-900 z-10"
   >
     <div
       transition:fade
       on:click|stopPropagation
-      class="opt-container mt-10 h-[550px] overflow-y-scroll overflow-hidden {width} bg-white text-black rounded-md px-8 py-10 relative"
+      class="opt-container mt-10 h-[550px] overflow-y-auto overflow-hidden {width} bg-white text-black rounded-md px-8 py-10 relative"
     >
       <span
         on:click={() => hide()}

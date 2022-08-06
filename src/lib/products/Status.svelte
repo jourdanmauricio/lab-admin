@@ -15,6 +15,7 @@
   >
     <option value="active">Activo</option>
     <option value="paused">Pausado</option>
+    <option value="under_review">Revisión</option>
   </select>
   <label class="label-oval" for="status">Estado</label>
 </div>

@@ -3,12 +3,7 @@
   import { credentials, notification, product } from "./../../store/stores.js";
   import { onMount } from "svelte";
   import { getCategory } from "../../services/api/categories.js";
-  import { patchProduct } from "../../services/api/products";
-  import {
-    patchApiDescriptionMl,
-    patchApiProductMl,
-    patchProductsMl,
-  } from "../../services/api/productsMl";
+  import { serviceUpdProduct } from "../../services/api/products";
   import Tabs from "../../helpers/tabs/Tabs.svelte";
   import TabList from "../../helpers/tabs/TabList.svelte";
   import Tab from "../../helpers/tabs/Tab.svelte";
@@ -39,6 +34,7 @@
   async function updateProd() {
     let body = {};
     let mlBody = {};
+    let mlLocalBody = {};
     let mlBodyDesc = {};
     console.log("$product", $product);
     $product.properties.forEach((property) => {
@@ -55,7 +51,7 @@
             }
             attributes.push(atrib);
           });
-          mlBody.attributes = attributes;
+          mlLocalBody.attributes = attributes;
           break;
         case "available_quantity":
           body.available_quantity = parseInt($product.available_quantity);
@@ -66,13 +62,13 @@
           mlBody.available_quantity = parseInt($product.available_quantity_ml);
           break;
         case "condition":
-          mlBody.condition = $product.condition;
+          mlLocalBody.condition = $product.condition;
           break;
         case "description":
           mlBodyDesc = { plain_text: $product.description };
           break;
         case "listing_type_id":
-          mlBody.listing_type_id = $product.listing_type_id;
+          mlLocalBody.listing_type_id = $product.listing_type_id;
           break;
         case "price":
           let variations3 = [];
@@ -116,11 +112,11 @@
           let newData = $product.attributes.map((el) =>
             el.id === sku.id ? sku : el
           );
-          mlBody.attributes = newData;
-          mlBody.seller_custom_field = $product.seller_custom_field;
+          mlLocalBody.attributes = newData;
+          mlLocalBody.seller_custom_field = $product.seller_custom_field;
           break;
         case "sale_terms":
-          mlBody.sale_terms = $product.sale_terms;
+          mlLocalBody.sale_terms = $product.sale_terms;
           break;
         case "status":
           body.status = $product.status;
@@ -163,7 +159,7 @@
             }
             variations.push(vari);
           });
-          mlBody.variations = variations;
+          mlLocalBody.variations = variations;
           break;
         default:
           break;
@@ -171,40 +167,22 @@
     });
 
     try {
-      if (Object.keys(mlBody).length > 0) {
-        mlBody.id = $product.prodMl.id;
-        const resApi = await patchApiProductMl([mlBody]);
-        resApi[0].prod_id = $product.id;
-        const resMl = await patchProductsMl(resApi);
-        resApi[0].id = $product.id;
-        delete resApi[0].status;
-        delete resApi[0].available_quantity;
-        delete resApi[0].price;
-        delete resApi[0].sold_quantity;
-        delete resApi[0].start_time;
-        console.log("resApi", resApi[0]);
-        await patchProduct(resApi);
-
-        if (Object.keys(mlBodyDesc).length > 0) {
-          mlBodyDesc.id = $product.prodMl.id;
-          const descriptionMl = await patchApiDescriptionMl([mlBodyDesc]);
-          const description = {
-            id: $product.id,
-            description: descriptionMl[0].plain_text,
-          };
-          await patchProduct([description]);
-        }
+      if (Object.keys(mlLocalBody).length > 0) {
+        await serviceUpdProduct(mlLocalBody, "ML-LOCAL", "PRODUCT");
+      }
+      if (Object.keys(mlBodyDesc).length > 0) {
+        await serviceUpdProduct(mlBodyDesc, "ML-LOCAL", "DESCRIPTION");
       }
       if (Object.keys(body).length > 0) {
-        // if (application.local) {
-        body.id = $product.id;
-        const res = await patchProduct([body]);
-        console.log("res", res);
-        // }
+        await serviceUpdProduct(body, "LOCAL", "PRODUCT");
+      }
+      if (Object.keys(mlBody).length > 0) {
+        await serviceUpdProduct(mlBody, "ML", "PRODUCT");
       }
       notification.show("Producto modificado", "success");
       goto("/products");
     } catch (error) {
+      console.log("ERRORRRRR", error);
       notification.show(error, "error");
     }
   }

@@ -1,5 +1,5 @@
 <script>
-  import { deleteProduct } from "../../services/api/products.js";
+  import { deleteLocalProduct } from "../../services/api/products.js";
   import { loading, notification } from "../../store/stores";
 
   export let currentProd;
@@ -8,7 +8,7 @@
   async function delProduct(item) {
     loading.show(true);
     try {
-      await deleteProduct([item]);
+      await deleteLocalProduct([item]);
       notification.show("Producto eliminado", "success");
       hideModalDelete(true);
     } catch (err) {

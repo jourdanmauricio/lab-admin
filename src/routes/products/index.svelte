@@ -2,7 +2,6 @@
   import { fade } from "svelte/transition";
   import { onMount, tick } from "svelte";
   import { goto } from "$app/navigation";
-  import { tooltip } from "./../../lib/tooltip/tooltip";
   import { clickOutside } from "./../../helpers/clickOutside";
   import { exportTableToExcel } from "../../helpers/exportTableToExcel";
   import {
@@ -20,21 +19,24 @@
   import { getAllCategories } from "../../services/api/categories";
   import { getApiCategoriesMl } from "./../../services/api/categoriesML.js";
   import { createCategories } from "./../../services/api/categories.js";
-  import { postproducts } from "../../services/api/products.js";
-  import { getProducts } from "../../services/api/products";
+  import { postLocalProducts } from "../../services/api/products.js";
   import {
-    postproductsMl,
-    getProductsMl,
-    getApiProductsMl,
-    getApiItemsMl,
-  } from "../../services/api/productsMl.js";
+    getLocalProducts,
+    getLocalMlProducts,
+    getMlItems,
+    getMlProducts,
+    patchLocalMlProducts,
+    postLocalMlProducts,
+  } from "../../services/api/products";
   import ProductDetail from "../../lib/products/ProductDetail.svelte";
+  import ModalSearch from "../../lib/products/ModalSearch.svelte";
 
   let modalDelete;
   let modalMassive;
   let modalProductDetail;
+  let modalSearch;
   let products = [];
-  let search = null;
+  let search = { status: null, category_id: null, text: null, id: null };
   let more = false;
   let currentProd = null;
   let selected = [];
@@ -44,6 +46,8 @@
     limit: $settings.itemsxpage,
     offset: 0,
   };
+
+  $: ifSearch = Object.values(search).findIndex((el) => el !== null);
 
   function changeAction(e) {
     if (e.target.value === "Acción masiva") return;
@@ -94,19 +98,22 @@
   async function importMl() {
     try {
       loading.show(true);
-      const mlApiItemsId = await getApiItemsMl();
-      const mlApiProducts = await getApiProductsMl(mlApiItemsId);
-      const mlProducts = await getProductsMl();
+      const mlApiItemsId = await getMlItems();
+      const mlApiProducts = await getMlProducts(mlApiItemsId);
+      const mlProducts = await getLocalMlProducts();
       const allCategories = await getAllCategories();
 
       let newCategoriesId = [];
       let newItems = [];
       let updItems = [];
       mlApiProducts.forEach((apiMlProd) => {
-        const index = mlProducts.findIndex(
-          (mlProd) => mlProd.id === apiMlProd.id
-        );
-        index === -1 ? newItems.push(apiMlProd) : updItems.push(apiMlProd);
+        const found = mlProducts.find((mlProd) => mlProd.id === apiMlProd.id);
+        if (found) {
+          apiMlProd.prod_id = found.prod_id;
+          updItems.push(apiMlProd);
+        } else {
+          newItems.push(apiMlProd);
+        }
         const index2 = allCategories.findIndex(
           (cat) => cat.id === apiMlProd.category_id
         );
@@ -129,14 +136,15 @@
             itemPrice.price - itemPrice.price * (parseInt(percent) / 100);
         });
       }
-      const newProducts = await postproducts(newItemsPrice);
+      const newProducts = await postLocalProducts(newItemsPrice);
       newItems.forEach((item) => {
         let found = newProducts.find((newProd) => item.id === newProd.ml_id);
         if (found) item.prod_id = found.id;
       });
-      await postproductsMl(newItems);
+      await postLocalMlProducts(newItems);
 
       console.log("TODO: // update updItems", updItems);
+      await patchLocalMlProducts(updItems);
 
       notification.show("Productos importados", "success");
 
@@ -171,10 +179,10 @@
   async function loadData() {
     try {
       loading.show(true);
-      const data = await getProducts(
+      const data = await getLocalProducts(
         pagination.limit,
         pagination.offset,
-        search
+        JSON.stringify(search)
       );
       products = data.results;
       console.log("Products", products);
@@ -199,6 +207,20 @@
   function handleDetail(prod) {
     currentProd = prod;
     modalProductDetail.show();
+  }
+
+  function setSearch(newSearch) {
+    search = newSearch;
+  }
+
+  function resetSearch() {
+    search = { status: null, category_id: null, text: null, id: null };
+    loadData();
+  }
+
+  function searchClose(refreshData) {
+    modalSearch.hide();
+    if (refreshData) loadData();
   }
 
   onMount(async () => {
@@ -235,7 +257,7 @@
             </button>
           </li>
           <li class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700">
-            <button on:click={importMl}>Importar ML</button>
+            <button class="w-full" on:click={importMl}>Importar ML</button>
           </li>
           <li class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700">
             <button on:click={() => exportTableToExcel("tblData")}
@@ -249,28 +271,34 @@
     <span class="text-lg ml-5">Productos: {pagination.total}</span>
   </div>
   <div class="flex items-center">
-    <input
-      class="text-black w-[250px] pl-1"
-      name="search"
-      type="search"
-      bind:value={search}
-      on:blur={loadData}
-    />
-  </div>
-  <div class="w-40 relative">
-    <select
-      disabled={selected.length === 0}
-      class="w-full bg-none bg-transparent p-1 pl-2 px-2 rounded text-white bg-secondaryColor border border-solid border-gray-500"
-      name="action"
-      id="action"
-      value={action}
-      on:change={changeAction}
-    >
-      <option value="Acción masiva">Acción masiva</option>
-      <option value="actionDeleteProd">Eliminar</option>
-      <option value="changeStatusProd">Estado</option>
-      <option value="changePriceProd">Precio</option>
-    </select>
+    <div>
+      <button on:click={() => modalSearch.show()}
+        ><i class="material-icons text-teal-500">search</i></button
+      >
+      <button on:click={resetSearch}
+        ><i
+          class="{ifSearch === -1
+            ? 'hidden'
+            : ''} ml-4 material-icons text-red-500">search_off</i
+        ></button
+      >
+      <button />
+    </div>
+    <div class="ml-4 w-40 relative">
+      <select
+        disabled={selected.length === 0}
+        class="w-full bg-none bg-transparent p-1 pl-2 px-2 rounded text-white bg-secondaryColor border border-solid border-gray-500"
+        name="action"
+        id="action"
+        value={action}
+        on:change={changeAction}
+      >
+        <option value="Acción masiva">Acción masiva</option>
+        <option value="actionDeleteProd">Eliminar</option>
+        <option value="changeStatusProd">Estado</option>
+        <option value="changePriceProd">Precio</option>
+      </select>
+    </div>
   </div>
 </caption>
 
@@ -352,14 +380,18 @@
   <Pagination {refreshData} {pagination} />
 {/if}
 
-<Modal2 bind:this={modalDelete}>
+<Modal2 width="w-11/12 lg:w-1/2" bind:this={modalDelete}>
   <ModalDelProd {currentProd} {hideModalDelete} />
 </Modal2>
 
-<Modal2 bind:this={modalMassive}>
+<Modal2 width="w-11/12 lg:w-1/2" bind:this={modalMassive}>
   <ModalMassiveAction items={selItems} {action} {hideModalMassive} />
 </Modal2>
 
 <Modal2 width="w-11/12 lg:w-3/4" bind:this={modalProductDetail}>
   <ProductDetail {currentProd} />
+</Modal2>
+
+<Modal2 width="w-11/12 lg:w-3/4" bind:this={modalSearch}>
+  <ModalSearch {search} {setSearch} {searchClose} />
 </Modal2>

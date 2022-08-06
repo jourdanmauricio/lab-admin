@@ -1,6 +1,6 @@
 <script>
   import { onMount } from "svelte";
-  import { getSkus } from "../../services/api/products";
+  import { getLocalSkus } from "../../services/api/products";
   import { credentials, notification, product } from "../../store/stores";
 
   let arraySkus2 = [];
@@ -62,7 +62,7 @@
     let sigla;
     let siglas = [];
     let arraySkus = [];
-    prodSkus = await getSkus();
+    prodSkus = await getLocalSkus();
     console.log("arraySkus", arraySkus);
     arraySkus = prodSkus.map((el) => el.seller_custom_field);
 
