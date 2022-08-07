@@ -86,11 +86,13 @@
     modalDelete.hide();
   }
 
-  function hideModalMassive(results) {
+  function hideModalMassive(refreshData) {
     action = "Acción masiva";
     modalMassive.hide();
-    if (results) {
+    if (refreshData) {
       modalMassive.hide();
+      selected = [];
+      action = "Acción masiva";
       loadData();
     }
   }

@@ -91,7 +91,7 @@
   });
 </script>
 
-{#if $credentials.settings.hintSku && $credentials.settings.hintSku === true}
+{#if $credentials.settings && $credentials.settings.hintSku === true}
   <div class="relative col-span-4">
     {#if arraySkus2}
       <input

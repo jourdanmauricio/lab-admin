@@ -1,5 +1,5 @@
 <div class="overlay">
-  <div class="spinner" />
+  <div class="spinner z-50" />
 </div>
 
 <style>

@@ -91,7 +91,8 @@ export const patchLocalProduct = async (prod) => {
       variations: prod.variations,
     };
 
-    return await Api.patch(`/products/${newProd.id}`, newProd);
+    const res = await Api.patch(`/products/${newProd.id}`, newProd);
+    return res;
   } catch (error) {
     console.log("ERRORRRR", error);
     let message = "";
