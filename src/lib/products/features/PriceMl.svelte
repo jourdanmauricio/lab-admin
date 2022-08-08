@@ -1,5 +1,5 @@
 <script>
-  import { product } from "../../store/stores";
+  import { product } from "../../../store/stores";
 
   $: price = $product.prodMl.price || "";
 </script>

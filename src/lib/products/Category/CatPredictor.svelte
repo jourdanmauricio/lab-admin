@@ -1,34 +1,49 @@
 <script>
+  import { searchPredictor } from "../../../services/api/categoriesML.js";
+  import { loading, notification } from "../../../store/stores";
   import { fade } from "svelte/transition";
-  import { onMount } from "svelte";
-  import { loading } from "../../store/stores";
-  import { getAllCategories } from "../../services/api/categories";
 
   export let hideModalSearchCat;
 
   let categories = [];
 
-  onMount(async function () {
+  async function predictor(e) {
+    if (!e.target.value.trim()) {
+      categories = [];
+      return;
+    }
+
+    e.target.blur();
+    loading.show(true);
     try {
-      loading.show(true);
-      categories = await getAllCategories();
-      console.log("categories", categories);
-      // posts = response.data;
-    } catch (error) {
-      console.error(error);
+      categories = await searchPredictor(e.target.value);
+    } catch (err) {
+      notification.show(err, "error");
     } finally {
       loading.show(false);
     }
-  });
+  }
   function handleSelectCat(category) {
     hideModalSearchCat(category);
   }
 </script>
 
-<div class="selected">Select Category</div>
+<div class="relative mt-4">
+  <input
+    class="input-oval"
+    type="text"
+    name="description"
+    required="required"
+    on:keydown={(e) => {
+      if (e.key === "Enter") predictor(e);
+    }}
+    on:blur={predictor}
+  />
+  <label class="label-oval" for="description">Descripción</label>
+</div>
 
 {#if categories.length > 0}
-  <div class="h-[380px] flex justify-center">
+  <div class="mt-4 h-[340px] flex justify-center">
     <div
       class="opt-container overflow-hidden bg-secondaryColor text-whiteColor rounded-lg overflow-y-scroll"
     >

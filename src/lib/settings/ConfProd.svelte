@@ -93,16 +93,18 @@
       </div>
       <div class="relative">
         <select
-          bind:value={settings.listingType}
+          bind:value={settings.listing_type_id}
           class="input-oval"
-          name="listingType"
-          id="listingType"
+          name="listing_type_id"
+          id="listing_type_id"
           required
         >
           <option value="gold_special">Clásica</option>
           <option value="gold_pro">Premium</option>
         </select>
-        <label class="label-oval" for="listingType">Tipo de publicación</label>
+        <label class="label-oval" for="listing_type_id"
+          >Tipo de publicación</label
+        >
       </div>
     </div>
     <div class="grid grid-cols-2 gap-8 mt-8">

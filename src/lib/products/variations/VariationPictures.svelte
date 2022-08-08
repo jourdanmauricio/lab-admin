@@ -1,11 +1,11 @@
 <script>
   import { slide } from "svelte/transition";
 
-  import { credentials } from "./../../store/stores.js";
-  import { product } from "../../store/stores";
+  import { credentials } from "../../../store/stores.js";
+  import { product } from "../../../store/stores";
   import axios from "axios";
   import { flip } from "svelte/animate";
-  import PictureCarrousel from "./PictureCarrousel.svelte";
+  import PictureCarrousel from "../PictureCarrousel.svelte";
 
   export let variation_id;
 

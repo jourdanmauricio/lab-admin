@@ -1,5 +1,5 @@
 <script>
-  import { notification } from "../../store/stores";
+  import { notification } from "../../../store/stores";
 
   export let addCustom;
 

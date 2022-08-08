@@ -14,7 +14,7 @@
   import { traduction } from "../../helpers/traduction";
   import Modal2 from "./../../lib/Modal2.svelte";
   import Pagination from "./../../lib/Pagination.svelte";
-  import ModalMassiveAction from "./../../lib/products/ModalMassiveAction.svelte";
+  import ModalMassiveAction from "../../lib/products/massive/ModalMassiveAction.svelte";
   import ModalDelProd from "../../lib/products/ModalDelProd.svelte";
   import { getAllCategories } from "../../services/api/categories";
   import { getApiCategoriesMl } from "./../../services/api/categoriesML.js";
@@ -97,6 +97,25 @@
     }
   }
 
+  function handleDelete(prod) {
+    currentProd = prod;
+    modalDelete.show();
+  }
+
+  function handleDetail(prod) {
+    currentProd = prod;
+    modalProductDetail.show();
+  }
+
+  function handleEdit(prod) {
+    currentProd = prod;
+    product.setProduct(currentProd);
+    console.log("Edit", currentProd);
+    product.update({ action: "edit" });
+    product.update({ properties: [] });
+    goto("/products/editProduct");
+  }
+
   async function importMl() {
     try {
       loading.show(true);
@@ -159,25 +178,6 @@
     }
   }
 
-  function refreshData(pag) {
-    pagination = pag;
-    loadData();
-  }
-
-  function handleDelete(prod) {
-    currentProd = prod;
-    modalDelete.show();
-  }
-
-  function handleEdit(prod) {
-    currentProd = prod;
-    product.setProduct(currentProd);
-    console.log("Edit", currentProd);
-    product.update({ action: "edit" });
-    product.update({ properties: [] });
-    goto("/products/editProduct");
-  }
-
   async function loadData() {
     try {
       loading.show(true);
@@ -202,17 +202,12 @@
   }
 
   function newProduct() {
-    product.update({ action: "new" });
     goto("/products/newProduct");
   }
 
-  function handleDetail(prod) {
-    currentProd = prod;
-    modalProductDetail.show();
-  }
-
-  function setSearch(newSearch) {
-    search = newSearch;
+  function refreshData(pag) {
+    pagination = pag;
+    loadData();
   }
 
   function resetSearch() {
@@ -223,6 +218,10 @@
   function searchClose(refreshData) {
     modalSearch.hide();
     if (refreshData) loadData();
+  }
+
+  function setSearch(newSearch) {
+    search = newSearch;
   }
 
   onMount(async () => {
@@ -338,20 +337,46 @@
         <td>{product.id}</td>
         <td><img class="w-20" src={product.thumbnail} alt="" /></td>
         <td>{product.seller_custom_field}</td>
-        <td
-          ><p class="bg-blue-100 rounded">
+        <td>
+          {#if product.prodWeb}
+            <p class="mt-1 bg-yellow-100 rounded">
+              {traduction(product.prodWeb.status)}
+            </p>
+          {:else}
+            <p
+              on:click={() => console.log("PUB WEB")}
+              class="bg-teal-300 rounded cursor-pointer"
+            >
+              Publicar
+            </p>
+          {/if}
+          <p class="mt-1 bg-blue-100 rounded">
             {traduction(product.status)}
           </p>
           {#if product.prodMl}
-            <p class="mt-1 bg-yellow-50 rounded">
+            <p class="mt-1 bg-yellow-100 rounded">
               {traduction(product.prodMl.status)}
+            </p>
+          {:else}
+            <p
+              on:click={() => console.log("PUB ML")}
+              class="bg-yellow-300 mt-1 rounded cursor-pointer"
+            >
+              Publicar
             </p>
           {/if}
         </td>
-        <td
-          ><p class="bg-blue-100 rounded">${product.price}</p>
+        <td>
+          {#if product.prodWeb}
+            <p class="mt-1 bg-yellow-100 rounded">${product.prodWeb.price}</p>
+          {:else}
+            <p>-</p>
+          {/if}
+          <p class="bg-blue-100 rounded">${product.price}</p>
           {#if product.prodMl}
-            <p class="mt-1 bg-yellow-50 rounded">${product.prodMl.price}</p>
+            <p class="mt-1 bg-yellow-100 rounded">${product.prodMl.price}</p>
+          {:else}
+            <p>-</p>
           {/if}
         </td>
         <td>{product.title}</td>

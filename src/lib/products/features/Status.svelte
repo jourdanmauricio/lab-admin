@@ -1,5 +1,5 @@
 <script>
-  import { credentials, product } from "../../store/stores";
+  import { credentials, product } from "../../../store/stores";
 
   $: status = $product.status ? $product.status : $credentials.settings.status;
 </script>
@@ -15,6 +15,7 @@
   >
     <option value="active">Activo</option>
     <option value="paused">Pausado</option>
+    <option value="closed">Finalizado</option>
     <option value="under_review">Revisión</option>
   </select>
   <label class="label-oval" for="status">Estado</label>

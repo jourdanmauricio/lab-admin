@@ -1,5 +1,5 @@
 <script>
-  import { product } from "./../../store/stores.js";
+  import { product } from "../../../store/stores.js";
   export let variation_id;
 
   $: attribs = $product.category.attributes.filter(

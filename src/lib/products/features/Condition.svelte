@@ -1,6 +1,6 @@
 <script>
-  import { credentials } from "./../../store/stores.js";
-  import { product } from "../../store/stores";
+  import { credentials } from "../../../store/stores.js";
+  import { product } from "../../../store/stores";
 
   $: condition = $product.condition
     ? $product.condition

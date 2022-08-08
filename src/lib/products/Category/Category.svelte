@@ -1,7 +1,7 @@
 <script>
-  import { product } from "./../../store/stores.js";
-  import Modal2 from "./../Modal2.svelte";
-  import SearchCategory from "./SearchCategory.svelte";
+  import { product } from "../../../store/stores";
+  import Modal2 from "../../Modal2.svelte";
+  import SearchCategory from "../../products/Category/SearchCategory.svelte";
 
   let modalSearchCat;
 

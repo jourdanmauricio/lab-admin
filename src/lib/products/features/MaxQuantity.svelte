@@ -1,5 +1,5 @@
 <script>
-  import { product } from "../../store/stores";
+  import { product } from "../../../store/stores";
 
   $: saleTerm = $product.sale_terms.find(
     (saleTerm) => saleTerm.id === "PURCHASE_MAX_QUANTITY"

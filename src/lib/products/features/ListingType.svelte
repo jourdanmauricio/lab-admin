@@ -1,6 +1,5 @@
 <script>
-  import { credentials } from "./../../store/stores.js";
-  import { product } from "../../store/stores";
+  import { credentials, product } from "../../../store/stores.js";
 
   $: listing_type_id = $product.listing_type_id
     ? $product.listing_type_id

@@ -1,9 +1,9 @@
 <script>
   import { onMount } from "svelte";
-  import { product } from "./../../store/stores.js";
-  import { notification } from "../../store/stores";
+  import { product } from "../../../store/stores.js";
+  import { notification } from "../../../store/stores";
   import VartiationsAddCustomAttribute from "./VartiationsAddCustomAttribute.svelte";
-  import Modal2 from "../Modal2.svelte";
+  import Modal2 from "../../Modal2.svelte";
 
   let modalAddCustomAttribute;
 

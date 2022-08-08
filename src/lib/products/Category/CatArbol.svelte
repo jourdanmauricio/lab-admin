@@ -3,9 +3,9 @@
   import {
     getApiAllCategoriesMl,
     getApiCategoriesMl,
-  } from "./../../services/api/categoriesML.js";
+  } from "../../../services/api/categoriesML";
   import { onMount } from "svelte";
-  import { notification, loading } from "../../store/stores.js";
+  import { notification, loading } from "../../../store/stores";
 
   export let hideModalSearchCat;
 

@@ -5,9 +5,11 @@
     (attribute) =>
       !attribute.tags.hasOwnProperty("hidden") &&
       !attribute.tags.hasOwnProperty("allow_variations") &&
-      (!attribute.tags.hasOwnProperty("variation_attribute") ||
-        (attribute.tags.hasOwnProperty("variation_attribute") &&
-          $product.variations.length > 0))
+      !attribute.tags.hasOwnProperty("variation_attribute")
+
+    // ||
+    //   (attribute.tags.hasOwnProperty("variation_attribute") &&
+    //     $product.variations.length > 0))
   );
 
   $: attributes = attribs.map((atrib) => {
@@ -145,10 +147,7 @@
                     type="text"
                     id={attribute.id}
                     list={attribute.name}
-                    value={attribute.value_id === "-1" &&
-                    attribute.value_name === null
-                      ? "N / A"
-                      : attribute.value_name}
+                    value={attribute.value_name || ""}
                   />
                   <datalist id={attribute.name}>
                     {#each attribute.values as value}

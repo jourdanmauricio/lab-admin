@@ -25,6 +25,7 @@
 
   function cancel() {
     goto("/products");
+    product.setProduct({});
   }
 
   function setApplication(e) {

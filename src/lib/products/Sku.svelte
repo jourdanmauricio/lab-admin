@@ -1,5 +1,5 @@
 <script>
-  import { onMount } from "svelte";
+  import { tick, onMount } from "svelte";
   import { getLocalSkus } from "../../services/api/products";
   import { credentials, notification, product } from "../../store/stores";
 
@@ -59,11 +59,11 @@
   }
 
   onMount(async () => {
+    await tick();
     let sigla;
     let siglas = [];
     let arraySkus = [];
     prodSkus = await getLocalSkus();
-    console.log("arraySkus", arraySkus);
     arraySkus = prodSkus.map((el) => el.seller_custom_field);
 
     arraySkus.forEach((sku) => {
@@ -86,7 +86,6 @@
       arraySkus2.push(sigla + sku);
       sku = 1;
     });
-    console.log("arraySkus2", arraySkus2);
     arraySkus2 = arraySkus2;
   });
 </script>

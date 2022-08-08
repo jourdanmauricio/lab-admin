@@ -1,5 +1,5 @@
 <script>
-  import { product } from "../../store/stores";
+  import { product } from "../../../store/stores";
 
   $: status = $product.prodMl.status ? $product.prodMl.status : "";
 </script>

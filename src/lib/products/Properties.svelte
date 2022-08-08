@@ -1,5 +1,5 @@
 <script>
-  import Features from "./Features.svelte";
+  import Features from "./features/Features.svelte";
   import Tabs from "../../helpers/tabs/Tabs.svelte";
   import TabList from "../../helpers/tabs/TabList.svelte";
   import Tab from "../../helpers/tabs/Tab.svelte";
@@ -7,7 +7,7 @@
   import Description from "./Description.svelte";
   import Pictures from "./Pictures.svelte";
   import Attributes from "./Attributes.svelte";
-  import Variations from "./Variations.svelte";
+  import Variations from "./variations/Variations.svelte";
   import { product } from "../../store/stores";
 </script>
 

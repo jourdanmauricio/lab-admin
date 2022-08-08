@@ -1,5 +1,5 @@
 <script>
-  import Category from "./Category.svelte";
+  import Category from "./Category/Category.svelte";
   import Properties from "./Properties.svelte";
   import Sku from "./Sku.svelte";
   import Title from "./Title.svelte";

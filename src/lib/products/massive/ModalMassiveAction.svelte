@@ -1,17 +1,17 @@
 <script>
-  import PriceAction from "./massive/PriceAction.svelte";
-  import StatusAction from "./massive/StatusAction.svelte";
-  import { traduction } from "./../../helpers/traduction";
-  import AppSelection from "./AppSelection.svelte";
+  import PriceAction from "./PriceAction.svelte";
+  import StatusAction from "./StatusAction.svelte";
+  import { traduction } from "../../../helpers/traduction";
+  import AppSelection from "../AppSelection.svelte";
   import {
     deleteLocalProduct,
     delLocalMlProduct,
     patchLocalMlProduct,
     patchLocalProduct,
     patchMlProduct,
-  } from "../../services/api/products";
-  import { loading } from "../../store/stores";
-  import { exportCSVFile } from "../../helpers/exportTableToExcel";
+  } from "../../../services/api/products";
+  import { loading } from "../../../store/stores";
+  import { exportCSVFile } from "../../../helpers/exportTableToExcel";
 
   export let items;
   export let action;
@@ -54,65 +54,66 @@
     loading.show(true);
     const results = await Promise.all(
       items.map(async (item) => {
-        switch (action) {
-          case "changeStatusProd":
-            body = { status };
-            localBody = { status };
-            break;
-          case "changePriceProd":
-            let price;
-            let lPrice;
-            let variations = [];
-            let lVariations = [];
-
-            quantityPrice = parseFloat(quantityPrice);
-            const selAction = actionPrice === 1 ? "add" : "subtract";
-            const selUnit = unitPrice === 1 ? "percent" : "amount";
-            const itemPrice = parseFloat(item.price);
-            const itemLPrice = parseFloat(item.prodMl.price);
-
-            if (selUnit === "amount") {
-              price =
-                selAction === "add"
-                  ? itemPrice + quantityPrice
-                  : itemPrice - quantityPrice;
-              lPrice =
-                selAction === "add"
-                  ? itemLPrice + quantityPrice
-                  : itemLPrice - quantityPrice;
-            } else {
-              price =
-                selAction === "add"
-                  ? itemPrice + (quantityPrice * itemPrice) / 100
-                  : itemPrice - (quantityPrice * itemPrice) / 100;
-              lPrice =
-                selAction === "add"
-                  ? itemLPrice + (quantityPrice * itemLPrice) / 100
-                  : itemLPrice - (quantityPrice * itemLPrice) / 100;
-            }
-            body = { price };
-            localBody = { price: lPrice };
-            if (item.variations.length > 0) {
-              item.variations.forEach((vari) => {
-                variations.push({ id: vari.id, price });
-                vari.price = lPrice;
-                lVariations.push(vari);
-              });
-              body.variations = variations;
-              localBody.variations = lVariations;
-              delete body.price;
-            }
-            break;
-          case "actionDeleteProd":
-            if (item.prodMl.status === "under_review") {
-              body = { deleted: "true" };
-            } else {
-              body = { status: "closed" };
-            }
-            localBody = { id: item.id };
-            break;
-        }
         try {
+          switch (action) {
+            case "changeStatusProd":
+              body = { status };
+              localBody = { status };
+              break;
+            case "changePriceProd":
+              let price;
+              let lPrice;
+              let variations = [];
+              let lVariations = [];
+
+              quantityPrice = parseFloat(quantityPrice);
+              const selAction = actionPrice === 1 ? "add" : "subtract";
+              const selUnit = unitPrice === 1 ? "percent" : "amount";
+              const itemPrice = parseFloat(item.price);
+              const itemLPrice = parseFloat(item.prodMl.price);
+
+              if (selUnit === "amount") {
+                price =
+                  selAction === "add"
+                    ? itemPrice + quantityPrice
+                    : itemPrice - quantityPrice;
+                lPrice =
+                  selAction === "add"
+                    ? itemLPrice + quantityPrice
+                    : itemLPrice - quantityPrice;
+              } else {
+                price =
+                  selAction === "add"
+                    ? itemPrice + (quantityPrice * itemPrice) / 100
+                    : itemPrice - (quantityPrice * itemPrice) / 100;
+                lPrice =
+                  selAction === "add"
+                    ? itemLPrice + (quantityPrice * itemLPrice) / 100
+                    : itemLPrice - (quantityPrice * itemLPrice) / 100;
+              }
+              body = { price };
+              localBody = { price: lPrice };
+              if (item.variations.length > 0) {
+                item.variations.forEach((vari) => {
+                  variations.push({ id: vari.id, price });
+                  vari.price = lPrice;
+                  lVariations.push(vari);
+                });
+                body.variations = variations;
+                localBody.variations = lVariations;
+                delete body.price;
+              }
+              break;
+            case "actionDeleteProd":
+              if (item.prodMl.status === "under_review") {
+                body = { deleted: "true" };
+              } else {
+                body = { status: "closed" };
+              }
+              localBody = { id: item.id };
+              break;
+          }
+
           if (application.ml && Object.keys(body).length > 0) {
             body.id = item.prodMl.id;
             const mlRes = await patchMlProduct(body);
@@ -147,7 +148,7 @@
             ...errors,
             {
               id: item.id,
-              ml_id: item.prodMl.id,
+              ml_id: item.prodMl ? item.prodMl.id : "",
               accion: action,
               resultado: "Error",
             },

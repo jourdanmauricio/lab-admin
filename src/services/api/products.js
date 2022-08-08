@@ -21,8 +21,8 @@ export const getLocalProducts = async (limit, offset, search) => {
 
 export const getLocalSkus = async () => {
   try {
-    let skus = await Api.get("products/getSkus");
-    return skus;
+    const res = await Api.get(`products/getSkus`);
+    return res;
   } catch (error) {
     throw error;
   }
@@ -381,6 +381,25 @@ export const patchMlDescription = async (descriptions) => {
       }
     }
     if (message === "") message = "Error modificando la descripción 😞";
+    throw message;
+  }
+};
+
+export const postMlProduct = async (mlItem) => {
+  try {
+    return await ApiMl.post(`items`, mlItem);
+  } catch (error) {
+    console.log("ERR!!!!", error);
+    let message = "";
+    if (error.response.data) {
+      message = `${error.response.status}: ${error.response.data.message}`;
+      if (error.response.data.cause.length > 0) {
+        error.response.data.cause.forEach((el) => {
+          if (el.type === "error") message += `<br> ${el.message}`;
+        });
+      }
+    }
+    if (message === "") message = "Error modificando el producto 😞";
     throw message;
   }
 };

@@ -1,5 +1,5 @@
 <script>
-  import Warranty from "./Warranty.svelte";
+  import Warranty from "../Warranty.svelte";
   import ListingType from "./ListingType.svelte";
   import Condition from "./Condition.svelte";
   import MaxQuantity from "./MaxQuantity.svelte";

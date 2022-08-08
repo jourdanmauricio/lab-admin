@@ -75,7 +75,7 @@
             user_id: res.newUser.id,
             setting: {
               status: "",
-              listingType: "",
+              listing_type_id: "",
               condition: "",
               hintSku: false,
             },

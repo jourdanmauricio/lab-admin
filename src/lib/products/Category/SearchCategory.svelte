@@ -2,7 +2,7 @@
   import CatArbol from "./CatArbol.svelte";
   import CatPredictor from "./CatPredictor.svelte";
   import CatUsed from "./CatUsed.svelte";
-  import { Tabs, TabList, TabPanel, Tab } from "./../../helpers/tabs/tabs";
+  import { Tabs, TabList, TabPanel, Tab } from "../../../helpers/tabs/tabs";
 
   export let hideModalSearchCat;
 </script>
